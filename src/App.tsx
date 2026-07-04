@@ -18,10 +18,11 @@ import {
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import {
+  Area,
   CartesianGrid,
+  ComposedChart,
   Legend,
   Line,
-  LineChart,
   ReferenceArea,
   ReferenceLine,
   ResponsiveContainer,
@@ -62,6 +63,24 @@ const currencyFormatter = new Intl.NumberFormat("en-GB", {
   maximumFractionDigits: 0
 });
 
+const navSections = [
+  { id: "overview", label: "Overview" },
+  { id: "approvals", label: "Pending approval" },
+  { id: "mapping", label: "Smart mapping" },
+  { id: "priorities", label: "Owner priorities" },
+  { id: "productivity", label: "Productivity" },
+  { id: "integrations", label: "Integrations" },
+  { id: "forecast", label: "Cash forecast" },
+  { id: "intelligence", label: "Forecast intelligence" },
+  { id: "xero", label: "Xero footprint" },
+  { id: "opportunities", label: "Revenue opportunities" },
+  { id: "actions", label: "Action simulator" },
+  { id: "messages", label: "Draft messages" },
+  { id: "audit", label: "Audit log" }
+] as const;
+
+type SectionId = (typeof navSections)[number]["id"];
+
 export function App() {
   const initialSource = new URLSearchParams(window.location.search).get("source") === "xero" ? "xero" : "demo";
   const [source, setSource] = useState<SourceMode>(initialSource);
@@ -77,6 +96,7 @@ export function App() {
   const [approving, setApproving] = useState(false);
   const [mappingStatuses, setMappingStatuses] = useState<Record<string, EntityMatch["matchStatus"]>>({});
   const [editedMessages, setEditedMessages] = useState<Record<string, string>>({});
+  const [activeSection, setActiveSection] = useState<SectionId>("overview");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -116,16 +136,43 @@ export function App() {
     });
   }, []);
 
+  useEffect(() => {
+    if (!payload) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((left, right) => left.boundingClientRect.top - right.boundingClientRect.top);
+        if (visible[0]) setActiveSection(visible[0].target.id as SectionId);
+      },
+      { rootMargin: "-15% 0px -65% 0px" }
+    );
+    for (const section of navSections) {
+      const element = document.getElementById(section.id);
+      if (element) observer.observe(element);
+    }
+    return () => observer.disconnect();
+  }, [payload]);
+
   const chartData = useMemo(() => {
     if (!payload) return [];
-    return payload.baseline.points.slice(0, horizon).map((point, index) => ({
-      date: formatShortDate(point.date),
-      fullDate: point.date,
-      before: Math.round(point.closingBalance),
-      after: Math.round(payload.afterActions.points[index]?.closingBalance ?? point.closingBalance),
-      threshold: payload.snapshot.safeCashThreshold
-    }));
+    return payload.baseline.points.slice(0, horizon).map((point, index) => {
+      const band = payload.baseline.bands?.[index];
+      return {
+        date: formatShortDate(point.date),
+        fullDate: point.date,
+        before: Math.round(point.closingBalance),
+        after: Math.round(payload.afterActions.points[index]?.closingBalance ?? point.closingBalance),
+        simulationRange: band ? [band.pessimisticBalance, band.optimisticBalance] : undefined,
+        threshold: payload.snapshot.safeCashThreshold
+      };
+    });
   }, [horizon, payload]);
+
+  function jumpToSection(id: SectionId) {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    setActiveSection(id);
+  }
 
   async function switchSource(nextSource: SourceMode) {
     setSource(nextSource);
@@ -304,6 +351,20 @@ export function App() {
           </div>
         </div>
 
+        <nav className="railSection railNav" aria-label="Dashboard sections">
+          <span className="railLabel">Sections</span>
+          {navSections.map((section) => (
+            <button
+              key={section.id}
+              className={`railNavLink ${activeSection === section.id ? "active" : ""}`}
+              type="button"
+              onClick={() => jumpToSection(section.id)}
+            >
+              {section.label}
+            </button>
+          ))}
+        </nav>
+
         <div className="railSection">
           <span className="railLabel">Source</span>
           <button
@@ -406,7 +467,7 @@ export function App() {
           </div>
         </header>
 
-        <section className="signalBand">
+        <section className="signalBand" id="overview">
           <MetricTile
             icon={<AlertTriangle size={18} aria-hidden="true" />}
             label="Baseline breach"
@@ -451,7 +512,7 @@ export function App() {
           />
         </section>
 
-        <section className="approvalSummaryPanel">
+        <section className="approvalSummaryPanel" id="approvals">
           <div className="panelHeader compact">
             <div>
               <span className="sectionLabel">Pending approval</span>
@@ -543,7 +604,7 @@ export function App() {
           onDecide={decideMapping}
         />
 
-        <section className="ownerPanel">
+        <section className="ownerPanel" id="priorities">
           <div className="panelHeader compact">
             <div>
               <span className="sectionLabel">Owner priorities</span>
@@ -590,7 +651,7 @@ export function App() {
           onToggle={toggleIntegrationCandidate}
         />
 
-        <section className="mainGrid">
+        <section className="mainGrid" id="forecast">
           <div className="chartPanel">
             <div className="panelHeader">
               <div>
@@ -612,7 +673,7 @@ export function App() {
             </div>
             <div className="chartFrame">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={chartData} margin={{ top: 12, right: 16, bottom: 0, left: 0 }}>
+                <ComposedChart data={chartData} margin={{ top: 12, right: 16, bottom: 0, left: 0 }}>
                   <CartesianGrid stroke="#1b2445" strokeDasharray="4 4" vertical={false} />
                   <XAxis
                     dataKey="date"
@@ -629,7 +690,11 @@ export function App() {
                     width={54}
                   />
                   <Tooltip
-                    formatter={(value) => money(Number(value))}
+                    formatter={(value) =>
+                      Array.isArray(value)
+                        ? `${money(Number(value[0]))} to ${money(Number(value[1]))}`
+                        : money(Number(value))
+                    }
                     labelFormatter={(_, rows) => rows?.[0]?.payload?.fullDate ?? ""}
                     contentStyle={{
                       background: "#0c1024",
@@ -654,9 +719,17 @@ export function App() {
                       fillOpacity={0.1}
                     />
                   ) : null}
+                  <Area
+                    name="Simulated range (p10-p90)"
+                    dataKey="simulationRange"
+                    stroke="none"
+                    fill="#8e8cff"
+                    fillOpacity={0.14}
+                    isAnimationActive={false}
+                  />
                   <Line type="monotone" name="Before actions" dataKey="before" stroke="#ff4d6d" strokeWidth={3} dot={false} />
                   <Line type="monotone" name="After actions" dataKey="after" stroke="#6d6cff" strokeWidth={3} dot={false} />
-                </LineChart>
+                </ComposedChart>
               </ResponsiveContainer>
             </div>
           </div>
@@ -683,7 +756,7 @@ export function App() {
           threshold={payload.snapshot.safeCashThreshold}
         />
 
-        <section className="pipelineGrid">
+        <section className="pipelineGrid" id="xero">
           <div className="pipelinePanel">
             <div className="panelHeader compact">
               <div>
@@ -770,7 +843,7 @@ export function App() {
           </div>
         </section>
 
-        <section className="growthPanel">
+        <section className="growthPanel" id="opportunities">
           <div className="panelHeader compact">
             <div>
               <span className="sectionLabel">Revenue opportunity agent</span>
@@ -790,7 +863,7 @@ export function App() {
           </div>
         </section>
 
-        <section className="actionsPanel">
+        <section className="actionsPanel" id="actions">
           <div className="panelHeader compact">
             <div>
               <span className="sectionLabel">Action simulator</span>
@@ -811,7 +884,7 @@ export function App() {
           </div>
         </section>
 
-        <section className="messagePanel">
+        <section className="messagePanel" id="messages">
           <div className="panelHeader compact">
             <div>
               <span className="sectionLabel">Human approval queue</span>
@@ -856,6 +929,45 @@ export function App() {
 
         <AuditLogPanel entries={auditEntries} />
       </section>
+
+      {approvalCount > 0 || approvalStatus ? (
+        <div className="approvalDock" role="status">
+          <div className="dockSummary">
+            <FileClock size={16} aria-hidden="true" />
+            {approvalStatus ? (
+              <span className="dockStatus">{approvalStatus}</span>
+            ) : (
+              <span>
+                <strong>{approvalCount}</strong> action{approvalCount === 1 ? "" : "s"} pending your decision
+                {Object.keys(editedMessages).length > 0
+                  ? ` · ${Object.keys(editedMessages).length} draft(s) edited`
+                  : ""}
+              </span>
+            )}
+          </div>
+          {approvalCount > 0 ? (
+            <div className="dockButtons">
+              <button
+                className="ghostButton rejectButton"
+                type="button"
+                onClick={() => submitDecision("reject")}
+                disabled={approving}
+              >
+                Reject
+              </button>
+              <button
+                className="primaryButton"
+                type="button"
+                onClick={() => submitDecision("approve")}
+                disabled={approving}
+              >
+                <Check size={15} aria-hidden="true" />
+                {approving ? "Queuing..." : "Approve"}
+              </button>
+            </div>
+          ) : null}
+        </div>
+      ) : null}
     </main>
   );
 }
@@ -874,7 +986,7 @@ function SmartMappingReviewPanel({
   const pendingReview = matches.filter((match) => (statuses[match.matchId] ?? match.matchStatus) === "PENDING_REVIEW").length;
 
   return (
-    <section className="bountyPanel mappingPanel">
+    <section className="bountyPanel mappingPanel" id="mapping">
       <div className="panelHeader compact">
         <div>
           <span className="sectionLabel">Smart Mapping Review</span>
@@ -957,7 +1069,7 @@ function ForecastIntelligencePanel({
   intelligence: DashboardPayload["forecastIntelligence"];
 }) {
   return (
-    <section className="forecastIntelPanel">
+    <section className="forecastIntelPanel" id="intelligence">
       <div className="panelHeader compact">
         <div>
           <span className="sectionLabel">Forecast intelligence</span>
@@ -1035,7 +1147,7 @@ function ForecastIntelligencePanel({
 
 function AuditLogPanel({ entries }: { entries: AuditLogEntry[] }) {
   return (
-    <section className="bountyPanel auditPanel">
+    <section className="bountyPanel auditPanel" id="audit">
       <div className="panelHeader compact">
         <div>
           <span className="sectionLabel">Audit Log</span>
@@ -1079,7 +1191,7 @@ function ProductivityPowerhousePanel({
   onToggle: (taskId: string) => void;
 }) {
   return (
-    <section className="bountyPanel productivityPanel">
+    <section className="bountyPanel productivityPanel" id="productivity">
       <div className="panelHeader compact">
         <div>
           <span className="sectionLabel">Bounty 01 · Productivity Powerhouse</span>
@@ -1151,7 +1263,7 @@ function AdaptiveIntegrationHubPanel({
   onToggle: (candidateId: string) => void;
 }) {
   return (
-    <section className="bountyPanel integrationPanel">
+    <section className="bountyPanel integrationPanel" id="integrations">
       <div className="panelHeader compact">
         <div>
           <span className="sectionLabel">Bounty 02 · Vibe Integrator</span>
