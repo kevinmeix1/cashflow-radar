@@ -1,0 +1,23 @@
+This is CashPilot, an AI revenue and cash-flow agent for Xero.
+
+Most accounting tools tell small businesses what already happened. CashPilot answers the operating question: what should I do today to grow revenue and avoid a cash crunch?
+
+Here is the pain. A business owner may have closed work that has not been invoiced. Cash can look fine until one supplier bill and one late customer collide. And integrations often break because real business data is messy.
+
+CashPilot keeps Xero at the centre. The live path uses Xero OAuth and the official Xero Node SDK. It reads contacts, invoices, payments, bank transactions, repeating invoices, tracking categories, and reports. Demo mode mirrors the same API shape when login is unavailable.
+
+The key demo story is Brightside. The CRM says Brightside Studio Limited has a closed-won conversion sprint for six thousand five hundred pounds. In Xero, the customer is called Brightside Studios. CashPilot normalises the names, checks the email-domain evidence, and proposes a high-confidence match for human review.
+
+Then the revenue leak detector checks Xero invoices. It finds no matching invoice for that closed-won deal, so it recommends creating a draft Xero invoice and queuing owner-approved outreach. This is not generic advice. It is a specific revenue action backed by external sales data and verified against Xero.
+
+The forecast intelligence layer shows why the action matters. CashPilot builds a daily cash ledger, applies payment-delay assumptions, and runs Monte Carlo simulations. In plain English, the crunch probability is how often cash falls below the safe line across many realistic payment futures.
+
+The dashboard explains the main risk, the control lever, and the before-versus-after forecast. Supplier payment timing creates pressure, while the revenue pipeline and selected actions protect cash.
+
+Every recommendation goes through human approval. The owner reviews the message, the timing, and the accounting context before anything is sent or written back.
+
+The audit log keeps source record traceability. For Brightside, it keeps the external CRM ID and the Xero contact ID together, so the owner can see exactly why the recommendation exists.
+
+CashPilot fits the revenue growth bounty by finding missed invoices, late-payment actions, and upsell opportunities. It fits the productivity bounty by automating finance admin. And it fits the Vibe Integrator bounty by mapping messy CRM, e-commerce, SaaS, and spreadsheet data into Xero.
+
+CashPilot turns Xero from a record of what happened into an approved action plan for what should happen next.
