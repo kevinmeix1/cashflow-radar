@@ -1,6 +1,5 @@
-import { useEffect, useMemo, useRef } from "react";
-import * as THREE from "three";
-import type { CashDriverInsight, ForecastScenario } from "../types/domain";
+import { useMemo } from "react";
+import type { CashDriverInsight, ForecastPoint, ForecastScenario } from "../types/domain";
 
 interface ForecastRiskSceneProps {
   baseline: ForecastScenario;
@@ -9,468 +8,372 @@ interface ForecastRiskSceneProps {
   drivers: CashDriverInsight[];
 }
 
-interface ScenePoint {
+interface ChartPoint {
   x: number;
   y: number;
-  z: number;
+}
+
+interface TickLabel {
+  key: string;
+  label: string;
+  x?: number;
+  y?: number;
 }
 
 const DAY_COUNT = 90;
-const SCENARIO_ROWS = 18;
-const DAY_SPACING = 0.34;
-const SCENARIO_SPACING = 0.44;
-const HEIGHT_RANGE = 4.9;
+const CHART_WIDTH = 980;
+const CHART_HEIGHT = 330;
+const CHART_PAD_X = 84;
+const CHART_PAD_Y = 28;
 
 export function ForecastRiskScene({ baseline, afterActions, threshold, drivers }: ForecastRiskSceneProps) {
-  const hostRef = useRef<HTMLDivElement | null>(null);
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-
-  const sceneData = useMemo(() => {
-    const baselinePoints = baseline.points.slice(0, DAY_COUNT);
-    const afterPoints = afterActions.points.slice(0, DAY_COUNT);
-    const balances = [...baselinePoints, ...afterPoints].map((point) => point.closingBalance);
-    const minBalance = Math.min(...balances, threshold);
-    const maxBalance = Math.max(...balances, threshold);
-    const paddedMin = minBalance - Math.max(1400, Math.abs(minBalance) * 0.08);
-    const paddedMax = maxBalance + Math.max(1400, Math.abs(maxBalance) * 0.08);
-    const span = Math.max(1, paddedMax - paddedMin);
-    const xOffset = ((baselinePoints.length || DAY_COUNT) - 1) * DAY_SPACING * 0.5;
-    const zOffset = (SCENARIO_ROWS - 1) * SCENARIO_SPACING * 0.5;
-
-    function yFor(balance: number) {
-      return ((balance - paddedMin) / span) * HEIGHT_RANGE - HEIGHT_RANGE * 0.5;
-    }
-
-    function xFor(index: number) {
-      return index * DAY_SPACING - xOffset;
-    }
-
-    function zFor(row: number) {
-      return row * SCENARIO_SPACING - zOffset;
-    }
-
-    return {
-      baselinePoints,
-      afterPoints,
-      minBalance: paddedMin,
-      maxBalance: paddedMax,
-      thresholdY: yFor(threshold),
-      yFor,
-      xFor,
-      zFor,
-      width: ((baselinePoints.length || DAY_COUNT) - 1) * DAY_SPACING,
-      depth: (SCENARIO_ROWS - 1) * SCENARIO_SPACING
-    };
-  }, [afterActions.points, baseline.points, threshold]);
-
-  const biggestRisk = drivers.find((driver) => driver.direction !== "positive");
-  const biggestOpportunity = drivers.find((driver) => driver.direction === "positive");
-  const breachDate = baseline.summary.firstThresholdBreachDate ?? "No breach";
-  const minimumLift = afterActions.summary.minimumCashBalance - baseline.summary.minimumCashBalance;
-
-  useEffect(() => {
-    const host = hostRef.current;
-    const canvas = canvasRef.current;
-    if (!host || !canvas || sceneData.baselinePoints.length === 0) return;
-    const hostElement = host;
-    const canvasElement = canvas;
-
-    const renderer = new THREE.WebGLRenderer({
-      alpha: true,
-      antialias: true,
-      canvas: canvasElement,
-      powerPreference: "high-performance"
-    });
-    renderer.setClearColor(0x000000, 0);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.outputColorSpace = THREE.SRGBColorSpace;
-
-    const scene = new THREE.Scene();
-    scene.fog = new THREE.Fog(0x050817, 13, 32);
-
-    const camera = new THREE.PerspectiveCamera(44, 1, 0.1, 100);
-    camera.position.set(-4.8, 6.0, 12.4);
-    camera.lookAt(0, 0.15, 0);
-
-    const root = new THREE.Group();
-    root.rotation.x = -0.08;
-    scene.add(root);
-
-    const ambient = new THREE.AmbientLight(0x7f8cff, 1.45);
-    scene.add(ambient);
-
-    const keyLight = new THREE.DirectionalLight(0x9cf8ff, 2.2);
-    keyLight.position.set(-5, 8, 9);
-    scene.add(keyLight);
-
-    const rimLight = new THREE.PointLight(0x6d6cff, 24, 28);
-    rimLight.position.set(8, 5, -6);
-    scene.add(rimLight);
-
-    const disposable: Array<{ dispose: () => void }> = [];
-
-    const terrain = buildRiskTerrain(sceneData, threshold);
-    root.add(terrain.mesh);
-    disposable.push(terrain.geometry, terrain.material);
-
-    const thresholdPlane = buildThresholdPlane(sceneData);
-    root.add(thresholdPlane.mesh);
-    disposable.push(thresholdPlane.geometry, thresholdPlane.material);
-
-    const baselineLine = buildPathLine(sceneData.baselinePoints.map((point, index) => ({
-      x: sceneData.xFor(index),
-      y: sceneData.yFor(point.closingBalance) + 0.06,
-      z: -sceneData.depth * 0.19
-    })), 0xff4d6d);
-    root.add(baselineLine.line);
-    disposable.push(baselineLine.geometry, baselineLine.material);
-
-    const afterLine = buildPathLine(sceneData.afterPoints.map((point, index) => ({
-      x: sceneData.xFor(index),
-      y: sceneData.yFor(point.closingBalance) + 0.11,
-      z: sceneData.depth * 0.19
-    })), 0x41d8c5);
-    root.add(afterLine.line);
-    disposable.push(afterLine.geometry, afterLine.material);
-
-    const actionBridge = buildActionBridge(sceneData);
-    root.add(actionBridge.line);
-    disposable.push(actionBridge.geometry, actionBridge.material);
-
-    const driverCluster = buildDriverPillars(sceneData, drivers);
-    root.add(driverCluster.group);
-    disposable.push(...driverCluster.disposable);
-
-    const particleField = buildRiskParticles(sceneData, threshold);
-    root.add(particleField.points);
-    disposable.push(particleField.geometry, particleField.material);
-
-    const axes = buildGridBase(sceneData);
-    root.add(axes.group);
-    disposable.push(...axes.disposable);
-
-    const pointer = {
-      active: false,
-      x: 0,
-      rotation: root.rotation.y
-    };
-
-    function onPointerDown(event: PointerEvent) {
-      pointer.active = true;
-      pointer.x = event.clientX;
-      pointer.rotation = root.rotation.y;
-      canvasElement.setPointerCapture(event.pointerId);
-    }
-
-    function onPointerMove(event: PointerEvent) {
-      if (!pointer.active) return;
-      const delta = (event.clientX - pointer.x) / Math.max(1, hostElement.clientWidth);
-      root.rotation.y = pointer.rotation + delta * 1.2;
-    }
-
-    function onPointerUp(event: PointerEvent) {
-      pointer.active = false;
-      if (canvasElement.hasPointerCapture(event.pointerId)) canvasElement.releasePointerCapture(event.pointerId);
-    }
-
-    canvasElement.addEventListener("pointerdown", onPointerDown);
-    canvasElement.addEventListener("pointermove", onPointerMove);
-    canvasElement.addEventListener("pointerup", onPointerUp);
-    canvasElement.addEventListener("pointercancel", onPointerUp);
-
-    const resizeObserver = new ResizeObserver(() => {
-      const width = Math.max(1, hostElement.clientWidth);
-      const height = Math.max(1, hostElement.clientHeight);
-      renderer.setSize(width, height, false);
-      camera.aspect = width / height;
-      camera.updateProjectionMatrix();
-    });
-    resizeObserver.observe(hostElement);
-    const initialWidth = Math.max(1, hostElement.clientWidth);
-    const initialHeight = Math.max(1, hostElement.clientHeight);
-    renderer.setSize(initialWidth, initialHeight, false);
-    camera.aspect = initialWidth / initialHeight;
-    camera.updateProjectionMatrix();
-
-    const startTime = Date.now();
-    renderer.setAnimationLoop(() => {
-      const elapsed = (Date.now() - startTime) / 1000;
-      if (!pointer.active) {
-        root.rotation.y = Math.sin(elapsed * 0.28) * 0.12;
-      }
-      terrain.mesh.rotation.z = Math.sin(elapsed * 0.22) * 0.008;
-      particleField.points.position.y = Math.sin(elapsed * 1.15) * 0.12;
-      particleField.points.rotation.y = elapsed * 0.08;
-      driverCluster.group.children.forEach((child, index) => {
-        child.scale.y = 1 + Math.sin(elapsed * 1.2 + index) * 0.035;
-      });
-      renderer.render(scene, camera);
-    });
-
-    return () => {
-      renderer.setAnimationLoop(null);
-      resizeObserver.disconnect();
-      canvasElement.removeEventListener("pointerdown", onPointerDown);
-      canvasElement.removeEventListener("pointermove", onPointerMove);
-      canvasElement.removeEventListener("pointerup", onPointerUp);
-      canvasElement.removeEventListener("pointercancel", onPointerUp);
-      disposable.forEach((item) => item.dispose());
-      renderer.dispose();
-    };
-  }, [drivers, sceneData, threshold]);
+  const view = useMemo(() => buildRiskView(baseline, afterActions, threshold, drivers), [
+    afterActions,
+    baseline,
+    drivers,
+    threshold
+  ]);
 
   return (
-    <div className="forecastSceneBand">
+    <div className="forecastDecisionBand">
       <div className="forecastSceneHeader">
         <div>
-          <strong>3D cash-risk terrain</strong>
-          <span>Monte Carlo surface · threshold plane · action lift paths</span>
+          <strong>Cash risk fan chart</strong>
+          <span>Dates on the bottom, cash position on the left, safe threshold in amber.</span>
         </div>
-        <div className="sceneLegend" aria-label="3D visualization legend">
-          <span className="risk">Baseline</span>
+        <div className="sceneLegend" aria-label="Forecast visualization legend">
+          <span className="risk">Before actions</span>
           <span className="safe">After actions</span>
-          <span className="threshold">Safe threshold</span>
+          <span className="threshold">Safe cash line</span>
         </div>
       </div>
 
-      <div ref={hostRef} className="forecastSceneShell">
-        <canvas ref={canvasRef} className="forecastSceneCanvas" aria-label="3D forecast risk visualization" />
-        <div className="sceneMetricStack">
-          <div>
-            <span>Risk window</span>
-            <strong>{breachDate}</strong>
-          </div>
-          <div>
-            <span>Action lift</span>
-            <strong>{money(minimumLift)}</strong>
-          </div>
-          <div>
-            <span>Risk driver</span>
-            <strong>{biggestRisk?.label ?? "No major risk"}</strong>
-          </div>
-          <div>
-            <span>Control lever</span>
-            <strong>{biggestOpportunity?.label ?? "No lever selected"}</strong>
+      <div className="riskStoryGrid">
+        <div className="riskFanPanel">
+          <svg
+            aria-label="Cash forecast fan chart"
+            className="riskFanSvg"
+            role="img"
+            viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`}
+          >
+            <defs>
+              <linearGradient id="riskBandGradient" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stopColor="#6d6cff" stopOpacity="0.18" />
+                <stop offset="62%" stopColor="#ff4d6d" stopOpacity="0.2" />
+                <stop offset="100%" stopColor="#ff4d6d" stopOpacity="0.08" />
+              </linearGradient>
+              <linearGradient id="actionAreaGradient" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stopColor="#41d8c5" stopOpacity="0.2" />
+                <stop offset="100%" stopColor="#41d8c5" stopOpacity="0.02" />
+              </linearGradient>
+            </defs>
+
+            <rect className="riskPlotBg" x="0" y="0" width={CHART_WIDTH} height={CHART_HEIGHT} rx="12" />
+            {view.gridLines.map((line) => (
+              <line
+                className="riskGridLine"
+                key={line.key}
+                x1={line.x1}
+                x2={line.x2}
+                y1={line.y1}
+                y2={line.y2}
+              />
+            ))}
+            <path className="riskBandPath" d={view.bandPath} />
+            <path className="actionLiftArea" d={view.actionAreaPath} />
+            <line
+              className="thresholdLine"
+              x1={CHART_PAD_X}
+              x2={CHART_WIDTH - CHART_PAD_X}
+              y1={view.thresholdY}
+              y2={view.thresholdY}
+            />
+            <path className="baselinePath" d={view.baselinePath} />
+            <path className="afterPath" d={view.afterPath} />
+            <circle className="riskPoint" cx={view.breachPoint.x} cy={view.breachPoint.y} r="5" />
+            <circle className="safePoint" cx={view.afterMinimumPoint.x} cy={view.afterMinimumPoint.y} r="5" />
+
+            <text className="bandLabel" x={CHART_PAD_X + 18} y={CHART_PAD_Y + 34}>
+              payment timing simulation range
+            </text>
+            {view.yTicks.map((tick) => (
+              <text className="cashTickLabel" key={tick.key} x={CHART_PAD_X - 10} y={(tick.y ?? 0) + 4}>
+                {tick.label}
+              </text>
+            ))}
+            {view.xTicks.map((tick) => (
+              <text className="dateTickLabel" key={tick.key} x={tick.x} y={CHART_HEIGHT - CHART_PAD_Y + 20}>
+                {tick.label}
+              </text>
+            ))}
+            <text className="axisLabel" x={CHART_PAD_X} y={CHART_PAD_Y - 8}>
+              Cash balance
+            </text>
+            <text className="thresholdText" x={CHART_WIDTH - 210} y={view.thresholdY - 8}>
+              Safe cash line: {money(threshold)}
+            </text>
+            <text className="breachText" x={view.breachLabelX} y={view.breachLabelY}>
+              {view.breachLabel}
+            </text>
+          </svg>
+
+          <div className="riskCalendar" aria-label="Weekly risk calendar">
+            {view.weeks.map((week) => (
+              <div className={`riskWeek ${week.status}`} key={week.label}>
+                <span>{week.label}</span>
+                <strong>{week.minimumLabel}</strong>
+                <em>{week.statusLabel}</em>
+              </div>
+            ))}
           </div>
         </div>
-        <div className="sceneHint">Drag to rotate · red surface zones fall below the cash safety threshold</div>
+
+        <div className="riskDecisionPanel">
+          <div className="riskDecisionHeader">
+            <span>Decision readout</span>
+            <strong>{view.headline}</strong>
+          </div>
+
+          <div className="riskMetricList">
+            <div>
+              <span>Baseline crunch probability</span>
+              <strong>{baseline.summary.crunchProbability}%</strong>
+            </div>
+            <div>
+              <span>After-action probability</span>
+              <strong>{afterActions.summary.crunchProbability}%</strong>
+            </div>
+            <div>
+              <span>Minimum cash lift</span>
+              <strong>{money(view.minimumLift)}</strong>
+            </div>
+          </div>
+
+          <div className="driverBars" aria-label="Cash driver impact bars">
+            {view.driverBars.map((driver) => (
+              <div className={`driverBar ${driver.direction}`} key={driver.id}>
+                <div>
+                  <strong>{driver.label}</strong>
+                  <span>{driver.explanation}</span>
+                </div>
+                <div className="driverBarTrack">
+                  <span style={{ width: `${driver.width}%` }} />
+                </div>
+                <em>{driver.impactLabel}</em>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
-function buildRiskTerrain(sceneData: SceneData, threshold: number) {
-  const columns = sceneData.baselinePoints.length;
-  const rows = SCENARIO_ROWS;
-  const positions: number[] = [];
-  const colors: number[] = [];
-  const indices: number[] = [];
-  const color = new THREE.Color();
+function buildRiskView(
+  baseline: ForecastScenario,
+  afterActions: ForecastScenario,
+  threshold: number,
+  drivers: CashDriverInsight[]
+) {
+  const baselinePoints = baseline.points.slice(0, DAY_COUNT);
+  const afterPoints = afterActions.points.slice(0, baselinePoints.length);
+  const daysShown = baselinePoints.length;
+  const paymentTimingImpact =
+    drivers.find((driver) => driver.id === "driver-payment-delay")?.impactAmount ??
+    Math.max(1200, threshold * 0.28);
+  const bandWidth = Math.max(900, Math.min(4200, paymentTimingImpact * 0.55));
 
-  for (let row = 0; row < rows; row += 1) {
-    const rowT = row / Math.max(1, rows - 1);
-    const reliabilityOffset = (rowT - 0.48) * 1900;
-    for (let column = 0; column < columns; column += 1) {
-      const point = sceneData.baselinePoints[column];
-      const wave = Math.sin(column * 0.32 + row * 0.86) * 420 + Math.cos(column * 0.13 + row * 1.2) * 260;
-      const stress = point.closingBalance < threshold ? -900 * (1 - rowT) : 0;
-      const simulatedBalance = point.closingBalance + reliabilityOffset + wave + stress;
-      const y = sceneData.yFor(simulatedBalance);
-      positions.push(sceneData.xFor(column), y, sceneData.zFor(row));
+  const lowerBand = baselinePoints.map((point, index) => ({
+    ...point,
+    closingBalance: point.closingBalance - bandWidth * Math.sqrt((index + 1) / Math.max(1, daysShown))
+  }));
+  const upperBand = baselinePoints.map((point, index) => ({
+    ...point,
+    closingBalance: point.closingBalance + bandWidth * 0.28 * Math.sqrt((index + 1) / Math.max(1, daysShown))
+  }));
+  const allBalances = [
+    ...baselinePoints,
+    ...afterPoints,
+    ...lowerBand,
+    ...upperBand,
+    { closingBalance: threshold } as ForecastPoint
+  ].map((point) => point.closingBalance);
+  const minBalance = Math.min(...allBalances);
+  const maxBalance = Math.max(...allBalances);
+  const padding = Math.max(1600, (maxBalance - minBalance) * 0.12);
+  const domainMin = minBalance - padding;
+  const domainMax = maxBalance + padding;
+  const baselineChart = baselinePoints.map((point, index) => chartPoint(index, point.closingBalance));
+  const afterChart = afterPoints.map((point, index) => chartPoint(index, point.closingBalance));
+  const lowerChart = lowerBand.map((point, index) => chartPoint(index, point.closingBalance));
+  const upperChart = upperBand.map((point, index) => chartPoint(index, point.closingBalance));
+  const thresholdY = yFor(threshold);
+  const breachIndex = Math.max(
+    0,
+    baselinePoints.findIndex((point) => point.date === baseline.summary.firstThresholdBreachDate)
+  );
+  const safeMinimumIndex = Math.max(
+    0,
+    afterPoints.findIndex((point) => point.date === afterActions.summary.minimumCashDate)
+  );
+  const breachPoint = baselineChart[breachIndex] ?? baselineChart[0] ?? { x: CHART_PAD_X, y: thresholdY };
+  const afterMinimumPoint = afterChart[safeMinimumIndex] ?? afterChart[0] ?? { x: CHART_PAD_X, y: thresholdY };
+  const driverBars = buildDriverBars(drivers);
+  const minimumLift = afterActions.summary.minimumCashBalance - baseline.summary.minimumCashBalance;
+  const yTicks: TickLabel[] = buildCashTicks(domainMin, domainMax, threshold).map((value) => ({
+    key: `cash-${value}`,
+    label: money(value),
+    y: yFor(value)
+  }));
+  const xTicks: TickLabel[] = buildDateTicks(baselinePoints).map((tick) => ({
+    key: `date-${tick.index}`,
+    label: tick.label,
+    x: xFor(tick.index)
+  }));
 
-      const distanceFromThreshold = simulatedBalance - threshold;
-      if (distanceFromThreshold < 0) {
-        color.setHSL(0.96, 0.86, 0.56);
-      } else if (distanceFromThreshold < 2600) {
-        color.setHSL(0.11, 0.9, 0.58);
-      } else {
-        color.setHSL(0.49, 0.72, 0.53);
-      }
-      colors.push(color.r, color.g, color.b);
-    }
+  return {
+    daysShown,
+    baselinePath: linePath(baselineChart),
+    afterPath: linePath(afterChart),
+    bandPath: areaBetweenPath(upperChart, lowerChart),
+    actionAreaPath: areaBetweenPath(afterChart, baselineChart),
+    thresholdY,
+    breachPoint,
+    afterMinimumPoint,
+    breachLabel: baseline.summary.firstThresholdBreachDate
+      ? `First risk date: ${shortDate(baseline.summary.firstThresholdBreachDate)}`
+      : "No baseline breach",
+    breachLabelX: Math.min(CHART_WIDTH - 255, Math.max(CHART_PAD_X + 10, breachPoint.x - 20)),
+    breachLabelY: Math.max(CHART_PAD_Y + 18, breachPoint.y - 18),
+    weeks: buildWeeks(baselinePoints, afterPoints, threshold),
+    xTicks,
+    yTicks,
+    headline: baseline.summary.firstThresholdBreachDate
+      ? `Cash falls below the safe line on ${shortDate(baseline.summary.firstThresholdBreachDate)} unless selected actions land.`
+      : "Baseline stays above the safe line in this horizon.",
+    minimumLift,
+    driverBars,
+    gridLines: buildGridLines(),
+  };
+
+  function xFor(index: number) {
+    const usableWidth = CHART_WIDTH - CHART_PAD_X * 2;
+    return CHART_PAD_X + (index / Math.max(1, daysShown - 1)) * usableWidth;
   }
 
-  for (let row = 0; row < rows - 1; row += 1) {
-    for (let column = 0; column < columns - 1; column += 1) {
-      const a = row * columns + column;
-      const b = a + 1;
-      const c = a + columns;
-      const d = c + 1;
-      indices.push(a, c, b, b, c, d);
-    }
+  function chartPoint(index: number, balance: number): ChartPoint {
+    return {
+      x: xFor(index),
+      y: yFor(balance)
+    };
   }
 
-  const geometry = new THREE.BufferGeometry();
-  geometry.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
-  geometry.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3));
-  geometry.setIndex(indices);
-  geometry.computeVertexNormals();
-
-  const material = new THREE.MeshStandardMaterial({
-    color: 0xffffff,
-    metalness: 0.18,
-    roughness: 0.42,
-    side: THREE.DoubleSide,
-    transparent: true,
-    opacity: 0.68,
-    vertexColors: true
-  });
-
-  return { geometry, material, mesh: new THREE.Mesh(geometry, material) };
-}
-
-function buildThresholdPlane(sceneData: SceneData) {
-  const geometry = new THREE.PlaneGeometry(sceneData.width + 1.6, sceneData.depth + 1.2);
-  const material = new THREE.MeshBasicMaterial({
-    color: 0xff4d6d,
-    depthWrite: false,
-    opacity: 0.16,
-    side: THREE.DoubleSide,
-    transparent: true
-  });
-  const mesh = new THREE.Mesh(geometry, material);
-  mesh.rotation.x = -Math.PI / 2;
-  mesh.position.y = sceneData.thresholdY;
-  return { geometry, material, mesh };
-}
-
-function buildPathLine(points: ScenePoint[], color: number) {
-  const curve = new THREE.CatmullRomCurve3(points.map((point) => new THREE.Vector3(point.x, point.y, point.z)));
-  const geometry = new THREE.TubeGeometry(curve, 120, 0.035, 8, false);
-  const material = new THREE.MeshStandardMaterial({
-    color,
-    emissive: color,
-    emissiveIntensity: 0.65,
-    metalness: 0.1,
-    roughness: 0.32
-  });
-  const line = new THREE.Mesh(geometry, material);
-  return { geometry, material, line };
-}
-
-function buildActionBridge(sceneData: SceneData) {
-  const positions: number[] = [];
-  const step = Math.max(4, Math.floor(sceneData.baselinePoints.length / 14));
-  for (let index = 0; index < sceneData.baselinePoints.length; index += step) {
-    const before = sceneData.baselinePoints[index];
-    const after = sceneData.afterPoints[index] ?? before;
-    positions.push(
-      sceneData.xFor(index),
-      sceneData.yFor(before.closingBalance) + 0.1,
-      -sceneData.depth * 0.19,
-      sceneData.xFor(index),
-      sceneData.yFor(after.closingBalance) + 0.1,
-      sceneData.depth * 0.19
-    );
+  function yFor(balance: number) {
+    const usableHeight = CHART_HEIGHT - CHART_PAD_Y * 2;
+    const ratio = (balance - domainMin) / Math.max(1, domainMax - domainMin);
+    return CHART_HEIGHT - CHART_PAD_Y - ratio * usableHeight;
   }
-
-  const geometry = new THREE.BufferGeometry();
-  geometry.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
-  const material = new THREE.LineBasicMaterial({
-    color: 0x8e8cff,
-    opacity: 0.42,
-    transparent: true
-  });
-  return { geometry, material, line: new THREE.LineSegments(geometry, material) };
 }
 
-function buildDriverPillars(sceneData: SceneData, drivers: CashDriverInsight[]) {
-  const group = new THREE.Group();
-  const disposable: Array<{ dispose: () => void }> = [];
-  const maxImpact = Math.max(1, ...drivers.map((driver) => driver.impactAmount));
-  const startX = -Math.min(sceneData.width * 0.48, 7.2);
+function buildDriverBars(drivers: CashDriverInsight[]) {
+  const selected = drivers.slice(0, 3);
+  const maxImpact = Math.max(1, ...selected.map((driver) => driver.impactAmount));
+  return selected.map((driver) => ({
+    id: driver.id,
+    label: driver.label,
+    direction: driver.direction,
+    impactLabel: driver.impactLabel,
+    explanation: driver.sensitivity,
+    width: Math.max(10, Math.round((driver.impactAmount / maxImpact) * 100))
+  }));
+}
 
-  drivers.slice(0, 6).forEach((driver, index) => {
-    const height = 0.38 + (driver.impactAmount / maxImpact) * 2.1;
-    const color = driver.direction === "positive" ? 0x41d8c5 : driver.direction === "risk" ? 0xff4d6d : 0xf5b64c;
-    const geometry = new THREE.CylinderGeometry(0.11, 0.2, height, 18, 1);
-    const material = new THREE.MeshStandardMaterial({
-      color,
-      emissive: color,
-      emissiveIntensity: 0.28,
-      metalness: 0.22,
-      roughness: 0.35
+function buildWeeks(baselinePoints: ForecastPoint[], afterPoints: ForecastPoint[], threshold: number) {
+  const weeks = [];
+  for (let index = 0; index < baselinePoints.length; index += 7) {
+    const baselineWeek = baselinePoints.slice(index, index + 7);
+    const afterWeek = afterPoints.slice(index, index + 7);
+    const baselineMinimum = Math.min(...baselineWeek.map((point) => point.closingBalance));
+    const afterMinimum = Math.min(...afterWeek.map((point) => point.closingBalance));
+    const status = baselineMinimum < threshold ? "danger" : baselineMinimum < threshold * 1.35 ? "watch" : "safe";
+    weeks.push({
+      label: `${shortDate(baselineWeek[0].date)}-${shortDate(baselineWeek[baselineWeek.length - 1].date)}`,
+      minimumLabel: money(Math.round(baselineMinimum)),
+      status,
+      statusLabel:
+        status === "danger"
+          ? afterMinimum >= threshold
+            ? "actions protect"
+            : "below safe line"
+          : status === "watch"
+            ? "watch"
+            : "safe"
     });
-    const pillar = new THREE.Mesh(geometry, material);
-    pillar.position.set(startX + index * 0.72, sceneData.thresholdY + height / 2, sceneData.depth * 0.66);
-    group.add(pillar);
-    disposable.push(geometry, material);
-  });
-
-  return { group, disposable };
+  }
+  return weeks.slice(0, 10);
 }
 
-function buildRiskParticles(sceneData: SceneData, threshold: number) {
-  const riskyDays = sceneData.baselinePoints
-    .map((point, index) => ({ point, index }))
-    .filter(({ point }) => point.closingBalance < threshold + 1400);
-  const sourceDays = riskyDays.length > 0 ? riskyDays : sceneData.baselinePoints.map((point, index) => ({ point, index }));
-  const count = 170;
-  const positions: number[] = [];
-
-  for (let i = 0; i < count; i += 1) {
-    const day = sourceDays[i % sourceDays.length];
-    const x = sceneData.xFor(day.index) + Math.sin(i * 2.31) * 0.18;
-    const z = -sceneData.depth * 0.48 + ((i * 37) % 100) / 100 * sceneData.depth * 0.96;
-    const y = sceneData.yFor(day.point.closingBalance) + 0.18 + ((i * 19) % 100) / 100 * 1.2;
-    positions.push(x, y, z);
-  }
-
-  const geometry = new THREE.BufferGeometry();
-  geometry.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
-  const material = new THREE.PointsMaterial({
-    color: 0xff6b7a,
-    depthWrite: false,
-    opacity: 0.58,
-    size: 0.055,
-    transparent: true
-  });
-  return { geometry, material, points: new THREE.Points(geometry, material) };
+function buildCashTicks(domainMin: number, domainMax: number, threshold: number) {
+  const tickStep = 5000;
+  const candidates = [
+    Math.ceil(domainMin / tickStep) * tickStep,
+    threshold,
+    Math.floor(domainMax / tickStep) * tickStep
+  ];
+  return [...new Set(candidates)]
+    .filter((value) => Number.isFinite(value) && value >= domainMin && value <= domainMax)
+    .sort((left, right) => right - left);
 }
 
-function buildGridBase(sceneData: SceneData) {
-  const group = new THREE.Group();
-  const disposable: Array<{ dispose: () => void }> = [];
-  const material = new THREE.LineBasicMaterial({
-    color: 0x33406b,
-    opacity: 0.38,
-    transparent: true
-  });
-  disposable.push(material);
-
-  const positions: number[] = [];
-  const baseY = -HEIGHT_RANGE * 0.5 - 0.2;
-  for (let day = 0; day < sceneData.baselinePoints.length; day += 10) {
-    positions.push(sceneData.xFor(day), baseY, -sceneData.depth * 0.56, sceneData.xFor(day), baseY, sceneData.depth * 0.56);
-  }
-  for (let row = 0; row < SCENARIO_ROWS; row += 3) {
-    positions.push(-sceneData.width * 0.54, baseY, sceneData.zFor(row), sceneData.width * 0.54, baseY, sceneData.zFor(row));
-  }
-
-  const geometry = new THREE.BufferGeometry();
-  geometry.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
-  disposable.push(geometry);
-  group.add(new THREE.LineSegments(geometry, material));
-  return { group, disposable };
+function buildDateTicks(points: ForecastPoint[]) {
+  if (points.length === 0) return [];
+  const indexes = [0, 29, 59, points.length - 1].filter(
+    (index, position, values) => index >= 0 && index < points.length && values.indexOf(index) === position
+  );
+  return indexes.map((index) => ({
+    index,
+    label: index === points.length - 1 ? `Day ${points.length}` : shortDate(points[index].date)
+  }));
 }
 
-type SceneData = {
-  baselinePoints: ForecastScenario["points"];
-  afterPoints: ForecastScenario["points"];
-  minBalance: number;
-  maxBalance: number;
-  thresholdY: number;
-  yFor: (balance: number) => number;
-  xFor: (index: number) => number;
-  zFor: (row: number) => number;
-  width: number;
-  depth: number;
-};
+function buildGridLines() {
+  const lines = [];
+  for (let index = 0; index <= 4; index += 1) {
+    const y = CHART_PAD_Y + ((CHART_HEIGHT - CHART_PAD_Y * 2) / 4) * index;
+    lines.push({ key: `h-${index}`, x1: CHART_PAD_X, x2: CHART_WIDTH - CHART_PAD_X, y1: y, y2: y });
+  }
+  for (let index = 0; index <= 6; index += 1) {
+    const x = CHART_PAD_X + ((CHART_WIDTH - CHART_PAD_X * 2) / 6) * index;
+    lines.push({ key: `v-${index}`, x1: x, x2: x, y1: CHART_PAD_Y, y2: CHART_HEIGHT - CHART_PAD_Y });
+  }
+  return lines;
+}
+
+function linePath(points: ChartPoint[]) {
+  if (points.length === 0) return "";
+  return points.map((point, index) => `${index === 0 ? "M" : "L"} ${point.x.toFixed(1)} ${point.y.toFixed(1)}`).join(" ");
+}
+
+function areaBetweenPath(top: ChartPoint[], bottom: ChartPoint[]) {
+  if (top.length === 0 || bottom.length === 0) return "";
+  const topPath = top.map((point, index) => `${index === 0 ? "M" : "L"} ${point.x.toFixed(1)} ${point.y.toFixed(1)}`);
+  const bottomPath = [...bottom]
+    .reverse()
+    .map((point) => `L ${point.x.toFixed(1)} ${point.y.toFixed(1)}`);
+  return [...topPath, ...bottomPath, "Z"].join(" ");
+}
 
 function money(value: number) {
   return new Intl.NumberFormat("en-GB", {
+    style: "currency",
     currency: "GBP",
-    maximumFractionDigits: 0,
-    style: "currency"
+    maximumFractionDigits: 0
   }).format(value);
+}
+
+function shortDate(date: string) {
+  return new Intl.DateTimeFormat("en-GB", {
+    day: "2-digit",
+    month: "short"
+  }).format(new Date(`${date}T00:00:00Z`));
 }

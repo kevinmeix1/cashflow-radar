@@ -68,7 +68,7 @@ Say:
 
 Point to:
 
-- 3D risk surface
+- cash risk fan chart
 - model cards
 - cash drivers
 - sensitivity notes
@@ -126,7 +126,7 @@ Xero is the system of record for contacts, invoices, payments, bank transactions
 
 ### Development Platform
 
-React, Vite, TypeScript, Express, Xero Node SDK, OpenAI Agents SDK, optional Xero MCP server, Recharts, Three.js.
+React, Vite, TypeScript, Express, Xero Node SDK, OpenAI Agents SDK, optional Xero MCP server, Recharts, and SVG forecast visualisation.
 
 ### Tracks
 

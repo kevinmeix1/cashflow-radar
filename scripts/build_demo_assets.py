@@ -226,7 +226,7 @@ def slide_8(c: canvas.Canvas):
     )
     draw_wrapped(
         c,
-        "Demo checklist: show baseline breach, Brightside mapping, missing invoice recommendation, 3D forecast intelligence, Xero API footprint, approval queue, and audit log.",
+        "Demo checklist: show baseline breach, Brightside mapping, missing invoice recommendation, cash risk fan chart, Xero API footprint, approval queue, and audit log.",
         1.05 * inch,
         2.0 * inch,
         96,

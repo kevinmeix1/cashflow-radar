@@ -2027,10 +2027,6 @@ body {
   margin: 14px 0 0;
 }
 
-.forecastSceneBand {
-  margin-top: 16px;
-}
-
 .forecastSceneHeader {
   align-items: center;
   display: flex;
@@ -2098,104 +2094,314 @@ body {
   box-shadow: 0 0 14px rgba(245, 182, 76, 0.62);
 }
 
-.forecastSceneShell {
-  background:
-    linear-gradient(90deg, rgba(65, 216, 197, 0.1) 1px, transparent 1px),
-    linear-gradient(180deg, rgba(109, 108, 255, 0.11) 1px, transparent 1px),
-    radial-gradient(circle at 20% 15%, rgba(109, 108, 255, 0.22), transparent 34%),
-    radial-gradient(circle at 78% 18%, rgba(65, 216, 197, 0.16), transparent 34%),
-    linear-gradient(180deg, rgba(4, 7, 19, 0.96), rgba(7, 12, 31, 0.98));
-  background-size:
-    64px 64px,
-    64px 64px,
-    auto,
-    auto,
-    auto;
-  border-radius: 8px;
-  height: 460px;
-  min-height: 360px;
-  overflow: hidden;
-  position: relative;
+.forecastDecisionBand {
+  margin-top: 16px;
+  padding-top: 3px;
 }
 
-.forecastSceneShell::after {
-  background:
-    linear-gradient(90deg, rgba(5, 8, 23, 0.86), transparent 24%, transparent 76%, rgba(5, 8, 23, 0.82)),
-    linear-gradient(180deg, rgba(5, 8, 23, 0.08), transparent 62%, rgba(5, 8, 23, 0.72));
-  content: "";
-  inset: 0;
-  pointer-events: none;
-  position: absolute;
-}
-
-.forecastSceneCanvas {
-  cursor: grab;
-  display: block;
-  height: 100%;
-  position: relative;
-  touch-action: none;
-  width: 100%;
-  z-index: 1;
-}
-
-.forecastSceneCanvas:active {
-  cursor: grabbing;
-}
-
-.sceneMetricStack {
-  bottom: 16px;
+.riskStoryGrid {
+  align-items: start;
   display: grid;
-  gap: 8px;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  left: 16px;
-  pointer-events: none;
-  position: absolute;
-  right: 16px;
-  z-index: 2;
+  gap: 14px;
+  grid-template-columns: minmax(0, 1.55fr) minmax(320px, 0.72fr);
 }
 
-.sceneMetricStack div {
-  background: rgba(5, 8, 23, 0.72);
-  border: 1px solid rgba(109, 108, 255, 0.24);
+.riskFanPanel,
+.riskDecisionPanel {
+  background:
+    radial-gradient(circle at 18% 8%, rgba(109, 108, 255, 0.16), transparent 30%),
+    linear-gradient(180deg, rgba(8, 13, 31, 0.92), rgba(5, 8, 23, 0.96));
+  border: 1px solid #20284b;
   border-radius: 8px;
-  min-height: 74px;
-  padding: 11px;
+  min-width: 0;
+  padding: 12px;
 }
 
-.sceneMetricStack span,
-.sceneMetricStack strong {
+.riskFanSvg {
   display: block;
+  height: auto;
+  min-height: 300px;
+  width: 100%;
 }
 
-.sceneMetricStack span {
-  color: #7f87a5;
-  font-size: 11px;
+.riskPlotBg {
+  fill: rgba(5, 8, 23, 0.58);
+  stroke: rgba(32, 40, 75, 0.92);
+}
+
+.riskGridLine {
+  stroke: rgba(154, 164, 199, 0.16);
+  stroke-width: 1;
+}
+
+.riskBandPath {
+  fill: url("#riskBandGradient");
+  stroke: rgba(255, 77, 109, 0.28);
+  stroke-width: 1;
+}
+
+.actionLiftArea {
+  fill: url("#actionAreaGradient");
+}
+
+.baselinePath,
+.afterPath,
+.thresholdLine {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.baselinePath {
+  filter: drop-shadow(0 0 8px rgba(255, 77, 109, 0.35));
+  stroke: #ff4d6d;
+  stroke-width: 4;
+}
+
+.afterPath {
+  filter: drop-shadow(0 0 8px rgba(65, 216, 197, 0.36));
+  stroke: #41d8c5;
+  stroke-width: 4;
+}
+
+.thresholdLine {
+  stroke: #f5b64c;
+  stroke-dasharray: 9 7;
+  stroke-width: 2.5;
+}
+
+.riskPoint,
+.safePoint {
+  stroke: #050817;
+  stroke-width: 3;
+}
+
+.riskPoint {
+  fill: #ff4d6d;
+}
+
+.safePoint {
+  fill: #41d8c5;
+}
+
+.axisLabel,
+.thresholdText,
+.breachText,
+.bandLabel,
+.cashTickLabel,
+.dateTickLabel {
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
   font-weight: 900;
-  letter-spacing: 0.14em;
+}
+
+.axisLabel {
+  fill: #7f87a5;
+  font-size: 13px;
+}
+
+.thresholdText {
+  fill: #f5d08c;
+  font-size: 13px;
+}
+
+.breachText {
+  fill: #ff9caf;
+  font-size: 13px;
+}
+
+.bandLabel {
+  fill: #b7c1e8;
+  font-size: 12px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
-.sceneMetricStack strong {
-  color: #f5f7ff;
-  font-size: 15px;
-  line-height: 1.25;
-  margin-top: 8px;
-  overflow-wrap: anywhere;
+.cashTickLabel,
+.dateTickLabel {
+  fill: #677191;
+  font-size: 12px;
 }
 
-.sceneHint {
-  background: rgba(5, 8, 23, 0.68);
-  border: 1px solid rgba(65, 216, 197, 0.22);
-  border-radius: 999px;
+.cashTickLabel {
+  text-anchor: end;
+}
+
+.dateTickLabel {
+  text-anchor: middle;
+}
+
+.riskCalendar {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  margin-top: 12px;
+}
+
+.riskWeek {
+  background: rgba(15, 21, 45, 0.72);
+  border: 1px solid #20284b;
+  border-radius: 8px;
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+  padding: 9px;
+}
+
+.riskWeek span,
+.riskWeek em {
+  color: #7f87a5;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.riskWeek strong {
+  color: #f5f7ff;
+  font-size: 15px;
+}
+
+.riskWeek.danger {
+  border-color: rgba(255, 77, 109, 0.46);
+}
+
+.riskWeek.danger em {
+  color: #ff9caf;
+}
+
+.riskWeek.watch {
+  border-color: rgba(245, 182, 76, 0.46);
+}
+
+.riskWeek.watch em {
+  color: #f5d08c;
+}
+
+.riskWeek.safe {
+  border-color: rgba(65, 216, 197, 0.34);
+}
+
+.riskWeek.safe em {
+  color: #41d8c5;
+}
+
+.riskDecisionPanel {
+  align-content: start;
+  display: grid;
+  gap: 12px;
+}
+
+.riskDecisionHeader {
+  background: rgba(109, 108, 255, 0.1);
+  border: 1px solid rgba(109, 108, 255, 0.22);
+  border-radius: 8px;
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+}
+
+.riskDecisionHeader span,
+.riskMetricList span {
+  color: #7f87a5;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.riskDecisionHeader strong {
+  color: #f5f7ff;
+  font-size: 16px;
+  line-height: 1.35;
+}
+
+.riskMetricList {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 1fr;
+}
+
+.riskMetricList div {
+  background: rgba(5, 8, 23, 0.58);
+  border: 1px solid #20284b;
+  border-radius: 8px;
+  display: grid;
+  gap: 6px;
+  padding: 10px;
+}
+
+.riskMetricList strong {
+  color: #f5f7ff;
+  font-size: 22px;
+}
+
+.driverBars {
+  display: grid;
+  gap: 9px;
+}
+
+.driverBar {
+  background: rgba(5, 8, 23, 0.58);
+  border: 1px solid #20284b;
+  border-left: 4px solid #6d6cff;
+  border-radius: 8px;
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+}
+
+.driverBar.negative {
+  border-left-color: #f5b64c;
+}
+
+.driverBar.risk {
+  border-left-color: #ff4d6d;
+}
+
+.driverBar.positive {
+  border-left-color: #41d8c5;
+}
+
+.driverBar strong,
+.driverBar em {
+  color: #f5f7ff;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.driverBar span {
   color: #9aa4c7;
+  display: block;
   font-size: 12px;
-  font-weight: 800;
-  left: 16px;
-  padding: 8px 10px;
-  pointer-events: none;
-  position: absolute;
-  top: 16px;
-  z-index: 2;
+  line-height: 1.35;
+  margin-top: 4px;
+}
+
+.driverBarTrack {
+  background: rgba(15, 21, 45, 0.84);
+  border-radius: 999px;
+  height: 8px;
+  overflow: hidden;
+}
+
+.driverBarTrack span {
+  background: linear-gradient(90deg, #6d6cff, #41d8c5);
+  border-radius: inherit;
+  display: block;
+  height: 100%;
+}
+
+.driverBar.negative .driverBarTrack span {
+  background: linear-gradient(90deg, #f5b64c, #ff8f70);
+}
+
+.driverBar.risk .driverBarTrack span {
+  background: linear-gradient(90deg, #ff4d6d, #f5b64c);
+}
+
+.driverBar.positive .driverBarTrack span {
+  background: linear-gradient(90deg, #41d8c5, #6d6cff);
 }
 
 .intelGrid {
@@ -2349,9 +2555,10 @@ body {
     grid-template-columns: 1fr;
   }
 
-  .sceneMetricStack {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .riskStoryGrid {
+    grid-template-columns: 1fr;
   }
+
 }
 
 @media (max-width: 760px) {
@@ -2368,12 +2575,8 @@ body {
     justify-content: flex-start;
   }
 
-  .forecastSceneShell {
-    height: 520px;
-  }
-
-  .sceneMetricStack {
-    grid-template-columns: 1fr;
+  .riskCalendar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .subPanelHeader,

@@ -106,7 +106,7 @@ CashPilot separates numeric calculation from agent reasoning:
 - `xero-node` official Xero SDK
 - `@openai/agents` for narrative orchestration
 - Optional Xero MCP bridge
-- Recharts and Three.js for forecast visualisation
+- Recharts and SVG for forecast visualisation
 - Lightweight TypeScript tests with `tsx`
 
 ## Quick Start
