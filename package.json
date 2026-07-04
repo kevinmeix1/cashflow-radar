@@ -1,0 +1,45 @@
+{
+  "name": "cashflow-radar",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Xero-powered revenue and cash-flow action cockpit for small businesses.",
+  "type": "module",
+  "keywords": [
+    "xero",
+    "cash-flow",
+    "forecasting",
+    "agents",
+    "hackathon"
+  ],
+  "scripts": {
+    "dev": "concurrently -k \"vite --host 127.0.0.1\" \"tsx src/server/index.ts\"",
+    "dev:ui": "vite --host 127.0.0.1",
+    "dev:api": "tsx src/server/index.ts",
+    "build": "tsc && vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@openai/agents": "^0.3.2",
+    "@vitejs/plugin-react": "^5.0.0",
+    "concurrently": "^9.2.1",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "lucide-react": "^0.468.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "recharts": "^2.15.0",
+    "xero-node": "^7.0.0",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.3",
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.5"
+  }
+}
