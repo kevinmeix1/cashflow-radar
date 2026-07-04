@@ -1261,11 +1261,24 @@ body {
 
 .connectLink,
 .connectDisabled button,
+.connectReady,
 .primaryButton {
   background: linear-gradient(135deg, #6d6cff, #41d8c5);
   border-color: transparent;
   box-shadow: 0 12px 34px rgba(109, 108, 255, 0.26);
   color: #050817;
+}
+
+.connectReady {
+  align-items: center;
+  border-radius: 8px;
+  display: grid;
+  font-size: 13px;
+  font-weight: 900;
+  gap: 8px;
+  grid-template-columns: 16px 1fr;
+  min-height: 42px;
+  padding: 10px 12px;
 }
 
 .ghostButton {

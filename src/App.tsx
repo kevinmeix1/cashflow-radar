@@ -239,7 +239,12 @@ export function App() {
             <strong>{xeroStatus?.authenticated ? "Connected" : xeroStatus?.configured ? "OAuth ready" : "Config needed"}</strong>
             <span>{xeroStatus?.tenantName ?? payload.xero.note}</span>
           </div>
-          {xeroStatus?.configured ? (
+          {xeroStatus?.authenticated ? (
+            <div className="connectReady">
+              <Check size={16} aria-hidden="true" />
+              <span>{xeroStatus.tenantName ?? "Xero connected"}</span>
+            </div>
+          ) : xeroStatus?.configured ? (
             <a className="connectLink" href="/auth/xero/start">
               Connect Xero
               <ArrowUpRight size={14} aria-hidden="true" />

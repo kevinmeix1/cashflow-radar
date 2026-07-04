@@ -53,4 +53,4 @@ The communications panel contains agent-drafted messages. They are drafts only. 
 
 ## Xero Connection
 
-If Xero credentials are not configured, the app uses seeded demo data. To connect live data, follow [Developer and Xero Setup](DEVELOPER_GUIDE.md).
+If Xero credentials are not configured, the app uses seeded demo data. During a hackathon demo, `XERO_DEMO_AUTH=true` can present that seeded data as a connected local Xero demo tenant. To connect live data, follow [Developer and Xero Setup](DEVELOPER_GUIDE.md).

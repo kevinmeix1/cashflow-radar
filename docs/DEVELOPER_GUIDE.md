@@ -22,6 +22,20 @@ http://127.0.0.1:8787/
 
 ## Xero OAuth Setup
 
+### No-Login Demo Tenant
+
+If Xero login is unavailable during a hackathon demo, use the local demo tenant mode:
+
+```env
+XERO_DEMO_AUTH=true
+XERO_CLIENT_ID=dummy-demo-client-id
+XERO_CLIENT_SECRET=dummy-demo-client-secret
+```
+
+This does not authenticate to Xero. It marks the seeded Xero-style snapshot as a connected local demo company so the product workflow can be shown end-to-end.
+
+### Live Xero OAuth
+
 1. Sign up or log in at the Xero Developer portal.
 2. Enable the Xero demo company.
 3. Create an OAuth 2.0 app using the standard Auth Code flow.

@@ -52,6 +52,8 @@ The app has a full OAuth path for live Xero data:
 
 Without Xero credentials, the app runs on a seeded demo snapshot that mirrors realistic Xero records.
 
+For hackathon demos where Xero login is unavailable, set `XERO_DEMO_AUTH=true`. This presents the seeded Xero-style data as a connected local "Xero Demo Company" while clearly labelling it as demo mode.
+
 ## Quick Start
 
 ```bash
@@ -70,6 +72,7 @@ http://127.0.0.1:5173/?source=xero
 
 ```env
 OPENAI_API_KEY=
+XERO_DEMO_AUTH=false
 XERO_CLIENT_ID=
 XERO_CLIENT_SECRET=
 XERO_REDIRECT_URI=http://localhost:8787/auth/xero/callback

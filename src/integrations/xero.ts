@@ -1,6 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import type { TokenSetParameters } from "xero-node";
+import { demoSnapshot } from "../data/demoSnapshot";
 import { addDays } from "../forecast/dateUtils";
 import type {
   Contact,
@@ -85,6 +86,27 @@ const xeroEndpoints = [
   "GET /Reports/AgedPayablesByContact"
 ];
 
+function isDemoXeroAuthEnabled() {
+  return process.env.XERO_DEMO_AUTH === "true";
+}
+
+async function buildDemoXeroLoadResult(): Promise<XeroSnapshotLoadResult> {
+  const mcp = await inspectXeroMcpBridge();
+
+  return {
+    snapshot: demoSnapshot,
+    provenance: {
+      ...seededXeroProvenance(mcp),
+      mode: "xero-api",
+      connected: true,
+      tenantId: "local-demo-tenant",
+      tenantName: "Xero Demo Company (Local)",
+      fetchedAt: new Date().toISOString(),
+      note: "Local Xero demo tenant mode: seeded Xero-style data is shown as a connected demo company. Replace dummy credentials with OAuth credentials for live Xero."
+    }
+  };
+}
+
 export function buildXeroToolingProvenance(mcp?: XeroMcpBridgeStatus): XeroApiProvenance["tooling"] {
   return {
     sdk: "xero-node official Accounting SDK",
@@ -132,6 +154,20 @@ export function seededXeroProvenance(mcp?: XeroMcpBridgeStatus): XeroApiProvenan
 }
 
 export async function getXeroIntegrationStatus(): Promise<XeroIntegrationStatus> {
+  if (isDemoXeroAuthEnabled()) {
+    return {
+      configured: true,
+      authenticated: true,
+      missing: [],
+      scopes: requiredXeroScopes,
+      mode: "connected",
+      tokenPath: getTokenPath(),
+      connectUrl: "/auth/xero/start",
+      tenantId: "local-demo-tenant",
+      tenantName: "Xero Demo Company (Local)"
+    };
+  }
+
   const required = ["XERO_CLIENT_ID", "XERO_CLIENT_SECRET", "XERO_REDIRECT_URI"];
   const missing = required.filter((key) => !process.env[key]);
   const stored = await readStoredXeroState();
@@ -180,6 +216,10 @@ export async function createXeroClient() {
 }
 
 export async function buildXeroConsentUrl(): Promise<string> {
+  if (isDemoXeroAuthEnabled()) {
+    return "http://127.0.0.1:5173/?source=xero";
+  }
+
   const xero = await createXeroClient();
   return xero.buildConsentUrl();
 }
@@ -203,6 +243,10 @@ export async function handleXeroCallback(callbackUrl: string): Promise<StoredXer
 }
 
 export async function loadXeroSnapshotFromApi(): Promise<XeroSnapshotLoadResult> {
+  if (isDemoXeroAuthEnabled()) {
+    return buildDemoXeroLoadResult();
+  }
+
   const { xero, tenantId, tenantName, tokenSet } = await getAuthorizedXeroSession();
   const asOfDate = new Date().toISOString().slice(0, 10);
   const fromDate = addDays(asOfDate, -90);
