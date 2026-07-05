@@ -1,0 +1,4404 @@
+{
+  "source": "seeded-demo",
+  "generatedAt": "2026-07-05T08:59:17.730Z",
+  "snapshot": {
+    "organisationName": "Northstar Design Studio",
+    "currency": "GBP",
+    "asOfDate": "2026-07-04",
+    "openingCashBalance": 12600,
+    "safeCashThreshold": 5000
+  },
+  "dataQuality": {
+    "score": 100,
+    "status": "forecast-ready",
+    "issues": []
+  },
+  "baseline": {
+    "name": "Before agent actions",
+    "threshold": 5000,
+    "horizonDays": 90,
+    "points": [
+      {
+        "date": "2026-07-04",
+        "openingBalance": 12600,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 12600
+      },
+      {
+        "date": "2026-07-05",
+        "openingBalance": 12600,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 12600
+      },
+      {
+        "date": "2026-07-06",
+        "openingBalance": 12600,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 12600
+      },
+      {
+        "date": "2026-07-07",
+        "openingBalance": 12600,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 12600
+      },
+      {
+        "date": "2026-07-08",
+        "openingBalance": 12600,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 12600
+      },
+      {
+        "date": "2026-07-09",
+        "openingBalance": 12600,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 12600
+      },
+      {
+        "date": "2026-07-10",
+        "openingBalance": 12600,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 2800,
+        "closingBalance": 9800
+      },
+      {
+        "date": "2026-07-11",
+        "openingBalance": 9800,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 9800
+      },
+      {
+        "date": "2026-07-12",
+        "openingBalance": 9800,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 950,
+        "closingBalance": 8850
+      },
+      {
+        "date": "2026-07-13",
+        "openingBalance": 8850,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 8850
+      },
+      {
+        "date": "2026-07-14",
+        "openingBalance": 8850,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 8850
+      },
+      {
+        "date": "2026-07-15",
+        "openingBalance": 8850,
+        "customerInflows": 0,
+        "supplierOutflows": 1800,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 7050
+      },
+      {
+        "date": "2026-07-16",
+        "openingBalance": 7050,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 7050
+      },
+      {
+        "date": "2026-07-17",
+        "openingBalance": 7050,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 7050
+      },
+      {
+        "date": "2026-07-18",
+        "openingBalance": 7050,
+        "customerInflows": 0,
+        "supplierOutflows": 9700,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": -2650
+      },
+      {
+        "date": "2026-07-19",
+        "openingBalance": -2650,
+        "customerInflows": 3150,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 500
+      },
+      {
+        "date": "2026-07-20",
+        "openingBalance": 500,
+        "customerInflows": 4200,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 4700
+      },
+      {
+        "date": "2026-07-21",
+        "openingBalance": 4700,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 4700
+      },
+      {
+        "date": "2026-07-22",
+        "openingBalance": 4700,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 4700
+      },
+      {
+        "date": "2026-07-23",
+        "openingBalance": 4700,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 4700
+      },
+      {
+        "date": "2026-07-24",
+        "openingBalance": 4700,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 4700
+      },
+      {
+        "date": "2026-07-25",
+        "openingBalance": 4700,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 3200,
+        "recurringOutflows": 0,
+        "closingBalance": 7900
+      },
+      {
+        "date": "2026-07-26",
+        "openingBalance": 7900,
+        "customerInflows": 7840,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15740
+      },
+      {
+        "date": "2026-07-27",
+        "openingBalance": 15740,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15740
+      },
+      {
+        "date": "2026-07-28",
+        "openingBalance": 15740,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15740
+      },
+      {
+        "date": "2026-07-29",
+        "openingBalance": 15740,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15740
+      },
+      {
+        "date": "2026-07-30",
+        "openingBalance": 15740,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15740
+      },
+      {
+        "date": "2026-07-31",
+        "openingBalance": 15740,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15740
+      },
+      {
+        "date": "2026-08-01",
+        "openingBalance": 15740,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15740
+      },
+      {
+        "date": "2026-08-02",
+        "openingBalance": 15740,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15740
+      },
+      {
+        "date": "2026-08-03",
+        "openingBalance": 15740,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15740
+      },
+      {
+        "date": "2026-08-04",
+        "openingBalance": 15740,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15740
+      },
+      {
+        "date": "2026-08-05",
+        "openingBalance": 15740,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15740
+      },
+      {
+        "date": "2026-08-06",
+        "openingBalance": 15740,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15740
+      },
+      {
+        "date": "2026-08-07",
+        "openingBalance": 15740,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15740
+      },
+      {
+        "date": "2026-08-08",
+        "openingBalance": 15740,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15740
+      },
+      {
+        "date": "2026-08-09",
+        "openingBalance": 15740,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 2800,
+        "closingBalance": 12940
+      },
+      {
+        "date": "2026-08-10",
+        "openingBalance": 12940,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 12940
+      },
+      {
+        "date": "2026-08-11",
+        "openingBalance": 12940,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 950,
+        "closingBalance": 11990
+      },
+      {
+        "date": "2026-08-12",
+        "openingBalance": 11990,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11990
+      },
+      {
+        "date": "2026-08-13",
+        "openingBalance": 11990,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11990
+      },
+      {
+        "date": "2026-08-14",
+        "openingBalance": 11990,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11990
+      },
+      {
+        "date": "2026-08-15",
+        "openingBalance": 11990,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11990
+      },
+      {
+        "date": "2026-08-16",
+        "openingBalance": 11990,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11990
+      },
+      {
+        "date": "2026-08-17",
+        "openingBalance": 11990,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11990
+      },
+      {
+        "date": "2026-08-18",
+        "openingBalance": 11990,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11990
+      },
+      {
+        "date": "2026-08-19",
+        "openingBalance": 11990,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11990
+      },
+      {
+        "date": "2026-08-20",
+        "openingBalance": 11990,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11990
+      },
+      {
+        "date": "2026-08-21",
+        "openingBalance": 11990,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11990
+      },
+      {
+        "date": "2026-08-22",
+        "openingBalance": 11990,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11990
+      },
+      {
+        "date": "2026-08-23",
+        "openingBalance": 11990,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11990
+      },
+      {
+        "date": "2026-08-24",
+        "openingBalance": 11990,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 3200,
+        "recurringOutflows": 0,
+        "closingBalance": 15190
+      },
+      {
+        "date": "2026-08-25",
+        "openingBalance": 15190,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15190
+      },
+      {
+        "date": "2026-08-26",
+        "openingBalance": 15190,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15190
+      },
+      {
+        "date": "2026-08-27",
+        "openingBalance": 15190,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15190
+      },
+      {
+        "date": "2026-08-28",
+        "openingBalance": 15190,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15190
+      },
+      {
+        "date": "2026-08-29",
+        "openingBalance": 15190,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15190
+      },
+      {
+        "date": "2026-08-30",
+        "openingBalance": 15190,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15190
+      },
+      {
+        "date": "2026-08-31",
+        "openingBalance": 15190,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15190
+      },
+      {
+        "date": "2026-09-01",
+        "openingBalance": 15190,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15190
+      },
+      {
+        "date": "2026-09-02",
+        "openingBalance": 15190,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15190
+      },
+      {
+        "date": "2026-09-03",
+        "openingBalance": 15190,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15190
+      },
+      {
+        "date": "2026-09-04",
+        "openingBalance": 15190,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15190
+      },
+      {
+        "date": "2026-09-05",
+        "openingBalance": 15190,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15190
+      },
+      {
+        "date": "2026-09-06",
+        "openingBalance": 15190,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15190
+      },
+      {
+        "date": "2026-09-07",
+        "openingBalance": 15190,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15190
+      },
+      {
+        "date": "2026-09-08",
+        "openingBalance": 15190,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 2800,
+        "closingBalance": 12390
+      },
+      {
+        "date": "2026-09-09",
+        "openingBalance": 12390,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 12390
+      },
+      {
+        "date": "2026-09-10",
+        "openingBalance": 12390,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 950,
+        "closingBalance": 11440
+      },
+      {
+        "date": "2026-09-11",
+        "openingBalance": 11440,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11440
+      },
+      {
+        "date": "2026-09-12",
+        "openingBalance": 11440,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11440
+      },
+      {
+        "date": "2026-09-13",
+        "openingBalance": 11440,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11440
+      },
+      {
+        "date": "2026-09-14",
+        "openingBalance": 11440,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11440
+      },
+      {
+        "date": "2026-09-15",
+        "openingBalance": 11440,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11440
+      },
+      {
+        "date": "2026-09-16",
+        "openingBalance": 11440,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11440
+      },
+      {
+        "date": "2026-09-17",
+        "openingBalance": 11440,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11440
+      },
+      {
+        "date": "2026-09-18",
+        "openingBalance": 11440,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11440
+      },
+      {
+        "date": "2026-09-19",
+        "openingBalance": 11440,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11440
+      },
+      {
+        "date": "2026-09-20",
+        "openingBalance": 11440,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11440
+      },
+      {
+        "date": "2026-09-21",
+        "openingBalance": 11440,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11440
+      },
+      {
+        "date": "2026-09-22",
+        "openingBalance": 11440,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11440
+      },
+      {
+        "date": "2026-09-23",
+        "openingBalance": 11440,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 3200,
+        "recurringOutflows": 0,
+        "closingBalance": 14640
+      },
+      {
+        "date": "2026-09-24",
+        "openingBalance": 14640,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 14640
+      },
+      {
+        "date": "2026-09-25",
+        "openingBalance": 14640,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 14640
+      },
+      {
+        "date": "2026-09-26",
+        "openingBalance": 14640,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 14640
+      },
+      {
+        "date": "2026-09-27",
+        "openingBalance": 14640,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 14640
+      },
+      {
+        "date": "2026-09-28",
+        "openingBalance": 14640,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 14640
+      },
+      {
+        "date": "2026-09-29",
+        "openingBalance": 14640,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 14640
+      },
+      {
+        "date": "2026-09-30",
+        "openingBalance": 14640,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 14640
+      },
+      {
+        "date": "2026-10-01",
+        "openingBalance": 14640,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 14640
+      }
+    ],
+    "bands": [
+      {
+        "date": "2026-07-04",
+        "pessimisticBalance": 12600,
+        "expectedBalance": 12600,
+        "optimisticBalance": 12600
+      },
+      {
+        "date": "2026-07-05",
+        "pessimisticBalance": 12600,
+        "expectedBalance": 12600,
+        "optimisticBalance": 12600
+      },
+      {
+        "date": "2026-07-06",
+        "pessimisticBalance": 12600,
+        "expectedBalance": 12600,
+        "optimisticBalance": 12600
+      },
+      {
+        "date": "2026-07-07",
+        "pessimisticBalance": 12600,
+        "expectedBalance": 12600,
+        "optimisticBalance": 12600
+      },
+      {
+        "date": "2026-07-08",
+        "pessimisticBalance": 12600,
+        "expectedBalance": 12600,
+        "optimisticBalance": 12600
+      },
+      {
+        "date": "2026-07-09",
+        "pessimisticBalance": 12600,
+        "expectedBalance": 12600,
+        "optimisticBalance": 12600
+      },
+      {
+        "date": "2026-07-10",
+        "pessimisticBalance": 9800,
+        "expectedBalance": 9800,
+        "optimisticBalance": 9800
+      },
+      {
+        "date": "2026-07-11",
+        "pessimisticBalance": 9800,
+        "expectedBalance": 9800,
+        "optimisticBalance": 12950
+      },
+      {
+        "date": "2026-07-12",
+        "pessimisticBalance": 8850,
+        "expectedBalance": 8850,
+        "optimisticBalance": 13050
+      },
+      {
+        "date": "2026-07-13",
+        "pessimisticBalance": 8850,
+        "expectedBalance": 8850,
+        "optimisticBalance": 13050
+      },
+      {
+        "date": "2026-07-14",
+        "pessimisticBalance": 8850,
+        "expectedBalance": 12000,
+        "optimisticBalance": 16200
+      },
+      {
+        "date": "2026-07-15",
+        "pessimisticBalance": 7050,
+        "expectedBalance": 10200,
+        "optimisticBalance": 14400
+      },
+      {
+        "date": "2026-07-16",
+        "pessimisticBalance": 7050,
+        "expectedBalance": 11250,
+        "optimisticBalance": 14400
+      },
+      {
+        "date": "2026-07-17",
+        "pessimisticBalance": 7050,
+        "expectedBalance": 11250,
+        "optimisticBalance": 14400
+      },
+      {
+        "date": "2026-07-18",
+        "pessimisticBalance": -2650,
+        "expectedBalance": 1550,
+        "optimisticBalance": 4700
+      },
+      {
+        "date": "2026-07-19",
+        "pessimisticBalance": 500,
+        "expectedBalance": 1550,
+        "optimisticBalance": 4700
+      },
+      {
+        "date": "2026-07-20",
+        "pessimisticBalance": 500,
+        "expectedBalance": 1550,
+        "optimisticBalance": 4700
+      },
+      {
+        "date": "2026-07-21",
+        "pessimisticBalance": 500,
+        "expectedBalance": 4700,
+        "optimisticBalance": 12540
+      },
+      {
+        "date": "2026-07-22",
+        "pessimisticBalance": 500,
+        "expectedBalance": 8340,
+        "optimisticBalance": 12540
+      },
+      {
+        "date": "2026-07-23",
+        "pessimisticBalance": 1550,
+        "expectedBalance": 8340,
+        "optimisticBalance": 12540
+      },
+      {
+        "date": "2026-07-24",
+        "pessimisticBalance": 1550,
+        "expectedBalance": 9390,
+        "optimisticBalance": 12540
+      },
+      {
+        "date": "2026-07-25",
+        "pessimisticBalance": 7900,
+        "expectedBalance": 12590,
+        "optimisticBalance": 15740
+      },
+      {
+        "date": "2026-07-26",
+        "pessimisticBalance": 7900,
+        "expectedBalance": 12590,
+        "optimisticBalance": 15740
+      },
+      {
+        "date": "2026-07-27",
+        "pessimisticBalance": 7900,
+        "expectedBalance": 12590,
+        "optimisticBalance": 15740
+      },
+      {
+        "date": "2026-07-28",
+        "pessimisticBalance": 7900,
+        "expectedBalance": 12590,
+        "optimisticBalance": 15740
+      },
+      {
+        "date": "2026-07-29",
+        "pessimisticBalance": 7900,
+        "expectedBalance": 12590,
+        "optimisticBalance": 15740
+      },
+      {
+        "date": "2026-07-30",
+        "pessimisticBalance": 7900,
+        "expectedBalance": 15740,
+        "optimisticBalance": 15740
+      },
+      {
+        "date": "2026-07-31",
+        "pessimisticBalance": 7900,
+        "expectedBalance": 15740,
+        "optimisticBalance": 15740
+      },
+      {
+        "date": "2026-08-01",
+        "pessimisticBalance": 7900,
+        "expectedBalance": 15740,
+        "optimisticBalance": 15740
+      },
+      {
+        "date": "2026-08-02",
+        "pessimisticBalance": 8390,
+        "expectedBalance": 15740,
+        "optimisticBalance": 15740
+      },
+      {
+        "date": "2026-08-03",
+        "pessimisticBalance": 8390,
+        "expectedBalance": 15740,
+        "optimisticBalance": 15740
+      },
+      {
+        "date": "2026-08-04",
+        "pessimisticBalance": 8390,
+        "expectedBalance": 15740,
+        "optimisticBalance": 15740
+      },
+      {
+        "date": "2026-08-05",
+        "pessimisticBalance": 11540,
+        "expectedBalance": 15740,
+        "optimisticBalance": 15740
+      },
+      {
+        "date": "2026-08-06",
+        "pessimisticBalance": 11540,
+        "expectedBalance": 15740,
+        "optimisticBalance": 15740
+      },
+      {
+        "date": "2026-08-07",
+        "pessimisticBalance": 11540,
+        "expectedBalance": 15740,
+        "optimisticBalance": 15740
+      },
+      {
+        "date": "2026-08-08",
+        "pessimisticBalance": 11540,
+        "expectedBalance": 15740,
+        "optimisticBalance": 15740
+      },
+      {
+        "date": "2026-08-09",
+        "pessimisticBalance": 9790,
+        "expectedBalance": 12940,
+        "optimisticBalance": 12940
+      },
+      {
+        "date": "2026-08-10",
+        "pessimisticBalance": 12940,
+        "expectedBalance": 12940,
+        "optimisticBalance": 12940
+      },
+      {
+        "date": "2026-08-11",
+        "pessimisticBalance": 11990,
+        "expectedBalance": 11990,
+        "optimisticBalance": 11990
+      },
+      {
+        "date": "2026-08-12",
+        "pessimisticBalance": 11990,
+        "expectedBalance": 11990,
+        "optimisticBalance": 11990
+      },
+      {
+        "date": "2026-08-13",
+        "pessimisticBalance": 11990,
+        "expectedBalance": 11990,
+        "optimisticBalance": 11990
+      },
+      {
+        "date": "2026-08-14",
+        "pessimisticBalance": 11990,
+        "expectedBalance": 11990,
+        "optimisticBalance": 11990
+      },
+      {
+        "date": "2026-08-15",
+        "pessimisticBalance": 11990,
+        "expectedBalance": 11990,
+        "optimisticBalance": 11990
+      },
+      {
+        "date": "2026-08-16",
+        "pessimisticBalance": 11990,
+        "expectedBalance": 11990,
+        "optimisticBalance": 11990
+      },
+      {
+        "date": "2026-08-17",
+        "pessimisticBalance": 11990,
+        "expectedBalance": 11990,
+        "optimisticBalance": 11990
+      },
+      {
+        "date": "2026-08-18",
+        "pessimisticBalance": 11990,
+        "expectedBalance": 11990,
+        "optimisticBalance": 11990
+      },
+      {
+        "date": "2026-08-19",
+        "pessimisticBalance": 11990,
+        "expectedBalance": 11990,
+        "optimisticBalance": 11990
+      },
+      {
+        "date": "2026-08-20",
+        "pessimisticBalance": 11990,
+        "expectedBalance": 11990,
+        "optimisticBalance": 11990
+      },
+      {
+        "date": "2026-08-21",
+        "pessimisticBalance": 11990,
+        "expectedBalance": 11990,
+        "optimisticBalance": 11990
+      },
+      {
+        "date": "2026-08-22",
+        "pessimisticBalance": 11990,
+        "expectedBalance": 11990,
+        "optimisticBalance": 11990
+      },
+      {
+        "date": "2026-08-23",
+        "pessimisticBalance": 11990,
+        "expectedBalance": 11990,
+        "optimisticBalance": 11990
+      },
+      {
+        "date": "2026-08-24",
+        "pessimisticBalance": 15190,
+        "expectedBalance": 15190,
+        "optimisticBalance": 15190
+      },
+      {
+        "date": "2026-08-25",
+        "pessimisticBalance": 15190,
+        "expectedBalance": 15190,
+        "optimisticBalance": 15190
+      },
+      {
+        "date": "2026-08-26",
+        "pessimisticBalance": 15190,
+        "expectedBalance": 15190,
+        "optimisticBalance": 15190
+      },
+      {
+        "date": "2026-08-27",
+        "pessimisticBalance": 15190,
+        "expectedBalance": 15190,
+        "optimisticBalance": 15190
+      },
+      {
+        "date": "2026-08-28",
+        "pessimisticBalance": 15190,
+        "expectedBalance": 15190,
+        "optimisticBalance": 15190
+      },
+      {
+        "date": "2026-08-29",
+        "pessimisticBalance": 15190,
+        "expectedBalance": 15190,
+        "optimisticBalance": 15190
+      },
+      {
+        "date": "2026-08-30",
+        "pessimisticBalance": 15190,
+        "expectedBalance": 15190,
+        "optimisticBalance": 15190
+      },
+      {
+        "date": "2026-08-31",
+        "pessimisticBalance": 15190,
+        "expectedBalance": 15190,
+        "optimisticBalance": 15190
+      },
+      {
+        "date": "2026-09-01",
+        "pessimisticBalance": 15190,
+        "expectedBalance": 15190,
+        "optimisticBalance": 15190
+      },
+      {
+        "date": "2026-09-02",
+        "pessimisticBalance": 15190,
+        "expectedBalance": 15190,
+        "optimisticBalance": 15190
+      },
+      {
+        "date": "2026-09-03",
+        "pessimisticBalance": 15190,
+        "expectedBalance": 15190,
+        "optimisticBalance": 15190
+      },
+      {
+        "date": "2026-09-04",
+        "pessimisticBalance": 15190,
+        "expectedBalance": 15190,
+        "optimisticBalance": 15190
+      },
+      {
+        "date": "2026-09-05",
+        "pessimisticBalance": 15190,
+        "expectedBalance": 15190,
+        "optimisticBalance": 15190
+      },
+      {
+        "date": "2026-09-06",
+        "pessimisticBalance": 15190,
+        "expectedBalance": 15190,
+        "optimisticBalance": 15190
+      },
+      {
+        "date": "2026-09-07",
+        "pessimisticBalance": 15190,
+        "expectedBalance": 15190,
+        "optimisticBalance": 15190
+      },
+      {
+        "date": "2026-09-08",
+        "pessimisticBalance": 12390,
+        "expectedBalance": 12390,
+        "optimisticBalance": 12390
+      },
+      {
+        "date": "2026-09-09",
+        "pessimisticBalance": 12390,
+        "expectedBalance": 12390,
+        "optimisticBalance": 12390
+      },
+      {
+        "date": "2026-09-10",
+        "pessimisticBalance": 11440,
+        "expectedBalance": 11440,
+        "optimisticBalance": 11440
+      },
+      {
+        "date": "2026-09-11",
+        "pessimisticBalance": 11440,
+        "expectedBalance": 11440,
+        "optimisticBalance": 11440
+      },
+      {
+        "date": "2026-09-12",
+        "pessimisticBalance": 11440,
+        "expectedBalance": 11440,
+        "optimisticBalance": 11440
+      },
+      {
+        "date": "2026-09-13",
+        "pessimisticBalance": 11440,
+        "expectedBalance": 11440,
+        "optimisticBalance": 11440
+      },
+      {
+        "date": "2026-09-14",
+        "pessimisticBalance": 11440,
+        "expectedBalance": 11440,
+        "optimisticBalance": 11440
+      },
+      {
+        "date": "2026-09-15",
+        "pessimisticBalance": 11440,
+        "expectedBalance": 11440,
+        "optimisticBalance": 11440
+      },
+      {
+        "date": "2026-09-16",
+        "pessimisticBalance": 11440,
+        "expectedBalance": 11440,
+        "optimisticBalance": 11440
+      },
+      {
+        "date": "2026-09-17",
+        "pessimisticBalance": 11440,
+        "expectedBalance": 11440,
+        "optimisticBalance": 11440
+      },
+      {
+        "date": "2026-09-18",
+        "pessimisticBalance": 11440,
+        "expectedBalance": 11440,
+        "optimisticBalance": 11440
+      },
+      {
+        "date": "2026-09-19",
+        "pessimisticBalance": 11440,
+        "expectedBalance": 11440,
+        "optimisticBalance": 11440
+      },
+      {
+        "date": "2026-09-20",
+        "pessimisticBalance": 11440,
+        "expectedBalance": 11440,
+        "optimisticBalance": 11440
+      },
+      {
+        "date": "2026-09-21",
+        "pessimisticBalance": 11440,
+        "expectedBalance": 11440,
+        "optimisticBalance": 11440
+      },
+      {
+        "date": "2026-09-22",
+        "pessimisticBalance": 11440,
+        "expectedBalance": 11440,
+        "optimisticBalance": 11440
+      },
+      {
+        "date": "2026-09-23",
+        "pessimisticBalance": 14640,
+        "expectedBalance": 14640,
+        "optimisticBalance": 14640
+      },
+      {
+        "date": "2026-09-24",
+        "pessimisticBalance": 14640,
+        "expectedBalance": 14640,
+        "optimisticBalance": 14640
+      },
+      {
+        "date": "2026-09-25",
+        "pessimisticBalance": 14640,
+        "expectedBalance": 14640,
+        "optimisticBalance": 14640
+      },
+      {
+        "date": "2026-09-26",
+        "pessimisticBalance": 14640,
+        "expectedBalance": 14640,
+        "optimisticBalance": 14640
+      },
+      {
+        "date": "2026-09-27",
+        "pessimisticBalance": 14640,
+        "expectedBalance": 14640,
+        "optimisticBalance": 14640
+      },
+      {
+        "date": "2026-09-28",
+        "pessimisticBalance": 14640,
+        "expectedBalance": 14640,
+        "optimisticBalance": 14640
+      },
+      {
+        "date": "2026-09-29",
+        "pessimisticBalance": 14640,
+        "expectedBalance": 14640,
+        "optimisticBalance": 14640
+      },
+      {
+        "date": "2026-09-30",
+        "pessimisticBalance": 14640,
+        "expectedBalance": 14640,
+        "optimisticBalance": 14640
+      },
+      {
+        "date": "2026-10-01",
+        "pessimisticBalance": 14640,
+        "expectedBalance": 14640,
+        "optimisticBalance": 14640
+      }
+    ],
+    "summary": {
+      "firstThresholdBreachDate": "2026-07-18",
+      "minimumCashDate": "2026-07-18",
+      "minimumCashBalance": -2650,
+      "crunchProbability": 100
+    }
+  },
+  "afterActions": {
+    "name": "After recommended actions",
+    "threshold": 5000,
+    "horizonDays": 90,
+    "points": [
+      {
+        "date": "2026-07-04",
+        "openingBalance": 12600,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 12600
+      },
+      {
+        "date": "2026-07-05",
+        "openingBalance": 12600,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 12600
+      },
+      {
+        "date": "2026-07-06",
+        "openingBalance": 12600,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 12600
+      },
+      {
+        "date": "2026-07-07",
+        "openingBalance": 12600,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 12600
+      },
+      {
+        "date": "2026-07-08",
+        "openingBalance": 12600,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 12600
+      },
+      {
+        "date": "2026-07-09",
+        "openingBalance": 12600,
+        "customerInflows": 4200,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 16800
+      },
+      {
+        "date": "2026-07-10",
+        "openingBalance": 16800,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 2800,
+        "closingBalance": 14000
+      },
+      {
+        "date": "2026-07-11",
+        "openingBalance": 14000,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 14000
+      },
+      {
+        "date": "2026-07-12",
+        "openingBalance": 14000,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 950,
+        "closingBalance": 13050
+      },
+      {
+        "date": "2026-07-13",
+        "openingBalance": 13050,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 13050
+      },
+      {
+        "date": "2026-07-14",
+        "openingBalance": 13050,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 13050
+      },
+      {
+        "date": "2026-07-15",
+        "openingBalance": 13050,
+        "customerInflows": 7683,
+        "supplierOutflows": 1800,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 18933
+      },
+      {
+        "date": "2026-07-16",
+        "openingBalance": 18933,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 18933
+      },
+      {
+        "date": "2026-07-17",
+        "openingBalance": 18933,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 18933
+      },
+      {
+        "date": "2026-07-18",
+        "openingBalance": 18933,
+        "customerInflows": 0,
+        "supplierOutflows": 7600,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11333
+      },
+      {
+        "date": "2026-07-19",
+        "openingBalance": 11333,
+        "customerInflows": 3150,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 14483
+      },
+      {
+        "date": "2026-07-20",
+        "openingBalance": 14483,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 14483
+      },
+      {
+        "date": "2026-07-21",
+        "openingBalance": 14483,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 14483
+      },
+      {
+        "date": "2026-07-22",
+        "openingBalance": 14483,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 14483
+      },
+      {
+        "date": "2026-07-23",
+        "openingBalance": 14483,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 14483
+      },
+      {
+        "date": "2026-07-24",
+        "openingBalance": 14483,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 14483
+      },
+      {
+        "date": "2026-07-25",
+        "openingBalance": 14483,
+        "customerInflows": 0,
+        "supplierOutflows": 2100,
+        "recurringInflows": 3200,
+        "recurringOutflows": 0,
+        "closingBalance": 15583
+      },
+      {
+        "date": "2026-07-26",
+        "openingBalance": 15583,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15583
+      },
+      {
+        "date": "2026-07-27",
+        "openingBalance": 15583,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15583
+      },
+      {
+        "date": "2026-07-28",
+        "openingBalance": 15583,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15583
+      },
+      {
+        "date": "2026-07-29",
+        "openingBalance": 15583,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15583
+      },
+      {
+        "date": "2026-07-30",
+        "openingBalance": 15583,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15583
+      },
+      {
+        "date": "2026-07-31",
+        "openingBalance": 15583,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15583
+      },
+      {
+        "date": "2026-08-01",
+        "openingBalance": 15583,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15583
+      },
+      {
+        "date": "2026-08-02",
+        "openingBalance": 15583,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15583
+      },
+      {
+        "date": "2026-08-03",
+        "openingBalance": 15583,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15583
+      },
+      {
+        "date": "2026-08-04",
+        "openingBalance": 15583,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15583
+      },
+      {
+        "date": "2026-08-05",
+        "openingBalance": 15583,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15583
+      },
+      {
+        "date": "2026-08-06",
+        "openingBalance": 15583,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15583
+      },
+      {
+        "date": "2026-08-07",
+        "openingBalance": 15583,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15583
+      },
+      {
+        "date": "2026-08-08",
+        "openingBalance": 15583,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15583
+      },
+      {
+        "date": "2026-08-09",
+        "openingBalance": 15583,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 2800,
+        "closingBalance": 12783
+      },
+      {
+        "date": "2026-08-10",
+        "openingBalance": 12783,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 12783
+      },
+      {
+        "date": "2026-08-11",
+        "openingBalance": 12783,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 950,
+        "closingBalance": 11833
+      },
+      {
+        "date": "2026-08-12",
+        "openingBalance": 11833,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11833
+      },
+      {
+        "date": "2026-08-13",
+        "openingBalance": 11833,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11833
+      },
+      {
+        "date": "2026-08-14",
+        "openingBalance": 11833,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11833
+      },
+      {
+        "date": "2026-08-15",
+        "openingBalance": 11833,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11833
+      },
+      {
+        "date": "2026-08-16",
+        "openingBalance": 11833,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11833
+      },
+      {
+        "date": "2026-08-17",
+        "openingBalance": 11833,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11833
+      },
+      {
+        "date": "2026-08-18",
+        "openingBalance": 11833,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11833
+      },
+      {
+        "date": "2026-08-19",
+        "openingBalance": 11833,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11833
+      },
+      {
+        "date": "2026-08-20",
+        "openingBalance": 11833,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11833
+      },
+      {
+        "date": "2026-08-21",
+        "openingBalance": 11833,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11833
+      },
+      {
+        "date": "2026-08-22",
+        "openingBalance": 11833,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11833
+      },
+      {
+        "date": "2026-08-23",
+        "openingBalance": 11833,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11833
+      },
+      {
+        "date": "2026-08-24",
+        "openingBalance": 11833,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 3200,
+        "recurringOutflows": 0,
+        "closingBalance": 15033
+      },
+      {
+        "date": "2026-08-25",
+        "openingBalance": 15033,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15033
+      },
+      {
+        "date": "2026-08-26",
+        "openingBalance": 15033,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15033
+      },
+      {
+        "date": "2026-08-27",
+        "openingBalance": 15033,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15033
+      },
+      {
+        "date": "2026-08-28",
+        "openingBalance": 15033,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15033
+      },
+      {
+        "date": "2026-08-29",
+        "openingBalance": 15033,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15033
+      },
+      {
+        "date": "2026-08-30",
+        "openingBalance": 15033,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15033
+      },
+      {
+        "date": "2026-08-31",
+        "openingBalance": 15033,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15033
+      },
+      {
+        "date": "2026-09-01",
+        "openingBalance": 15033,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15033
+      },
+      {
+        "date": "2026-09-02",
+        "openingBalance": 15033,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15033
+      },
+      {
+        "date": "2026-09-03",
+        "openingBalance": 15033,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15033
+      },
+      {
+        "date": "2026-09-04",
+        "openingBalance": 15033,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15033
+      },
+      {
+        "date": "2026-09-05",
+        "openingBalance": 15033,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15033
+      },
+      {
+        "date": "2026-09-06",
+        "openingBalance": 15033,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15033
+      },
+      {
+        "date": "2026-09-07",
+        "openingBalance": 15033,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 15033
+      },
+      {
+        "date": "2026-09-08",
+        "openingBalance": 15033,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 2800,
+        "closingBalance": 12233
+      },
+      {
+        "date": "2026-09-09",
+        "openingBalance": 12233,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 12233
+      },
+      {
+        "date": "2026-09-10",
+        "openingBalance": 12233,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 950,
+        "closingBalance": 11283
+      },
+      {
+        "date": "2026-09-11",
+        "openingBalance": 11283,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11283
+      },
+      {
+        "date": "2026-09-12",
+        "openingBalance": 11283,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11283
+      },
+      {
+        "date": "2026-09-13",
+        "openingBalance": 11283,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11283
+      },
+      {
+        "date": "2026-09-14",
+        "openingBalance": 11283,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11283
+      },
+      {
+        "date": "2026-09-15",
+        "openingBalance": 11283,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11283
+      },
+      {
+        "date": "2026-09-16",
+        "openingBalance": 11283,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11283
+      },
+      {
+        "date": "2026-09-17",
+        "openingBalance": 11283,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11283
+      },
+      {
+        "date": "2026-09-18",
+        "openingBalance": 11283,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11283
+      },
+      {
+        "date": "2026-09-19",
+        "openingBalance": 11283,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11283
+      },
+      {
+        "date": "2026-09-20",
+        "openingBalance": 11283,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11283
+      },
+      {
+        "date": "2026-09-21",
+        "openingBalance": 11283,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11283
+      },
+      {
+        "date": "2026-09-22",
+        "openingBalance": 11283,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 11283
+      },
+      {
+        "date": "2026-09-23",
+        "openingBalance": 11283,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 3200,
+        "recurringOutflows": 0,
+        "closingBalance": 14483
+      },
+      {
+        "date": "2026-09-24",
+        "openingBalance": 14483,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 14483
+      },
+      {
+        "date": "2026-09-25",
+        "openingBalance": 14483,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 14483
+      },
+      {
+        "date": "2026-09-26",
+        "openingBalance": 14483,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 14483
+      },
+      {
+        "date": "2026-09-27",
+        "openingBalance": 14483,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 14483
+      },
+      {
+        "date": "2026-09-28",
+        "openingBalance": 14483,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 14483
+      },
+      {
+        "date": "2026-09-29",
+        "openingBalance": 14483,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 14483
+      },
+      {
+        "date": "2026-09-30",
+        "openingBalance": 14483,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 14483
+      },
+      {
+        "date": "2026-10-01",
+        "openingBalance": 14483,
+        "customerInflows": 0,
+        "supplierOutflows": 0,
+        "recurringInflows": 0,
+        "recurringOutflows": 0,
+        "closingBalance": 14483
+      }
+    ],
+    "bands": [
+      {
+        "date": "2026-07-04",
+        "pessimisticBalance": 12600,
+        "expectedBalance": 12600,
+        "optimisticBalance": 12600
+      },
+      {
+        "date": "2026-07-05",
+        "pessimisticBalance": 12600,
+        "expectedBalance": 12600,
+        "optimisticBalance": 12600
+      },
+      {
+        "date": "2026-07-06",
+        "pessimisticBalance": 12600,
+        "expectedBalance": 12600,
+        "optimisticBalance": 12600
+      },
+      {
+        "date": "2026-07-07",
+        "pessimisticBalance": 12600,
+        "expectedBalance": 12600,
+        "optimisticBalance": 12600
+      },
+      {
+        "date": "2026-07-08",
+        "pessimisticBalance": 12600,
+        "expectedBalance": 12600,
+        "optimisticBalance": 12600
+      },
+      {
+        "date": "2026-07-09",
+        "pessimisticBalance": 16800,
+        "expectedBalance": 16800,
+        "optimisticBalance": 16800
+      },
+      {
+        "date": "2026-07-10",
+        "pessimisticBalance": 14000,
+        "expectedBalance": 14000,
+        "optimisticBalance": 14000
+      },
+      {
+        "date": "2026-07-11",
+        "pessimisticBalance": 14000,
+        "expectedBalance": 14000,
+        "optimisticBalance": 17150
+      },
+      {
+        "date": "2026-07-12",
+        "pessimisticBalance": 13050,
+        "expectedBalance": 13050,
+        "optimisticBalance": 16200
+      },
+      {
+        "date": "2026-07-13",
+        "pessimisticBalance": 13050,
+        "expectedBalance": 13050,
+        "optimisticBalance": 16200
+      },
+      {
+        "date": "2026-07-14",
+        "pessimisticBalance": 13050,
+        "expectedBalance": 13050,
+        "optimisticBalance": 16200
+      },
+      {
+        "date": "2026-07-15",
+        "pessimisticBalance": 18933,
+        "expectedBalance": 18933,
+        "optimisticBalance": 22083
+      },
+      {
+        "date": "2026-07-16",
+        "pessimisticBalance": 18933,
+        "expectedBalance": 18933,
+        "optimisticBalance": 22083
+      },
+      {
+        "date": "2026-07-17",
+        "pessimisticBalance": 18933,
+        "expectedBalance": 22083,
+        "optimisticBalance": 22083
+      },
+      {
+        "date": "2026-07-18",
+        "pessimisticBalance": 11333,
+        "expectedBalance": 14483,
+        "optimisticBalance": 14483
+      },
+      {
+        "date": "2026-07-19",
+        "pessimisticBalance": 11333,
+        "expectedBalance": 14483,
+        "optimisticBalance": 14483
+      },
+      {
+        "date": "2026-07-20",
+        "pessimisticBalance": 11333,
+        "expectedBalance": 14483,
+        "optimisticBalance": 14483
+      },
+      {
+        "date": "2026-07-21",
+        "pessimisticBalance": 11333,
+        "expectedBalance": 14483,
+        "optimisticBalance": 14483
+      },
+      {
+        "date": "2026-07-22",
+        "pessimisticBalance": 11333,
+        "expectedBalance": 14483,
+        "optimisticBalance": 14483
+      },
+      {
+        "date": "2026-07-23",
+        "pessimisticBalance": 11333,
+        "expectedBalance": 14483,
+        "optimisticBalance": 14483
+      },
+      {
+        "date": "2026-07-24",
+        "pessimisticBalance": 11333,
+        "expectedBalance": 14483,
+        "optimisticBalance": 14483
+      },
+      {
+        "date": "2026-07-25",
+        "pessimisticBalance": 12433,
+        "expectedBalance": 15583,
+        "optimisticBalance": 15583
+      },
+      {
+        "date": "2026-07-26",
+        "pessimisticBalance": 12433,
+        "expectedBalance": 15583,
+        "optimisticBalance": 15583
+      },
+      {
+        "date": "2026-07-27",
+        "pessimisticBalance": 12433,
+        "expectedBalance": 15583,
+        "optimisticBalance": 15583
+      },
+      {
+        "date": "2026-07-28",
+        "pessimisticBalance": 12433,
+        "expectedBalance": 15583,
+        "optimisticBalance": 15583
+      },
+      {
+        "date": "2026-07-29",
+        "pessimisticBalance": 12433,
+        "expectedBalance": 15583,
+        "optimisticBalance": 15583
+      },
+      {
+        "date": "2026-07-30",
+        "pessimisticBalance": 12433,
+        "expectedBalance": 15583,
+        "optimisticBalance": 15583
+      },
+      {
+        "date": "2026-07-31",
+        "pessimisticBalance": 12433,
+        "expectedBalance": 15583,
+        "optimisticBalance": 15583
+      },
+      {
+        "date": "2026-08-01",
+        "pessimisticBalance": 12433,
+        "expectedBalance": 15583,
+        "optimisticBalance": 15583
+      },
+      {
+        "date": "2026-08-02",
+        "pessimisticBalance": 12433,
+        "expectedBalance": 15583,
+        "optimisticBalance": 15583
+      },
+      {
+        "date": "2026-08-03",
+        "pessimisticBalance": 12433,
+        "expectedBalance": 15583,
+        "optimisticBalance": 15583
+      },
+      {
+        "date": "2026-08-04",
+        "pessimisticBalance": 12433,
+        "expectedBalance": 15583,
+        "optimisticBalance": 15583
+      },
+      {
+        "date": "2026-08-05",
+        "pessimisticBalance": 12433,
+        "expectedBalance": 15583,
+        "optimisticBalance": 15583
+      },
+      {
+        "date": "2026-08-06",
+        "pessimisticBalance": 12433,
+        "expectedBalance": 15583,
+        "optimisticBalance": 15583
+      },
+      {
+        "date": "2026-08-07",
+        "pessimisticBalance": 15583,
+        "expectedBalance": 15583,
+        "optimisticBalance": 15583
+      },
+      {
+        "date": "2026-08-08",
+        "pessimisticBalance": 15583,
+        "expectedBalance": 15583,
+        "optimisticBalance": 15583
+      },
+      {
+        "date": "2026-08-09",
+        "pessimisticBalance": 12783,
+        "expectedBalance": 12783,
+        "optimisticBalance": 12783
+      },
+      {
+        "date": "2026-08-10",
+        "pessimisticBalance": 12783,
+        "expectedBalance": 12783,
+        "optimisticBalance": 12783
+      },
+      {
+        "date": "2026-08-11",
+        "pessimisticBalance": 11833,
+        "expectedBalance": 11833,
+        "optimisticBalance": 11833
+      },
+      {
+        "date": "2026-08-12",
+        "pessimisticBalance": 11833,
+        "expectedBalance": 11833,
+        "optimisticBalance": 11833
+      },
+      {
+        "date": "2026-08-13",
+        "pessimisticBalance": 11833,
+        "expectedBalance": 11833,
+        "optimisticBalance": 11833
+      },
+      {
+        "date": "2026-08-14",
+        "pessimisticBalance": 11833,
+        "expectedBalance": 11833,
+        "optimisticBalance": 11833
+      },
+      {
+        "date": "2026-08-15",
+        "pessimisticBalance": 11833,
+        "expectedBalance": 11833,
+        "optimisticBalance": 11833
+      },
+      {
+        "date": "2026-08-16",
+        "pessimisticBalance": 11833,
+        "expectedBalance": 11833,
+        "optimisticBalance": 11833
+      },
+      {
+        "date": "2026-08-17",
+        "pessimisticBalance": 11833,
+        "expectedBalance": 11833,
+        "optimisticBalance": 11833
+      },
+      {
+        "date": "2026-08-18",
+        "pessimisticBalance": 11833,
+        "expectedBalance": 11833,
+        "optimisticBalance": 11833
+      },
+      {
+        "date": "2026-08-19",
+        "pessimisticBalance": 11833,
+        "expectedBalance": 11833,
+        "optimisticBalance": 11833
+      },
+      {
+        "date": "2026-08-20",
+        "pessimisticBalance": 11833,
+        "expectedBalance": 11833,
+        "optimisticBalance": 11833
+      },
+      {
+        "date": "2026-08-21",
+        "pessimisticBalance": 11833,
+        "expectedBalance": 11833,
+        "optimisticBalance": 11833
+      },
+      {
+        "date": "2026-08-22",
+        "pessimisticBalance": 11833,
+        "expectedBalance": 11833,
+        "optimisticBalance": 11833
+      },
+      {
+        "date": "2026-08-23",
+        "pessimisticBalance": 11833,
+        "expectedBalance": 11833,
+        "optimisticBalance": 11833
+      },
+      {
+        "date": "2026-08-24",
+        "pessimisticBalance": 15033,
+        "expectedBalance": 15033,
+        "optimisticBalance": 15033
+      },
+      {
+        "date": "2026-08-25",
+        "pessimisticBalance": 15033,
+        "expectedBalance": 15033,
+        "optimisticBalance": 15033
+      },
+      {
+        "date": "2026-08-26",
+        "pessimisticBalance": 15033,
+        "expectedBalance": 15033,
+        "optimisticBalance": 15033
+      },
+      {
+        "date": "2026-08-27",
+        "pessimisticBalance": 15033,
+        "expectedBalance": 15033,
+        "optimisticBalance": 15033
+      },
+      {
+        "date": "2026-08-28",
+        "pessimisticBalance": 15033,
+        "expectedBalance": 15033,
+        "optimisticBalance": 15033
+      },
+      {
+        "date": "2026-08-29",
+        "pessimisticBalance": 15033,
+        "expectedBalance": 15033,
+        "optimisticBalance": 15033
+      },
+      {
+        "date": "2026-08-30",
+        "pessimisticBalance": 15033,
+        "expectedBalance": 15033,
+        "optimisticBalance": 15033
+      },
+      {
+        "date": "2026-08-31",
+        "pessimisticBalance": 15033,
+        "expectedBalance": 15033,
+        "optimisticBalance": 15033
+      },
+      {
+        "date": "2026-09-01",
+        "pessimisticBalance": 15033,
+        "expectedBalance": 15033,
+        "optimisticBalance": 15033
+      },
+      {
+        "date": "2026-09-02",
+        "pessimisticBalance": 15033,
+        "expectedBalance": 15033,
+        "optimisticBalance": 15033
+      },
+      {
+        "date": "2026-09-03",
+        "pessimisticBalance": 15033,
+        "expectedBalance": 15033,
+        "optimisticBalance": 15033
+      },
+      {
+        "date": "2026-09-04",
+        "pessimisticBalance": 15033,
+        "expectedBalance": 15033,
+        "optimisticBalance": 15033
+      },
+      {
+        "date": "2026-09-05",
+        "pessimisticBalance": 15033,
+        "expectedBalance": 15033,
+        "optimisticBalance": 15033
+      },
+      {
+        "date": "2026-09-06",
+        "pessimisticBalance": 15033,
+        "expectedBalance": 15033,
+        "optimisticBalance": 15033
+      },
+      {
+        "date": "2026-09-07",
+        "pessimisticBalance": 15033,
+        "expectedBalance": 15033,
+        "optimisticBalance": 15033
+      },
+      {
+        "date": "2026-09-08",
+        "pessimisticBalance": 12233,
+        "expectedBalance": 12233,
+        "optimisticBalance": 12233
+      },
+      {
+        "date": "2026-09-09",
+        "pessimisticBalance": 12233,
+        "expectedBalance": 12233,
+        "optimisticBalance": 12233
+      },
+      {
+        "date": "2026-09-10",
+        "pessimisticBalance": 11283,
+        "expectedBalance": 11283,
+        "optimisticBalance": 11283
+      },
+      {
+        "date": "2026-09-11",
+        "pessimisticBalance": 11283,
+        "expectedBalance": 11283,
+        "optimisticBalance": 11283
+      },
+      {
+        "date": "2026-09-12",
+        "pessimisticBalance": 11283,
+        "expectedBalance": 11283,
+        "optimisticBalance": 11283
+      },
+      {
+        "date": "2026-09-13",
+        "pessimisticBalance": 11283,
+        "expectedBalance": 11283,
+        "optimisticBalance": 11283
+      },
+      {
+        "date": "2026-09-14",
+        "pessimisticBalance": 11283,
+        "expectedBalance": 11283,
+        "optimisticBalance": 11283
+      },
+      {
+        "date": "2026-09-15",
+        "pessimisticBalance": 11283,
+        "expectedBalance": 11283,
+        "optimisticBalance": 11283
+      },
+      {
+        "date": "2026-09-16",
+        "pessimisticBalance": 11283,
+        "expectedBalance": 11283,
+        "optimisticBalance": 11283
+      },
+      {
+        "date": "2026-09-17",
+        "pessimisticBalance": 11283,
+        "expectedBalance": 11283,
+        "optimisticBalance": 11283
+      },
+      {
+        "date": "2026-09-18",
+        "pessimisticBalance": 11283,
+        "expectedBalance": 11283,
+        "optimisticBalance": 11283
+      },
+      {
+        "date": "2026-09-19",
+        "pessimisticBalance": 11283,
+        "expectedBalance": 11283,
+        "optimisticBalance": 11283
+      },
+      {
+        "date": "2026-09-20",
+        "pessimisticBalance": 11283,
+        "expectedBalance": 11283,
+        "optimisticBalance": 11283
+      },
+      {
+        "date": "2026-09-21",
+        "pessimisticBalance": 11283,
+        "expectedBalance": 11283,
+        "optimisticBalance": 11283
+      },
+      {
+        "date": "2026-09-22",
+        "pessimisticBalance": 11283,
+        "expectedBalance": 11283,
+        "optimisticBalance": 11283
+      },
+      {
+        "date": "2026-09-23",
+        "pessimisticBalance": 14483,
+        "expectedBalance": 14483,
+        "optimisticBalance": 14483
+      },
+      {
+        "date": "2026-09-24",
+        "pessimisticBalance": 14483,
+        "expectedBalance": 14483,
+        "optimisticBalance": 14483
+      },
+      {
+        "date": "2026-09-25",
+        "pessimisticBalance": 14483,
+        "expectedBalance": 14483,
+        "optimisticBalance": 14483
+      },
+      {
+        "date": "2026-09-26",
+        "pessimisticBalance": 14483,
+        "expectedBalance": 14483,
+        "optimisticBalance": 14483
+      },
+      {
+        "date": "2026-09-27",
+        "pessimisticBalance": 14483,
+        "expectedBalance": 14483,
+        "optimisticBalance": 14483
+      },
+      {
+        "date": "2026-09-28",
+        "pessimisticBalance": 14483,
+        "expectedBalance": 14483,
+        "optimisticBalance": 14483
+      },
+      {
+        "date": "2026-09-29",
+        "pessimisticBalance": 14483,
+        "expectedBalance": 14483,
+        "optimisticBalance": 14483
+      },
+      {
+        "date": "2026-09-30",
+        "pessimisticBalance": 14483,
+        "expectedBalance": 14483,
+        "optimisticBalance": 14483
+      },
+      {
+        "date": "2026-10-01",
+        "pessimisticBalance": 14483,
+        "expectedBalance": 14483,
+        "optimisticBalance": 14483
+      }
+    ],
+    "summary": {
+      "firstThresholdBreachDate": null,
+      "minimumCashDate": "2026-09-10",
+      "minimumCashBalance": 11283,
+      "crunchProbability": 0
+    }
+  },
+  "forecastIntelligence": {
+    "explainabilitySummary": "Supplier payment timing is the main pressure on cash, while revenue opportunity pipeline is the strongest lever the owner can control.",
+    "biggestRisk": "Supplier payment timing",
+    "biggestOpportunity": "Revenue opportunity pipeline",
+    "decisionCallouts": [
+      {
+        "id": "why-cash-dips",
+        "title": "Why cash dips on 2026-07-18",
+        "answer": "-£9,700 net movement on 2026-07-18, driven by £9,700 of outflows against £0 of inflows.",
+        "evidence": [
+          "£11,500 authorised supplier bills in the model",
+          "£15,190 authorised receivables depend on payment timing",
+          "Safe threshold first breached on 2026-07-18"
+        ],
+        "businessDecision": "Prioritise actions that move cash before the minimum-cash date, not actions that arrive after the danger window."
+      },
+      {
+        "id": "top-three-factors",
+        "title": "Which 3 factors move cash most",
+        "answer": "Revenue opportunity pipeline: £21,941 | Approved action lift: £13,983 | Supplier payment timing: £11,500",
+        "evidence": [
+          "7 growth opportunity/opportunities",
+          "3 cash action(s) selected",
+          "£11,500 authorised supplier bills"
+        ],
+        "businessDecision": "Focus the owner conversation on the few timing levers that actually change runway."
+      },
+      {
+        "id": "what-changed-after-actions",
+        "title": "What changed after actions",
+        "answer": "£13,933 improvement to minimum cash; crunch probability moves from 100% to 0%.",
+        "evidence": [
+          "3 cash-flow action(s) included",
+          "After-action forecast removes the threshold breach",
+          "Offer Brightside Studios a 2% early-payment incentive"
+        ],
+        "businessDecision": "Approve the smallest action bundle that removes the breach and preserves supplier/customer trust."
+      },
+      {
+        "id": "monte-carlo-meaning",
+        "title": "Monte Carlo means many realistic payment futures",
+        "answer": "At the minimum-cash date, simulated outcomes range from -£2,650 to £4,700.",
+        "evidence": [
+          "420 seeded simulations vary customer payment delay around contact reliability",
+          "p10-p90 band shows the middle 80% of realistic outcomes",
+          "The red line is the deterministic expected timing case"
+        ],
+        "businessDecision": "Treat the forecast as a risk range, not a single promise; approve actions that work in pessimistic timing cases."
+      }
+    ],
+    "timeSeriesDiagnostics": [
+      {
+        "id": "daily-ledger",
+        "label": "Daily ledger model",
+        "value": "90 forecast days",
+        "detail": "Every day rolls opening cash plus dated receivables, supplier bills, and recurring flows into closing cash.",
+        "method": "Time-indexed deterministic ledger from Xero due dates, planned payment dates, expected payment dates, and recurring cash flows."
+      },
+      {
+        "id": "rolling-net-flow",
+        "label": "Worst 7-day net cash movement",
+        "value": "-£12,450",
+        "detail": "2026-07-12 to 2026-07-18 is the most stressful seven-day run in the baseline forecast.",
+        "method": "Rolling seven-day window over daily closing-minus-opening cash movement."
+      },
+      {
+        "id": "cash-velocity",
+        "label": "Average daily cash velocity",
+        "value": "£23",
+        "detail": "Daily movement volatility is £1,644, which is why timing changes matter more than the average.",
+        "method": "Mean and standard deviation of daily net cash movements across the forecast horizon."
+      },
+      {
+        "id": "payment-timing-band",
+        "label": "Payment timing uncertainty",
+        "value": "100% crunch probability",
+        "detail": "On 2026-07-18, the simulated p10-p90 balance range is -£2,650 to £4,700.",
+        "method": "Monte Carlo simulation using contact payment reliability and invoice timing variance."
+      }
+    ],
+    "models": [
+      {
+        "id": "model-daily-ledger",
+        "name": "Daily cash ledger forecast",
+        "type": "time_series",
+        "purpose": "Project daily opening and closing cash over 30-90 days.",
+        "xeroInputs": [
+          "Bank summary",
+          "Authorised invoices",
+          "Bills",
+          "Repeating cash flows"
+        ],
+        "method": "Deterministic time-series ledger with dated inflows and outflows.",
+        "output": "Minimum baseline cash is -£2,650 on 2026-07-18.",
+        "confidence": "high"
+      },
+      {
+        "id": "model-payment-delay",
+        "name": "Customer payment-delay model",
+        "type": "payment_delay",
+        "purpose": "Estimate when receivables will actually arrive.",
+        "xeroInputs": [
+          "Contacts",
+          "Paid invoices",
+          "Due dates",
+          "Fully paid dates"
+        ],
+        "method": "Contact-level median days late and reliability scoring from Xero payment history.",
+        "output": "£15,190 of open receivables are timing-sensitive.",
+        "confidence": "high"
+      },
+      {
+        "id": "model-monte-carlo",
+        "name": "Monte Carlo cash simulation",
+        "type": "monte_carlo",
+        "purpose": "Estimate probability of a future cash threshold breach.",
+        "xeroInputs": [
+          "Open receivables",
+          "Customer reliability",
+          "Supplier bills",
+          "Recurring flows"
+        ],
+        "method": "420 seeded simulations varying customer payment delays around contact reliability.",
+        "output": "100% baseline crunch probability, 0% after actions.",
+        "confidence": "medium"
+      },
+      {
+        "id": "model-driver-attribution",
+        "name": "Cash-driver attribution",
+        "type": "driver_attribution",
+        "purpose": "Explain which business factors move the forecast most.",
+        "xeroInputs": [
+          "Invoice concentration",
+          "Payable timing",
+          "Recurring costs",
+          "Action impact"
+        ],
+        "method": "Sensitivity tests and factor scoring against the minimum cash point.",
+        "output": "6 ranked cash drivers explain the forecast movement.",
+        "confidence": "medium"
+      }
+    ],
+    "cashDrivers": [
+      {
+        "id": "driver-revenue-upside",
+        "label": "Revenue opportunity pipeline",
+        "direction": "positive",
+        "impactAmount": 21941,
+        "impactLabel": "£21,941",
+        "explanation": "Detected growth opportunities do not fix today's bank balance immediately, but they improve the forward cash outlook.",
+        "evidence": [
+          "7 growth opportunity/opportunities",
+          "£25,450 expected revenue impact",
+          "Invoice closed-won Conversion Sprint"
+        ],
+        "sensitivity": "Converting the top opportunity adds about £5,590 expected cash-flow lift.",
+        "confidence": "high"
+      },
+      {
+        "id": "driver-action-lift",
+        "label": "Approved action lift",
+        "direction": "positive",
+        "impactAmount": 13983,
+        "impactLabel": "£13,983",
+        "explanation": "The selected cash actions change the timing of receipts and payments before the risk window arrives.",
+        "evidence": [
+          "3 cash action(s) selected",
+          "£13,933 improvement to minimum cash",
+          "After-action forecast removes the threshold breach"
+        ],
+        "sensitivity": "Removing selected actions would bring the minimum cash back to -£2,650.",
+        "confidence": "high"
+      },
+      {
+        "id": "driver-supplier-timing",
+        "label": "Supplier payment timing",
+        "direction": "negative",
+        "impactAmount": 11500,
+        "impactLabel": "£11,500",
+        "explanation": "Supplier bills and planned payment dates create the steepest downward steps in the short-term cash curve.",
+        "evidence": [
+          "£11,500 authorised supplier bills",
+          "3 payable item(s) in the forecast window",
+          "One supplier timing action is available for approval"
+        ],
+        "sensitivity": "Pulling supplier payments 7 days earlier lowers minimum cash by £0.",
+        "confidence": "high"
+      },
+      {
+        "id": "driver-starting-buffer",
+        "label": "Starting cash buffer",
+        "direction": "positive",
+        "impactAmount": 7600,
+        "impactLabel": "£7,600",
+        "explanation": "Opening cash relative to the safety threshold determines how much timing shock the business can absorb.",
+        "evidence": [
+          "Opening cash: £12,600",
+          "Safe threshold: £5,000",
+          "Baseline breach: 2026-07-18"
+        ],
+        "sensitivity": "Every £1,000 of extra starting cash delays or softens threshold risk.",
+        "confidence": "high"
+      },
+      {
+        "id": "driver-fixed-cost-load",
+        "label": "Fixed cost load",
+        "direction": "negative",
+        "impactAmount": 3750,
+        "impactLabel": "£3,750",
+        "explanation": "Recurring rent, software, and operating costs reduce the buffer even when invoice timing is stable.",
+        "evidence": [
+          "2 recurring outflow(s)",
+          "£3,750 recurring outflow per cycle",
+          "Recurring flows are projected across the 90-day ledger"
+        ],
+        "sensitivity": "A 10% fixed-cost reduction would improve monthly cash by about £375.",
+        "confidence": "medium"
+      },
+      {
+        "id": "driver-payment-delay",
+        "label": "Customer payment timing",
+        "direction": "risk",
+        "impactAmount": 3462,
+        "impactLabel": "£3,462",
+        "explanation": "The forecast is most sensitive to when authorised receivables actually land, not just their due dates.",
+        "evidence": [
+          "£15,190 open customer receivables",
+          "3 authorised customer invoice(s)",
+          "Largest invoice: INV-4018 from Brightside Studios"
+        ],
+        "sensitivity": "If open customer receipts slip by 7 days, minimum cash falls by £0.",
+        "confidence": "high"
+      }
+    ]
+  },
+  "recommendedActions": [
+    {
+      "id": "discount-inv-bright-4018",
+      "type": "early_payment_incentive",
+      "title": "Offer Brightside Studios a 2% early-payment incentive",
+      "contactId": "contact-bright",
+      "contactName": "Brightside Studios",
+      "invoiceId": "inv-bright-4018",
+      "invoiceNumber": "INV-4018",
+      "grossAmount": 7840,
+      "estimatedCost": 157,
+      "amount": 7683,
+      "cashImpactBeforeCrunch": 7683,
+      "actionDate": "2026-07-04",
+      "expectedCashDate": "2026-07-15",
+      "confidence": "high",
+      "relationshipRisk": "low",
+      "rationale": "The discount costs £157 but accelerates a large invoice before the crunch date.",
+      "messageDraft": "Hi Brightside Studios, I hope you are well. We are offering a 2% early-payment discount on INV-4018 if payment can be made this week. Would that be helpful on your side?",
+      "approvalPlan": {
+        "xeroRecords": [
+          "Invoice INV-4018",
+          "Contact Brightside Studios",
+          "2% discount cost £157"
+        ],
+        "approvedExecution": "Add an approved early-payment offer note and queue the customer email; invoice totals stay unchanged until payment is confirmed.",
+        "humanControl": "Owner approves the discount language and can cap the offer window."
+      }
+    },
+    {
+      "id": "chase-inv-acme-4012",
+      "type": "chase_invoice",
+      "title": "Chase Acme Retail Group",
+      "contactId": "contact-acme",
+      "contactName": "Acme Retail Group",
+      "invoiceId": "inv-acme-4012",
+      "invoiceNumber": "INV-4012",
+      "grossAmount": 4200,
+      "estimatedCost": 0,
+      "amount": 4200,
+      "cashImpactBeforeCrunch": 4200,
+      "actionDate": "2026-07-04",
+      "expectedCashDate": "2026-07-09",
+      "confidence": "medium",
+      "relationshipRisk": "low",
+      "rationale": "Acme Retail Group usually pays 16 days late, so a targeted reminder can pull INV-4012 into the risk window.",
+      "messageDraft": "Hi Acme Retail Group, I hope you are well. A quick reminder that INV-4012 for £4,200 is now due. Could you let us know when payment is scheduled?",
+      "approvalPlan": {
+        "xeroRecords": [
+          "Invoice INV-4012",
+          "Contact Acme Retail Group",
+          "£4,200 receivable"
+        ],
+        "approvedExecution": "Create a contact note and queue the invoice follow-up draft against the Xero invoice record.",
+        "humanControl": "Owner reviews the customer message before anything is sent."
+      }
+    },
+    {
+      "id": "delay-bill-printco-188",
+      "type": "delay_supplier_payment",
+      "title": "Delay PrintCo Supplies by 7 days",
+      "contactId": "contact-printco",
+      "contactName": "PrintCo Supplies",
+      "invoiceId": "bill-printco-188",
+      "invoiceNumber": "BILL-188",
+      "grossAmount": 2100,
+      "estimatedCost": 0,
+      "amount": 2100,
+      "cashImpactBeforeCrunch": 2100,
+      "actionDate": "2026-07-04",
+      "expectedCashDate": "2026-07-25",
+      "confidence": "medium",
+      "relationshipRisk": "medium",
+      "rationale": "PrintCo Supplies has previously accepted short payment extensions, and this bill lands inside the crunch window.",
+      "messageDraft": "Hi PrintCo Supplies, we are reviewing payment timing for BILL-188. Would it be possible to move payment to 2026-07-25? We value the relationship and want to confirm this works for your team.",
+      "approvalPlan": {
+        "xeroRecords": [
+          "Bill BILL-188",
+          "Supplier PrintCo Supplies",
+          "New target date 2026-07-25"
+        ],
+        "approvedExecution": "Queue a supplier extension request and record the approved payment-plan note against the bill.",
+        "humanControl": "Owner confirms supplier sensitivity before the request is sent."
+      }
+    }
+  ],
+  "revenueGrowth": {
+    "totalExpectedRevenue": 25450,
+    "totalExpectedCashFlow": 21941,
+    "opportunitiesDetected": 7,
+    "topOpportunityType": "closed_won_not_invoiced"
+  },
+  "revenueOpportunities": [
+    {
+      "id": "closed-won-CRM-DEAL-6500",
+      "type": "closed_won_not_invoiced",
+      "title": "Invoice closed-won Conversion Sprint",
+      "contactId": "contact-bright",
+      "contactName": "Brightside Studios",
+      "serviceCategory": "Conversion sprint",
+      "expectedRevenueImpact": 6500,
+      "expectedCashFlowImpact": 5590,
+      "confidence": "high",
+      "urgency": "high",
+      "recommendedAction": "Create a draft Xero invoice for the closed-won CRM deal before the cash-risk window arrives.",
+      "evidence": [
+        "MockCRM deal CRM-DEAL-6500 is closed-won for £6,500.",
+        "Smart Mapper matched Brightside Studio Ltd to Brightside Studios with 98% confidence.",
+        "No similar Xero invoice exists for the matched contact, amount, and close-date window."
+      ],
+      "modelSignals": [
+        {
+          "label": "Source record",
+          "value": "CRM-DEAL-6500"
+        },
+        {
+          "label": "Matched Xero contact",
+          "value": "Brightside Studios"
+        },
+        {
+          "label": "Expected cash",
+          "value": "£5,590"
+        }
+      ],
+      "messageDraft": "Hi Brightside Studios, thanks again for confirming the conversion sprint. I have prepared the draft invoice for review and can adjust the details before it is sent.",
+      "approvalPlan": {
+        "xeroRecords": [
+          "External deal CRM-DEAL-6500",
+          "Contact Brightside Studios",
+          "Draft invoice £6,500"
+        ],
+        "approvedExecution": "Create a draft Xero invoice payload and queue the customer follow-up for owner review.",
+        "humanControl": "Owner confirms scope, tax/VAT treatment, and invoice timing before any Xero writeback or email send."
+      }
+    },
+    {
+      "id": "reactivate-contact-harbor",
+      "type": "dormant_customer_reactivation",
+      "title": "Reactivate Harbor Coffee Co",
+      "contactId": "contact-harbor",
+      "contactName": "Harbor Coffee Co",
+      "expectedRevenueImpact": 5460,
+      "expectedCashFlowImpact": 4200,
+      "confidence": "high",
+      "urgency": "medium",
+      "recommendedAction": "Send a personalised check-in with a relevant follow-on offer from their last purchase.",
+      "evidence": [
+        "Harbor Coffee Co previously generated £8,400 of revenue.",
+        "No paid invoice has landed for 108 days.",
+        "Average historical invoice value is £8,400."
+      ],
+      "modelSignals": [
+        {
+          "label": "Last paid invoice",
+          "value": "18 Mar"
+        },
+        {
+          "label": "Days inactive",
+          "value": "108"
+        },
+        {
+          "label": "Payment reliability",
+          "value": "91%"
+        }
+      ],
+      "messageDraft": "Hi Harbor Coffee Co, we loved working with you on the last project. We spotted a few quick wins that could build on that work and would be happy to share a short plan this week.",
+      "approvalPlan": {
+        "xeroRecords": [
+          "Contact Harbor Coffee Co",
+          "1 paid invoice(s)",
+          "Last paid 18 Mar"
+        ],
+        "approvedExecution": "Create a contact note, queue a reactivation task, and attach the owner-approved outreach draft.",
+        "humanControl": "Owner approves the offer angle before the customer is contacted."
+      }
+    },
+    {
+      "id": "subscription-contact-luna-content",
+      "type": "subscription_conversion",
+      "title": "Convert Luna Fitness to a Content retainer",
+      "contactId": "contact-luna",
+      "contactName": "Luna Fitness",
+      "serviceCategory": "Content",
+      "expectedRevenueImpact": 5900,
+      "expectedCashFlowImpact": 1967,
+      "confidence": "high",
+      "urgency": "medium",
+      "recommendedAction": "Offer a quarterly retainer that turns repeated ad-hoc invoices into predictable recurring revenue.",
+      "evidence": [
+        "Luna Fitness bought Content work 3 times recently.",
+        "Average invoice value is £1,967.",
+        "A subscription improves revenue predictability and cash-flow visibility."
+      ],
+      "modelSignals": [
+        {
+          "label": "Repeat purchases",
+          "value": "3 in 110 days"
+        },
+        {
+          "label": "Suggested retainer",
+          "value": "£1,967/mo"
+        },
+        {
+          "label": "Confidence",
+          "value": "High"
+        }
+      ],
+      "messageDraft": "Hi Luna Fitness, we noticed the monthly content work has become a regular rhythm. Would a fixed monthly retainer make planning and approvals easier on your side?",
+      "approvalPlan": {
+        "xeroRecords": [
+          "Contact Luna Fitness",
+          "3 Content invoices",
+          "Average £1,967"
+        ],
+        "approvedExecution": "Draft a retainer proposal and prepare a Xero repeating-invoice template for owner review.",
+        "humanControl": "Owner confirms scope, price, and cadence before any recurring invoice is created."
+      }
+    },
+    {
+      "id": "upsell-contact-bright-conversion",
+      "type": "upsell_cross_sell",
+      "title": "Cross-sell Conversion to Brightside Studios",
+      "contactId": "contact-bright",
+      "contactName": "Brightside Studios",
+      "serviceCategory": "Conversion",
+      "expectedRevenueImpact": 3800,
+      "expectedCashFlowImpact": 3268,
+      "confidence": "high",
+      "urgency": "low",
+      "recommendedAction": "Send a value-led recommendation connected to the service they already bought.",
+      "evidence": [
+        "Brightside Studios has recent revenue of £7,840.",
+        "They bought Website but not Conversion.",
+        "Cross-sell is tied to an adjacent service, not a generic promotion."
+      ],
+      "modelSignals": [
+        {
+          "label": "Existing categories",
+          "value": "Website"
+        },
+        {
+          "label": "Next best offer",
+          "value": "Conversion"
+        },
+        {
+          "label": "Expected value",
+          "value": "£3,800"
+        }
+      ],
+      "messageDraft": "Hi Brightside Studios, based on the recent work, the next highest-leverage step is a focused conversion sprint. We can keep it lightweight and tie it directly to the outcomes from the current project.",
+      "approvalPlan": {
+        "xeroRecords": [
+          "Contact Brightside Studios",
+          "Bought Website",
+          "Missing Conversion"
+        ],
+        "approvedExecution": "Prepare a draft Xero quote for the next-best service and queue the personalised recommendation.",
+        "humanControl": "Owner approves pricing and scope before the quote is sent."
+      }
+    },
+    {
+      "id": "service-fix-conversion",
+      "type": "underperforming_service_fix",
+      "title": "Repackage underperforming Conversion offer",
+      "serviceCategory": "Conversion",
+      "expectedRevenueImpact": 3070,
+      "expectedCashFlowImpact": 1996,
+      "confidence": "medium",
+      "urgency": "low",
+      "recommendedAction": "Bundle the underperforming offer with a better-selling adjacent service and test it with recent buyers.",
+      "evidence": [
+        "Conversion revenue is £4,200, below the portfolio average of £8,773.",
+        "1 invoice(s) include this service.",
+        "The action is a pricing/packaging experiment, not an accounting adjustment."
+      ],
+      "modelSignals": [
+        {
+          "label": "Service",
+          "value": "Conversion"
+        },
+        {
+          "label": "Current revenue",
+          "value": "£4,200"
+        },
+        {
+          "label": "Target lift",
+          "value": "£3,070"
+        }
+      ],
+      "messageDraft": "Internal action: repackage conversion as an add-on to a proven service, then test the offer with customers who recently bought adjacent work.",
+      "approvalPlan": {
+        "xeroRecords": [
+          "Service category Conversion",
+          "1 invoice(s)",
+          "Current revenue £4,200"
+        ],
+        "approvedExecution": "Create an internal pricing task and prepare a draft Xero item/quote bundle for review.",
+        "humanControl": "Owner decides whether the service should be repriced, bundled, or retired."
+      }
+    },
+    {
+      "id": "recover-inv-acme-4012",
+      "type": "late_payment_recovery",
+      "title": "Protect booked revenue from Acme Retail Group",
+      "contactId": "contact-acme",
+      "contactName": "Acme Retail Group",
+      "expectedRevenueImpact": 0,
+      "expectedCashFlowImpact": 4200,
+      "confidence": "low",
+      "urgency": "medium",
+      "recommendedAction": "Trigger a customer-specific follow-up before the payment delay hits the forecast.",
+      "evidence": [
+        "INV-4012 has £4,200 still due.",
+        "Acme Retail Group typically pays 16 days late.",
+        "Due date is 2026-07-04."
+      ],
+      "modelSignals": [
+        {
+          "label": "Invoice",
+          "value": "INV-4012"
+        },
+        {
+          "label": "Amount due",
+          "value": "£4,200"
+        },
+        {
+          "label": "Median days late",
+          "value": "16"
+        }
+      ],
+      "messageDraft": "Hi Acme Retail Group, a quick note on INV-4012. Could you confirm the payment date so we can keep our schedule aligned?",
+      "approvalPlan": {
+        "xeroRecords": [
+          "Invoice INV-4012",
+          "Contact Acme Retail Group",
+          "£4,200 due"
+        ],
+        "approvedExecution": "Queue an invoice follow-up and add a contact note with the requested payment-date confirmation.",
+        "humanControl": "Owner can soften the tone for sensitive customer relationships."
+      }
+    },
+    {
+      "id": "unmatched-order-shopify-order-1120",
+      "type": "unmatched_external_order",
+      "title": "Reconcile unmatched MockShopify order",
+      "serviceCategory": "Template pack",
+      "expectedRevenueImpact": 720,
+      "expectedCashFlowImpact": 720,
+      "confidence": "medium",
+      "urgency": "high",
+      "recommendedAction": "Money was collected outside Xero. Create the contact and sales invoice so the payment can be reconciled and reported.",
+      "evidence": [
+        "MockShopify order SHOPIFY-ORDER-1120 is paid (£720) with no confident Xero contact match.",
+        "Buyer \"Unknown buyer\" has no email on record and could not be matched above the 58% confidence floor.",
+        "Unrecorded sales understate revenue and break bank reconciliation until they are booked."
+      ],
+      "modelSignals": [
+        {
+          "label": "Source record",
+          "value": "SHOPIFY-ORDER-1120"
+        },
+        {
+          "label": "Order value",
+          "value": "£720"
+        },
+        {
+          "label": "Match status",
+          "value": "NEEDS_NEW_CONTACT"
+        }
+      ],
+      "messageDraft": "Internal action: create a Xero contact for \"Unknown buyer\" and raise a £720 sales invoice matching SHOPIFY-ORDER-1120, then reconcile the incoming payment against it.",
+      "approvalPlan": {
+        "xeroRecords": [
+          "External order SHOPIFY-ORDER-1120",
+          "Order value £720",
+          "New Xero contact + invoice draft"
+        ],
+        "approvedExecution": "Prepare a new contact draft and a matching sales invoice so the external payment can be reconciled in Xero.",
+        "humanControl": "Owner confirms the buyer identity and tax treatment before any record is created."
+      }
+    }
+  ],
+  "smartMappingSummary": {
+    "totalMatches": 10,
+    "highConfidenceMatches": 6,
+    "needsReview": 8,
+    "bestMatch": "Brightside Studio Ltd -> Brightside Studios"
+  },
+  "entityMatches": [
+    {
+      "matchId": "match-crm-deal-6500",
+      "externalRecordId": "CRM-DEAL-6500",
+      "externalRecordType": "DEAL",
+      "sourceSystem": "MockCRM",
+      "externalName": "Brightside Studio Ltd",
+      "externalTitle": "Conversion Sprint",
+      "externalAmount": 6500,
+      "xeroContactId": "contact-bright",
+      "xeroContactName": "Brightside Studios",
+      "confidence": 0.98,
+      "matchStatus": "PENDING_REVIEW",
+      "evidence": [
+        "Company names are highly similar after normalisation.",
+        "Both records use the exact billing email finance@brightside.co.uk.",
+        "Previous Xero relationship context exists for this customer."
+      ],
+      "sourceRecordIds": [
+        "CRM-DEAL-6500",
+        "contact-bright"
+      ]
+    },
+    {
+      "matchId": "match-crm-deal-2210",
+      "externalRecordId": "CRM-DEAL-2210",
+      "externalRecordType": "DEAL",
+      "sourceSystem": "MockCRM",
+      "externalName": "Harbor Coffee Company",
+      "externalTitle": "Launch Kit Follow-up",
+      "externalAmount": 2450,
+      "xeroContactId": "contact-harbor",
+      "xeroContactName": "Harbor Coffee Co",
+      "confidence": 0.98,
+      "matchStatus": "PENDING_REVIEW",
+      "evidence": [
+        "Company names are highly similar after normalisation.",
+        "Both records use the exact billing email founders@harborcoffee.example.",
+        "Previous Xero relationship context exists for this customer."
+      ],
+      "sourceRecordIds": [
+        "CRM-DEAL-2210",
+        "contact-harbor"
+      ]
+    },
+    {
+      "matchId": "match-crm-deal-9104",
+      "externalRecordId": "CRM-DEAL-9104",
+      "externalRecordType": "DEAL",
+      "sourceSystem": "MockCRM",
+      "externalName": "Luna Fit Ltd",
+      "externalTitle": "Monthly Content Renewal",
+      "externalAmount": 2100,
+      "xeroContactId": "contact-luna",
+      "xeroContactName": "Luna Fitness",
+      "confidence": 0.98,
+      "matchStatus": "PENDING_REVIEW",
+      "evidence": [
+        "Company names are highly similar after normalisation.",
+        "Both records use the exact billing email ops@lunafitness.example.",
+        "Previous Xero relationship context exists for this customer."
+      ],
+      "sourceRecordIds": [
+        "CRM-DEAL-9104",
+        "contact-luna"
+      ]
+    },
+    {
+      "matchId": "match-crm-deal-3319",
+      "externalRecordId": "CRM-DEAL-3319",
+      "externalRecordType": "DEAL",
+      "sourceSystem": "MockCRM",
+      "externalName": "Apex Architecture",
+      "externalTitle": "Analytics Sprint",
+      "externalAmount": 2600,
+      "xeroContactId": "contact-apex",
+      "xeroContactName": "Apex Architects",
+      "confidence": 0.98,
+      "matchStatus": "PENDING_REVIEW",
+      "evidence": [
+        "Company names partially match after normalisation.",
+        "Both records use the exact billing email studio@apexarchitects.example.",
+        "Previous Xero relationship context exists for this customer."
+      ],
+      "sourceRecordIds": [
+        "CRM-DEAL-3319",
+        "contact-apex"
+      ]
+    },
+    {
+      "matchId": "match-shopify-order-1098",
+      "externalRecordId": "SHOPIFY-ORDER-1098",
+      "externalRecordType": "ORDER",
+      "sourceSystem": "MockShopify",
+      "externalName": "Harbor Coffee Co",
+      "externalTitle": "Launch Kit, Brand Assets",
+      "externalAmount": 2450,
+      "xeroContactId": "contact-harbor",
+      "xeroContactName": "Harbor Coffee Co",
+      "confidence": 0.98,
+      "matchStatus": "PENDING_REVIEW",
+      "evidence": [
+        "Company names are highly similar after normalisation.",
+        "Both records use the exact billing email founders@harborcoffee.example.",
+        "Previous Xero relationship context exists for this customer."
+      ],
+      "sourceRecordIds": [
+        "SHOPIFY-ORDER-1098",
+        "contact-harbor"
+      ]
+    },
+    {
+      "matchId": "match-shopify-order-1114",
+      "externalRecordId": "SHOPIFY-ORDER-1114",
+      "externalRecordType": "ORDER",
+      "sourceSystem": "MockShopify",
+      "externalName": "Apex Architects",
+      "externalTitle": "Analytics sprint",
+      "externalAmount": 2600,
+      "xeroContactId": "contact-apex",
+      "xeroContactName": "Apex Architects",
+      "confidence": 0.98,
+      "matchStatus": "PENDING_REVIEW",
+      "evidence": [
+        "Company names are highly similar after normalisation.",
+        "Both records use the exact billing email studio@apexarchitects.example.",
+        "Previous Xero relationship context exists for this customer."
+      ],
+      "sourceRecordIds": [
+        "SHOPIFY-ORDER-1114",
+        "contact-apex"
+      ]
+    },
+    {
+      "matchId": "match-shopify-order-1101",
+      "externalRecordId": "SHOPIFY-ORDER-1101",
+      "externalRecordType": "ORDER",
+      "sourceSystem": "MockShopify",
+      "externalName": "LUNA monthly content",
+      "externalTitle": "Monthly content refresh",
+      "externalAmount": 1967,
+      "xeroContactId": "contact-luna",
+      "xeroContactName": "Luna Fitness",
+      "confidence": 0.76,
+      "matchStatus": "PENDING_REVIEW",
+      "evidence": [
+        "Both records use the exact billing email ops@lunafitness.example.",
+        "Previous Xero relationship context exists for this customer."
+      ],
+      "sourceRecordIds": [
+        "SHOPIFY-ORDER-1101",
+        "contact-luna"
+      ]
+    },
+    {
+      "matchId": "match-csv-row-77",
+      "externalRecordId": "CSV-ROW-77",
+      "externalRecordType": "ORDER",
+      "sourceSystem": "MockCSV",
+      "externalName": "Brightside Ops",
+      "externalTitle": "Monthly support retainer",
+      "externalAmount": 3200,
+      "xeroContactId": "contact-bright",
+      "xeroContactName": "Brightside Studios",
+      "confidence": 0.7,
+      "matchStatus": "PENDING_REVIEW",
+      "evidence": [
+        "Company names partially match after normalisation.",
+        "Both records share the brightside.co.uk email domain.",
+        "Previous Xero relationship context exists for this customer."
+      ],
+      "sourceRecordIds": [
+        "CSV-ROW-77",
+        "contact-bright"
+      ]
+    },
+    {
+      "matchId": "match-crm-deal-4040",
+      "externalRecordId": "CRM-DEAL-4040",
+      "externalRecordType": "DEAL",
+      "sourceSystem": "MockCRM",
+      "externalName": "NewCo Marketplace",
+      "externalTitle": "Discovery Call",
+      "externalAmount": 1800,
+      "xeroContactId": "contact-civic",
+      "xeroContactName": "Civic Labs",
+      "confidence": 0.14,
+      "matchStatus": "NEEDS_NEW_CONTACT",
+      "evidence": [
+        "Previous Xero relationship context exists for this customer."
+      ],
+      "sourceRecordIds": [
+        "CRM-DEAL-4040",
+        "contact-civic"
+      ]
+    },
+    {
+      "matchId": "match-shopify-order-1120",
+      "externalRecordId": "SHOPIFY-ORDER-1120",
+      "externalRecordType": "ORDER",
+      "sourceSystem": "MockShopify",
+      "externalName": "Unknown buyer",
+      "externalTitle": "Template pack",
+      "externalAmount": 720,
+      "xeroContactId": "contact-harbor",
+      "xeroContactName": "Harbor Coffee Co",
+      "confidence": 0.12,
+      "matchStatus": "NEEDS_NEW_CONTACT",
+      "evidence": [
+        "Previous Xero relationship context exists for this customer."
+      ],
+      "sourceRecordIds": [
+        "SHOPIFY-ORDER-1120",
+        "contact-harbor"
+      ]
+    }
+  ],
+  "productivitySummary": {
+    "tasksDetected": 5,
+    "autoResolvableTasks": 3,
+    "exceptionTasks": 2,
+    "estimatedMinutesSaved": 136,
+    "highestImpactTask": "Contractor payment prep with cash-risk check",
+    "xeroTouchpoints": [
+      "Bank transactions",
+      "Payments",
+      "Invoices",
+      "Bills",
+      "Contacts",
+      "Accounts",
+      "Tracking categories",
+      "Attachments"
+    ]
+  },
+  "productivityTasks": [
+    {
+      "id": "productivity-contractor-payout",
+      "type": "contractor_payment_prep",
+      "title": "Contractor payment prep with cash-risk check",
+      "sourceRecord": "Contractor spreadsheet - July creative team",
+      "workflow": "Contractor spreadsheet -> bill allocation -> payroll sensitivity check -> approval batch",
+      "xeroTarget": "Bill BILL-077",
+      "confidenceScore": 0.79,
+      "confidence": "medium",
+      "timeSavedMinutes": 38,
+      "businessImpact": "Turns a messy contractor spreadsheet into a reviewed £7,600 payment batch.",
+      "messySignals": [
+        "Spreadsheet has line-level contractor amounts but no Xero contact IDs.",
+        "Payment falls inside the cash risk window.",
+        "Payroll and contractor trust risk is high, so automation must not delay it silently."
+      ],
+      "automationSteps": [
+        "Extract contractor categories and total from spreadsheet text.",
+        "Match total to the authorised Xero contractor bill.",
+        "Flag cash-flow risk before payment date.",
+        "Prepare an approval checklist rather than auto-paying."
+      ],
+      "recommendedAction": "Approve the payment batch only after reviewing cash impact and contractor priority.",
+      "approvalPlan": {
+        "xeroRecords": [
+          "Bill BILL-077",
+          "Payment batch £7,600",
+          "Supplier group Payroll"
+        ],
+        "approvedExecution": "Queue a reviewed payment-prep task with bill allocation, contractor notes, and cash-risk warning.",
+        "humanControl": "Owner confirms payment timing; the app does not execute payroll or contractor payments automatically."
+      }
+    },
+    {
+      "id": "productivity-receipt-printco",
+      "type": "receipt_to_expense",
+      "title": "Receipt to expense and bill match",
+      "sourceRecord": "Scanned receipt - Print Co. Ltd",
+      "workflow": "Receipt -> supplier bill -> expense account -> attachment -> approval",
+      "xeroTarget": "Bill BILL-188",
+      "confidenceScore": 0.92,
+      "confidence": "high",
+      "timeSavedMinutes": 32,
+      "businessImpact": "Avoids manual entry and attaches evidence to a £2,100 supplier bill.",
+      "messySignals": [
+        "Supplier name appears as Print Co. Ltd while Xero contact is PrintCo Supplies.",
+        "Receipt has reference 188 but no exact Xero bill URL."
+      ],
+      "automationSteps": [
+        "Extract vendor, amount, due date, and reference from receipt text.",
+        "Fuzzy-match vendor and amount to authorised Xero bill.",
+        "Suggest Printing & production account code and attach receipt to the bill.",
+        "Queue reviewed bill-coding update for human approval."
+      ],
+      "recommendedAction": "Approve the suggested bill attachment and expense coding.",
+      "approvalPlan": {
+        "xeroRecords": [
+          "Bill BILL-188",
+          "£2,100 supplier bill",
+          "Contact PrintCo Supplies",
+          "Account: Printing & production"
+        ],
+        "approvedExecution": "Attach the receipt, set the suggested expense account, and add a reviewed coding note to the Xero bill.",
+        "humanControl": "Owner or bookkeeper confirms the supplier match before the app updates the bill coding."
+      }
+    },
+    {
+      "id": "productivity-reconcile-acme",
+      "type": "smart_reconciliation",
+      "title": "Smart payment reconciliation",
+      "sourceRecord": "Bank feed transaction - ACME RETAIL GRP",
+      "workflow": "Bank feed -> payment match -> invoice close -> cash forecast refresh",
+      "xeroTarget": "Invoice INV-4012",
+      "confidenceScore": 0.96,
+      "confidence": "high",
+      "timeSavedMinutes": 26,
+      "businessImpact": "£4,200 can be matched to the open invoice without manual search.",
+      "messySignals": [
+        "Bank memo uses ACME RETAIL GRP while Xero contact is Acme Retail Group.",
+        "Invoice reference is typed as INV4012 without the hyphen."
+      ],
+      "automationSteps": [
+        "Normalise bank-feed memo text and invoice references.",
+        "Match payer, amount, and invoice number to authorised receivable.",
+        "Queue reconciliation and payment allocation against the Xero invoice.",
+        "Refresh the cash forecast after owner approval."
+      ],
+      "recommendedAction": "Approve the payment-to-invoice match and close the receivable.",
+      "approvalPlan": {
+        "xeroRecords": [
+          "Invoice INV-4012",
+          "Contact Acme Retail Group",
+          "Bank transaction candidate £4,200"
+        ],
+        "approvedExecution": "Create a reviewed reconciliation task that allocates the bank receipt to the Xero invoice payment record.",
+        "humanControl": "Owner confirms the bank transaction is not a duplicate before marking the invoice paid."
+      }
+    },
+    {
+      "id": "productivity-duplicate-cloudlane",
+      "type": "duplicate_bill_guard",
+      "title": "Duplicate supplier bill guard",
+      "sourceRecord": "Forwarded supplier bill - Cloud Lane",
+      "workflow": "Supplier inbox -> duplicate check -> payment hold -> Xero bill note",
+      "xeroTarget": "Bill BILL-733",
+      "confidenceScore": 0.84,
+      "confidence": "medium",
+      "timeSavedMinutes": 22,
+      "businessImpact": "Prevents a possible duplicate £1,800 payment to a critical supplier.",
+      "messySignals": [
+        "Supplier is written as Cloud Lane in email but CloudLane Hosting in Xero.",
+        "Email has no bill number, only amount and month.",
+        "Supplier is marked high sensitivity, so auto-delay is unsafe."
+      ],
+      "automationSteps": [
+        "Compare vendor alias, amount, period, and due date against open Xero bills.",
+        "Flag likely duplicate instead of creating a second bill.",
+        "Suggest a payment hold note on the existing bill.",
+        "Escalate to human review because supplier continuity risk is high."
+      ],
+      "recommendedAction": "Review the duplicate warning before paying or importing the forwarded bill.",
+      "approvalPlan": {
+        "xeroRecords": [
+          "Existing bill BILL-733",
+          "Contact CloudLane Hosting",
+          "Potential duplicate £1,800"
+        ],
+        "approvedExecution": "Add a duplicate-risk note to the existing Xero bill and prevent a second import unless approved.",
+        "humanControl": "Owner decides whether the forwarded bill is a duplicate, revised bill, or missing attachment."
+      }
+    },
+    {
+      "id": "productivity-subscription-control",
+      "type": "subscription_expense_control",
+      "title": "Subscription expense categorisation",
+      "sourceRecord": "Multi-vendor subscription receipt",
+      "workflow": "Card receipt -> supplier bundle split -> account code -> recurring spend report",
+      "xeroTarget": "Recurring Software subscriptions",
+      "confidenceScore": 0.88,
+      "confidence": "high",
+      "timeSavedMinutes": 18,
+      "businessImpact": "Keeps £950 of monthly software spend consistently coded and reportable.",
+      "messySignals": [
+        "Receipt bundles multiple SaaS vendors into one card charge.",
+        "Previous coding alternated between Software and General."
+      ],
+      "automationSteps": [
+        "Classify vendor bundle as operating software.",
+        "Map to the existing recurring cash-flow category.",
+        "Suggest account coding and tracking category.",
+        "Queue a monthly control check for unusual increases."
+      ],
+      "recommendedAction": "Approve consistent software coding and recurring spend monitoring.",
+      "approvalPlan": {
+        "xeroRecords": [
+          "Account: Software subscriptions",
+          "Recurring outflow £950",
+          "Tracking: Operations"
+        ],
+        "approvedExecution": "Apply the reviewed account-code suggestion and add this vendor bundle to recurring spend monitoring.",
+        "humanControl": "Owner confirms the bundle is a business expense and not a personal card charge."
+      }
+    }
+  ],
+  "integrationSummary": {
+    "candidatesDetected": 5,
+    "readyToSync": 2,
+    "needsReview": 3,
+    "totalMappedValue": 28117,
+    "sourceSystems": [
+      "SaaS",
+      "Spreadsheet",
+      "CRM",
+      "E-commerce",
+      "Payments"
+    ],
+    "topSyncAction": "Prepare a Xero repeating-invoice template from the SaaS renewal."
+  },
+  "integrationCandidates": [
+    {
+      "id": "integrate-saas-retainer-wave",
+      "sourceSystem": "SaaS",
+      "sourceRecordId": "RETENTION-APP-RENEWAL-221",
+      "title": "SaaS renewal -> Xero repeating invoice",
+      "rawSignal": "Retainer Wave renewal accepted: support plan 3,200 monthly, starts 25 July, customer alias Bright+Ops.",
+      "mappedXeroObject": "RepeatingInvoice",
+      "targetXeroRecord": "Monthly support retainer",
+      "confidenceScore": 0.81,
+      "confidence": "medium",
+      "expectedValue": 9600,
+      "syncAction": "Prepare a Xero repeating-invoice template from the SaaS renewal.",
+      "fieldMappings": [
+        {
+          "sourceField": "renewal.amount",
+          "sourceValue": "3,200 monthly",
+          "xeroField": "RepeatingInvoice.Amount",
+          "mappedValue": "£3,200 monthly",
+          "confidence": "high"
+        },
+        {
+          "sourceField": "renewal.start",
+          "sourceValue": "25 July",
+          "xeroField": "RepeatingInvoice.StartDate",
+          "mappedValue": "2026-07-25",
+          "confidence": "medium"
+        },
+        {
+          "sourceField": "renewal.alias",
+          "sourceValue": "Bright+Ops",
+          "xeroField": "Contact.Name",
+          "mappedValue": "Brightside Studios or new operations contact",
+          "confidence": "medium"
+        },
+        {
+          "sourceField": "renewal.plan",
+          "sourceValue": "support plan",
+          "xeroField": "Item.Name",
+          "mappedValue": "Monthly support retainer",
+          "confidence": "high"
+        }
+      ],
+      "missingFields": [
+        "Billing contact email confirmation"
+      ],
+      "resilienceNotes": [
+        "Understands the phrase monthly as recurring cadence.",
+        "Maps alias Bright+Ops to a likely Xero contact but requests confirmation.",
+        "Converts renewal into draft repeating-invoice template rather than a one-off invoice."
+      ],
+      "approvalPlan": {
+        "xeroRecords": [
+          "SaaS renewal RETENTION-APP-RENEWAL-221",
+          "Repeating invoice template candidate",
+          "Monthly amount £3,200"
+        ],
+        "approvedExecution": "Prepare a draft Xero repeating invoice template with cadence, amount, line item, and contact candidate.",
+        "humanControl": "Owner confirms billing contact and recurring terms before creating the template."
+      }
+    },
+    {
+      "id": "integrate-sheet-contractor-bill",
+      "sourceSystem": "Spreadsheet",
+      "sourceRecordId": "GOOGLE-SHEET-TAB-JULY-CONTRACTORS",
+      "title": "Contractor sheet -> Xero supplier bill",
+      "rawSignal": "Creative team July: Sam design 3200, Jo copy 2100, QA support 2300. No supplier bill IDs.",
+      "mappedXeroObject": "Bill",
+      "targetXeroRecord": "Bill BILL-077",
+      "confidenceScore": 0.76,
+      "confidence": "medium",
+      "expectedValue": 7600,
+      "syncAction": "Transform contractor rows into a reviewed Xero bill allocation.",
+      "fieldMappings": [
+        {
+          "sourceField": "row.Sam design",
+          "sourceValue": "3200",
+          "xeroField": "Bill.LineItem[Design support]",
+          "mappedValue": "£3,200",
+          "confidence": "medium"
+        },
+        {
+          "sourceField": "row.Jo copy",
+          "sourceValue": "2100",
+          "xeroField": "Bill.LineItem[Copywriting]",
+          "mappedValue": "£2,100",
+          "confidence": "medium"
+        },
+        {
+          "sourceField": "row.QA support",
+          "sourceValue": "2300",
+          "xeroField": "Bill.LineItem[Quality assurance]",
+          "mappedValue": "£2,300",
+          "confidence": "medium"
+        },
+        {
+          "sourceField": "sheet.total",
+          "sourceValue": "7600",
+          "xeroField": "Bill.Total",
+          "mappedValue": "£7,600",
+          "confidence": "high"
+        }
+      ],
+      "missingFields": [
+        "Individual contractor supplier IDs",
+        "Payment bank account"
+      ],
+      "resilienceNotes": [
+        "Handles spreadsheet rows without requiring a rigid column template.",
+        "Aggregates line items to the authorised Xero contractor bill.",
+        "Routes missing supplier IDs to review instead of creating duplicates."
+      ],
+      "approvalPlan": {
+        "xeroRecords": [
+          "Google Sheet July contractors",
+          "Bill BILL-077",
+          "Bill allocation £7,600"
+        ],
+        "approvedExecution": "Prepare bill line allocations and a payment-prep checklist for the existing Xero contractor bill.",
+        "humanControl": "Owner confirms supplier IDs and bank account before any payment workflow proceeds."
+      }
+    },
+    {
+      "id": "integrate-crm-bright-conversion",
+      "sourceSystem": "CRM",
+      "sourceRecordId": "CRM-DEAL-6500",
+      "title": "Won CRM deal -> Xero draft invoice",
+      "rawSignal": "Brightside Studio Ltd / Conversion sprint / closed-won / 6.5k / invoice after kickoff / owner: Mia",
+      "mappedXeroObject": "Invoice",
+      "targetXeroRecord": "Contact Brightside Studios",
+      "confidenceScore": 0.91,
+      "confidence": "high",
+      "expectedValue": 6500,
+      "syncAction": "Prepare a draft Xero invoice from the won CRM deal.",
+      "fieldMappings": [
+        {
+          "sourceField": "deal.customer",
+          "sourceValue": "Brightside Studio Ltd",
+          "xeroField": "Contact.Name",
+          "mappedValue": "Brightside Studios",
+          "confidence": "high"
+        },
+        {
+          "sourceField": "deal.value",
+          "sourceValue": "6.5k",
+          "xeroField": "Invoice.LineAmount",
+          "mappedValue": "£6,500",
+          "confidence": "high"
+        },
+        {
+          "sourceField": "deal.stage",
+          "sourceValue": "closed-won",
+          "xeroField": "Invoice.Status",
+          "mappedValue": "DRAFT for owner approval",
+          "confidence": "high"
+        },
+        {
+          "sourceField": "deal.product",
+          "sourceValue": "Conversion sprint",
+          "xeroField": "LineItem.Description",
+          "mappedValue": "Conversion sprint",
+          "confidence": "medium"
+        }
+      ],
+      "missingFields": [],
+      "resilienceNotes": [
+        "Understands 6.5k as a currency amount instead of requiring a numeric field.",
+        "Maps CRM stage to a draft invoice, not an authorised invoice.",
+        "Uses existing Xero contact despite legal suffix and pluralisation differences."
+      ],
+      "approvalPlan": {
+        "xeroRecords": [
+          "CRM deal CRM-DEAL-6500",
+          "Xero contact Brightside Studios",
+          "Draft invoice £6,500"
+        ],
+        "approvedExecution": "Create a draft Xero invoice with mapped line item, contact, amount, and tracking category for review.",
+        "humanControl": "Owner confirms scope, tax treatment, and invoice timing before the draft invoice is sent."
+      }
+    },
+    {
+      "id": "integrate-shopify-harbor-order",
+      "sourceSystem": "E-commerce",
+      "sourceRecordId": "SHOPIFY-ORDER-1098",
+      "title": "Shopify-style order -> Xero sales invoice",
+      "rawSignal": "Harbor Coffee Co ordered Launch Kit + Brand Assets. Address missing VAT field. Paid by card.",
+      "mappedXeroObject": "Invoice",
+      "targetXeroRecord": "Contact Harbor Coffee Co",
+      "confidenceScore": 0.82,
+      "confidence": "medium",
+      "expectedValue": 2450,
+      "syncAction": "Convert paid order into a reviewed Xero sales invoice.",
+      "fieldMappings": [
+        {
+          "sourceField": "order.customer",
+          "sourceValue": "Harbor Coffee",
+          "xeroField": "Contact.Name",
+          "mappedValue": "Harbor Coffee Co",
+          "confidence": "medium"
+        },
+        {
+          "sourceField": "order.items",
+          "sourceValue": "Launch Kit + Brand Assets",
+          "xeroField": "Invoice.LineItems",
+          "mappedValue": "Launch Kit; Brand Assets",
+          "confidence": "high"
+        },
+        {
+          "sourceField": "order.payment_status",
+          "sourceValue": "Paid by card",
+          "xeroField": "Payment.Status",
+          "mappedValue": "Paid",
+          "confidence": "high"
+        },
+        {
+          "sourceField": "order.total",
+          "sourceValue": "2450",
+          "xeroField": "Invoice.Total",
+          "mappedValue": "£2,450",
+          "confidence": "high"
+        }
+      ],
+      "missingFields": [
+        "VAT number / tax treatment"
+      ],
+      "resilienceNotes": [
+        "Does not fail when the order lacks VAT metadata; it routes the tax field to review.",
+        "Maps product bundle to multiple Xero line items.",
+        "Recognises Harbor Coffee as an existing Xero customer from partial name."
+      ],
+      "approvalPlan": {
+        "xeroRecords": [
+          "Shopify order SHOPIFY-ORDER-1098",
+          "Xero contact Harbor Coffee Co",
+          "Items: Launch Kit, Brand Assets"
+        ],
+        "approvedExecution": "Create a draft paid sales invoice and queue the missing tax field for owner review.",
+        "humanControl": "Owner confirms VAT/tax treatment before the order is synced into Xero."
+      }
+    },
+    {
+      "id": "integrate-stripe-luna-payout",
+      "sourceSystem": "Payments",
+      "sourceRecordId": "STRIPE-PO-2026-07-02",
+      "title": "Stripe payout -> invoice and fee mapping",
+      "rawSignal": "Payout 1,912.58; gross 1,967.00; fee 54.42; description LUNA monthly content",
+      "mappedXeroObject": "Payment",
+      "targetXeroRecord": "Contact Luna Fitness",
+      "confidenceScore": 0.89,
+      "confidence": "high",
+      "expectedValue": 1967,
+      "syncAction": "Split gross receipt and payment fee for Xero reconciliation.",
+      "fieldMappings": [
+        {
+          "sourceField": "payout.net",
+          "sourceValue": "1,912.58",
+          "xeroField": "BankTransaction.Amount",
+          "mappedValue": "£1,912.58",
+          "confidence": "high"
+        },
+        {
+          "sourceField": "payout.gross",
+          "sourceValue": "1,967.00",
+          "xeroField": "Invoice.Total",
+          "mappedValue": "£1,967.00",
+          "confidence": "high"
+        },
+        {
+          "sourceField": "payout.fee",
+          "sourceValue": "54.42",
+          "xeroField": "BankFee.LineItem",
+          "mappedValue": "£54.42 payment processing fee",
+          "confidence": "high"
+        },
+        {
+          "sourceField": "description",
+          "sourceValue": "LUNA monthly content",
+          "xeroField": "Contact.Name",
+          "mappedValue": "Luna Fitness",
+          "confidence": "high"
+        }
+      ],
+      "missingFields": [],
+      "resilienceNotes": [
+        "Separates gross revenue from payment processor fee.",
+        "Uses fuzzy description matching to map LUNA to Luna Fitness.",
+        "Prepares reconciliation instead of forcing a one-line bank transaction."
+      ],
+      "approvalPlan": {
+        "xeroRecords": [
+          "Stripe payout STRIPE-PO-2026-07-02",
+          "Xero contact Luna Fitness",
+          "Bank fee line item"
+        ],
+        "approvedExecution": "Queue a Xero reconciliation split: gross revenue to invoice/payment, fee to bank fees expense.",
+        "humanControl": "Owner confirms fee treatment and invoice match before reconciliation is posted."
+      }
+    }
+  ],
+  "auditLog": [
+    {
+      "auditId": "audit-seed-risk-run",
+      "eventType": "FORECAST_RUN_CREATED",
+      "sourceRecordIds": [
+        "forecast-run-demo-30d",
+        "BILL-077",
+        "INV-4018"
+      ],
+      "payload": {
+        "previousStatus": "NOT_STARTED",
+        "newStatus": "COMPLETED",
+        "note": "30-day crunch probability calculated from deterministic cash-flow simulation."
+      },
+      "createdAt": "2026-07-04T09:07:00.000Z"
+    },
+    {
+      "auditId": "audit-seed-mapping-brightside",
+      "eventType": "SMART_MAPPING_REVIEWED",
+      "sourceRecordIds": [
+        "CRM-DEAL-6500",
+        "contact-bright"
+      ],
+      "payload": {
+        "matchId": "match-crm-deal-6500",
+        "previousStatus": "NEW",
+        "newStatus": "PENDING_REVIEW",
+        "confidence": 0.92,
+        "explanation": "Brightside Studio Ltd matched to Brightside Studios using normalised name and email domain."
+      },
+      "createdAt": "2026-07-04T09:05:00.000Z"
+    }
+  ],
+  "ownerPriorities": [
+    {
+      "id": "owner-cash-runway",
+      "type": "cash_runway",
+      "title": "Avoid the 18 Jul cash squeeze",
+      "practicalImpact": "Baseline cash drops to -£2,650; approved actions lift the low point by £13,933.",
+      "recommendedMove": "Approve \"Offer Brightside Studios a 2% early-payment incentive\" first, then review the remaining queued actions.",
+      "metricLabel": "Runway risk",
+      "metricValue": "100%",
+      "urgency": "high",
+      "effort": "low",
+      "ownerOutcome": "Protect payroll, rent, and supplier commitments before the gap appears."
+    },
+    {
+      "id": "owner-late-payment",
+      "type": "late_payment_stress",
+      "title": "Chase cash without sounding desperate",
+      "practicalImpact": "Acme Retail Group can move £4,200 into the risk window.",
+      "recommendedMove": "Send the drafted follow-up, then ask for a specific payment date rather than a vague update.",
+      "metricLabel": "Cash at stake",
+      "metricValue": "£4,200",
+      "urgency": "high",
+      "effort": "low",
+      "ownerOutcome": "Reduce awkward collections work while keeping the customer relationship intact."
+    },
+    {
+      "id": "owner-revenue-leakage",
+      "type": "revenue_leakage",
+      "title": "Win back revenue that already converted",
+      "practicalImpact": "Harbor Coffee Co has proven buying history and is worth £5,460 in expected revenue.",
+      "recommendedMove": "Send a personalised reactivation note tied to their last successful project.",
+      "metricLabel": "Expected revenue",
+      "metricValue": "£5,460",
+      "urgency": "medium",
+      "effort": "medium",
+      "ownerOutcome": "Grow revenue without starting from a cold lead list."
+    },
+    {
+      "id": "owner-predictable-revenue",
+      "type": "predictable_revenue",
+      "title": "Turn repeat work into a retainer",
+      "practicalImpact": "Luna Fitness repeatedly buys Content; packaging it can add £1,967 of cash-flow lift.",
+      "recommendedMove": "Offer a simple monthly plan with a clear scope, review cadence, and cancellation option.",
+      "metricLabel": "Revenue upside",
+      "metricValue": "£5,900",
+      "urgency": "medium",
+      "effort": "medium",
+      "ownerOutcome": "Replace ad-hoc invoices with a more predictable base of recurring revenue."
+    },
+    {
+      "id": "owner-supplier-trust",
+      "type": "supplier_trust",
+      "title": "Protect supplier trust while buying time",
+      "practicalImpact": "PrintCo Supplies can be delayed by 7 days, protecting £2,100 before the risk window.",
+      "recommendedMove": "Use the supplier message only for lower-sensitivity suppliers and keep the new date specific.",
+      "metricLabel": "Cash protected",
+      "metricValue": "£2,100",
+      "urgency": "medium",
+      "effort": "low",
+      "ownerOutcome": "Create breathing room without training key suppliers to distrust payment promises."
+    }
+  ],
+  "narrative": {
+    "headline": "Cash risk appears on 2026-07-18; growth and cash actions remove the immediate breach.",
+    "summary": "Baseline cash falls to -£2,650. With the recommended actions, the minimum projected cash position improves to £11,283. The revenue agent also found 7 growth opportunities worth £25,450 in expected revenue.",
+    "boardLevelNarrative": "The strongest growth move is \"Invoice closed-won Conversion Sprint\", with £6,500 of expected revenue impact. The cash forecast still matters: \"Offer Brightside Studios a 2% early-payment incentive\" protects £7,683 before the risk window.",
+    "assumptions": [
+      "Customer payment timing is estimated from contact-level payment behaviour.",
+      "Revenue opportunities are detected from Xero invoices, contacts, payment history, and invoice line items.",
+      "Supplier bills are assumed to be paid on planned payment date unless an approved action changes it.",
+      "AI agents explain and draft actions; deterministic forecast code performs numerical calculations.",
+      "After recommended actions, no threshold breach appears in the selected horizon."
+    ]
+  },
+  "xero": {
+    "mode": "seeded-demo",
+    "connected": false,
+    "endpoints": [
+      "GET /connections",
+      "GET /Organisations",
+      "GET /Invoices?Statuses=AUTHORISED,PAID",
+      "GET /Contacts?summaryOnly=true",
+      "GET /Accounts",
+      "GET /Items",
+      "GET /Payments",
+      "GET /Quotes",
+      "GET /BankTransactions",
+      "GET /RepeatingInvoices",
+      "GET /TrackingCategories",
+      "GET /Reports/BankSummary",
+      "GET /Reports/ProfitAndLoss",
+      "GET /Reports/BalanceSheet",
+      "GET /Reports/TrialBalance",
+      "GET /Reports/AgedReceivablesByContact",
+      "GET /Reports/AgedPayablesByContact"
+    ],
+    "scopes": [
+      "openid",
+      "profile",
+      "email",
+      "offline_access",
+      "accounting.invoices",
+      "accounting.invoices.read",
+      "accounting.payments.read",
+      "accounting.banktransactions.read",
+      "accounting.reports.aged.read",
+      "accounting.reports.balancesheet.read",
+      "accounting.reports.profitandloss.read",
+      "accounting.reports.trialbalance.read",
+      "accounting.contacts",
+      "accounting.contacts.read",
+      "accounting.settings",
+      "accounting.settings.read",
+      "accounting.reports.read"
+    ],
+    "records": {
+      "invoices": 11,
+      "contacts": 9,
+      "reports": 0,
+      "lineItems": 8,
+      "accounts": 6,
+      "items": 7,
+      "payments": 9,
+      "quotes": 4,
+      "bankTransactions": 12,
+      "repeatingInvoices": 2,
+      "trackingCategories": 2
+    },
+    "tooling": {
+      "sdk": "xero-node official Accounting SDK",
+      "mcpServerPackage": "@xeroapi/xero-mcp-server@latest",
+      "mcpEnabled": false,
+      "mcpAuthMode": "not-configured",
+      "mcpToolsDiscovered": 0,
+      "mcpToolExamples": [
+        "list-invoices",
+        "list-contacts",
+        "list-items",
+        "list-payments",
+        "list-bank-transactions",
+        "list-profit-and-loss",
+        "list-report-balance-sheet",
+        "list-trial-balance",
+        "list-aged-receivables-by-contact",
+        "create-quote",
+        "create-invoice",
+        "update-contact"
+      ],
+      "agentToolkitPattern": "OpenAI Agents SDK + MCPServerStdio pattern from XeroAPI/xero-agent-toolkit",
+      "promptLibraryGuidance": [
+        "Centralised Xero provider module",
+        "OAuth2 offline_access and token refresh",
+        "Granular 2026 accounting scopes",
+        "Read-first analysis, human-approved writes",
+        "Fail-soft optional endpoint enrichment"
+      ],
+      "scopeMode": "2026 granular scopes plus reports.read compatibility for BankSummary",
+      "compatibilityScopes": [
+        "accounting.reports.read"
+      ],
+      "safeWriteMode": "No Xero write endpoint is called until a human approves the queued action."
+    },
+    "note": "Seeded Xero-like demo data. Connect OAuth to replace this with live Accounting API data."
+  },
+  "queuedWritebacks": [],
+  "agentLayer": {
+    "mode": "deterministic-fallback",
+    "specialists": [
+      {
+        "name": "Productivity Automation Agent",
+        "role": "Handles messy receipts, reconciliation, duplicate bills, and contractor payment prep.",
+        "status": "fallback"
+      },
+      {
+        "name": "Adaptive Integration Agent",
+        "role": "Maps CRM, e-commerce, payments, SaaS, and spreadsheet data into Xero objects.",
+        "status": "fallback"
+      },
+      {
+        "name": "Data Quality Agent",
+        "role": "Checks whether Xero data is complete enough for forecasting.",
+        "status": "fallback"
+      },
+      {
+        "name": "Forecast Agent",
+        "role": "Interprets deterministic risk windows and Monte Carlo output.",
+        "status": "fallback"
+      },
+      {
+        "name": "Cash Action Agent",
+        "role": "Ranks customer and supplier interventions by forecast impact.",
+        "status": "fallback"
+      },
+      {
+        "name": "Collections Agent",
+        "role": "Drafts customer-specific invoice follow-up messages.",
+        "status": "fallback"
+      },
+      {
+        "name": "Revenue Growth Agent",
+        "role": "Finds dormant customers, upsells, subscription conversions, and service opportunities.",
+        "status": "fallback"
+      },
+      {
+        "name": "Outreach Agent",
+        "role": "Turns revenue opportunities into customer-specific messages.",
+        "status": "fallback"
+      },
+      {
+        "name": "Supplier Payment Agent",
+        "role": "Suggests which bills are safe to delay with human approval.",
+        "status": "fallback"
+      },
+      {
+        "name": "CFO Narrative Agent",
+        "role": "Explains the forecast in plain English.",
+        "status": "fallback"
+      }
+    ],
+    "traceSteps": [
+      {
+        "id": "trace-data-quality",
+        "agentName": "Data Quality Agent",
+        "status": "fallback",
+        "input": "11 invoices, 9 contacts, opening cash £12,600",
+        "reasoning": "Checked whether due dates, contacts, opening cash, and payment history are complete enough to trust the forecast.",
+        "output": "100/100 data quality: forecast ready",
+        "xeroEvidence": [
+          "GET /Invoices",
+          "GET /Contacts",
+          "GET /Reports/BankSummary"
+        ]
+      },
+      {
+        "id": "trace-forecast",
+        "agentName": "Forecast Agent",
+        "status": "fallback",
+        "input": "90-day ledger with 90 Monte Carlo band points",
+        "reasoning": "Interpreted the risk window, safe-cash threshold, simulated uncertainty, and before/after action movement.",
+        "output": "Cash falls below threshold on 2026-07-18; after-action minimum is £11,283.",
+        "xeroEvidence": [
+          "GET /Invoices?Statuses=AUTHORISED,PAID",
+          "GET /Reports/BankSummary",
+          "GET /RepeatingInvoices"
+        ]
+      },
+      {
+        "id": "trace-cash-actions",
+        "agentName": "Cash Action Agent",
+        "status": "fallback",
+        "input": "3 cash intervention candidates",
+        "reasoning": "Ranked customer and supplier moves by cash protected before the risk window and relationship risk.",
+        "output": "3 pending cash action(s); 3 action(s) included in after-action forecast.",
+        "xeroEvidence": [
+          "Invoices",
+          "Contacts",
+          "Payment timing history"
+        ]
+      },
+      {
+        "id": "trace-revenue-growth",
+        "agentName": "Revenue Growth Agent",
+        "status": "fallback",
+        "input": "7 pending revenue opportunities from invoices, contacts, line items, and external matches",
+        "reasoning": "Looked for closed-won uninvoiced work, dormant high-value customers, repeat purchases, upsells, and unmatched external orders.",
+        "output": "£25,450 expected revenue upside remains pending.",
+        "xeroEvidence": [
+          "GET /Invoices",
+          "GET /Contacts",
+          "GET /Items",
+          "Smart Mapping Review"
+        ]
+      },
+      {
+        "id": "trace-communications",
+        "agentName": "Communication Agent",
+        "status": "fallback",
+        "input": "10 customer/supplier message drafts",
+        "reasoning": "Kept outreach specific, respectful, and gated behind owner approval.",
+        "output": "Draft messages are editable before any Xero writeback or external send.",
+        "xeroEvidence": [
+          "Contact names",
+          "Invoice numbers",
+          "Amounts due",
+          "Approval audit trail"
+        ]
+      }
+    ],
+    "traceHint": "OPENAI_API_KEY is not set, so deterministic fallback text is active while agent scaffolding remains ready."
+  }
+}

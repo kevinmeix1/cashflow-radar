@@ -62,6 +62,41 @@ interface XeroStatus {
   tenantName?: string;
 }
 
+type StaticDecision = "APPROVED" | "REJECTED";
+
+interface StaticDecisionRecord {
+  id: string;
+  group: QueuedWritebackPreview["group"];
+  decision: StaticDecision;
+  editedMessage?: string;
+  writeback?: QueuedWritebackPreview;
+  createdAt: string;
+}
+
+const staticDecisionStorageKey = "cashpilot-static-decisions-v1";
+const staticMappingStorageKey = "cashpilot-static-mapping-decisions-v1";
+
+const staticXeroStatus: XeroStatus = {
+  configured: false,
+  authenticated: false,
+  missing: ["XERO_CLIENT_ID", "XERO_CLIENT_SECRET", "XERO_REDIRECT_URI"],
+  scopes: [
+    "offline_access",
+    "openid",
+    "profile",
+    "email",
+    "accounting.transactions.read",
+    "accounting.contacts.read",
+    "accounting.settings.read",
+    "accounting.reports.read",
+    "accounting.transactions",
+    "accounting.contacts"
+  ],
+  mode: "seeded-demo",
+  tokenPath: "Browser demo mode",
+  connectUrl: "https://developer.xero.com/"
+};
+
 const currencyFormatter = new Intl.NumberFormat("en-GB", {
   style: "currency",
   currency: "GBP",
@@ -130,18 +165,31 @@ export function App() {
   async function refresh(nextSource = source) {
     setLoading(true);
     setError(null);
-    const [dashboardResponse, xeroResponse] = await Promise.all([
-      fetch(`/api/dashboard?source=${nextSource}`),
-      fetch("/api/integrations/xero/status")
-    ]);
+    try {
+      const [dashboardResponse, xeroResponse] = await Promise.all([
+        fetch(`/api/dashboard?source=${nextSource}`),
+        fetch("/api/integrations/xero/status")
+      ]);
 
-    if (!dashboardResponse.ok) {
-      const result = await dashboardResponse.json();
-      throw new Error(result.error ?? "Unable to load dashboard");
+      if (!dashboardResponse.ok) {
+        const result = await dashboardResponse.json();
+        throw new Error(result.error ?? "Unable to load dashboard");
+      }
+
+      const dashboard = (await dashboardResponse.json()) as DashboardPayload;
+      const xero = (await xeroResponse.json()) as XeroStatus;
+      loadDashboardState(dashboard, xero);
+    } catch (caught) {
+      const dashboard = await loadStaticDashboardPayload();
+      loadDashboardState(applyStaticDashboardState(dashboard), {
+        ...staticXeroStatus,
+        mode: nextSource === "xero" ? "ready-for-oauth" : "seeded-demo"
+      });
+      setApprovalStatus("Live demo mode: using packaged Xero demo data because the API server is not running.");
     }
+  }
 
-    const dashboard = (await dashboardResponse.json()) as DashboardPayload;
-    const xero = (await xeroResponse.json()) as XeroStatus;
+  function loadDashboardState(dashboard: DashboardPayload, xero: XeroStatus) {
     const defaultSelection = buildDefaultApprovalSelection(dashboard);
     setPayload(dashboard);
     setXeroStatus(xero);
@@ -210,33 +258,42 @@ export function App() {
 
   async function resetDemoState() {
     setApprovalStatus("Resetting demo state...");
-    const response = await fetch("/api/demo/reset", { method: "POST" });
-    if (!response.ok) {
-      setApprovalStatus("Unable to reset demo state.");
-      return;
+    clearStaticDemoState();
+    try {
+      const response = await fetch("/api/demo/reset", { method: "POST" });
+      if (!response.ok) throw new Error("Unable to reset API demo state.");
+      await refresh(source);
+      setApprovalStatus("Demo approvals, mappings, and writeback queue reset.");
+    } catch {
+      await refresh(source);
+      setApprovalStatus("Demo approvals, mappings, and writeback queue reset for this browser.");
     }
-    await refresh(source);
-    setApprovalStatus("Demo approvals, mappings, and writeback queue reset.");
   }
 
   async function submitDecision(decision: "approve" | "reject") {
     if (approvalCount === 0 || approving) return;
     setApproving(true);
     setApprovalStatus(decision === "approve" ? "Submitting approval..." : "Submitting rejection...");
+    const selectedEdits = Object.fromEntries(
+      Object.entries(editedMessages).filter(
+        ([id]) => selectedActionIds.includes(id) || selectedOpportunityIds.includes(id)
+      )
+    );
+    const writebackPreviews = payload
+      ? buildSelectedWritebacks(payload, {
+          cashActionIds: selectedActionIds,
+          revenueOpportunityIds: selectedOpportunityIds,
+          productivityTaskIds: selectedProductivityTaskIds,
+          integrationCandidateIds: selectedIntegrationCandidateIds
+        })
+      : [];
+    const decidedIds = new Set([
+      ...selectedActionIds,
+      ...selectedOpportunityIds,
+      ...selectedProductivityTaskIds,
+      ...selectedIntegrationCandidateIds
+    ]);
     try {
-      const selectedEdits = Object.fromEntries(
-        Object.entries(editedMessages).filter(
-          ([id]) => selectedActionIds.includes(id) || selectedOpportunityIds.includes(id)
-        )
-      );
-      const writebackPreviews = payload
-        ? buildSelectedWritebacks(payload, {
-            cashActionIds: selectedActionIds,
-            revenueOpportunityIds: selectedOpportunityIds,
-            productivityTaskIds: selectedProductivityTaskIds,
-            integrationCandidateIds: selectedIntegrationCandidateIds
-          })
-        : [];
       const response = await fetch(`/api/actions/${decision}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -272,19 +329,50 @@ export function App() {
             : current
         );
       }
-      const decidedIds = new Set([
-        ...selectedActionIds,
-        ...selectedOpportunityIds,
-        ...selectedProductivityTaskIds,
-        ...selectedIntegrationCandidateIds
-      ]);
+      setPayload((current) => (current ? removeDecidedItemsFromPayload(current, decidedIds) : current));
       setSelectedActionIds([]);
       setSelectedOpportunityIds([]);
       setSelectedProductivityTaskIds([]);
       setSelectedIntegrationCandidateIds([]);
       setEditedMessages((current) => removeKeys(current, decidedIds));
     } catch (caught) {
-      setApprovalStatus(caught instanceof Error ? caught.message : "Unable to queue selected actions.");
+      const localRecords = persistStaticDecision({
+        decision: decision === "approve" ? "APPROVED" : "REJECTED",
+        editedMessages: selectedEdits,
+        selection: {
+          cashActionIds: selectedActionIds,
+          revenueOpportunityIds: selectedOpportunityIds,
+          productivityTaskIds: selectedProductivityTaskIds,
+          integrationCandidateIds: selectedIntegrationCandidateIds
+        },
+        writebacks: decision === "approve" ? writebackPreviews : []
+      });
+      const localAuditEntries = localRecords.map(staticDecisionToAuditEntry);
+      setAuditEntries((current) => [...localAuditEntries, ...current].slice(0, 12));
+      setPayload((current) =>
+        current
+          ? removeDecidedItemsFromPayload(
+              {
+                ...current,
+                queuedWritebacks:
+                  decision === "approve"
+                    ? [...writebackPreviews, ...current.queuedWritebacks].slice(0, 12)
+                    : current.queuedWritebacks
+              },
+              decidedIds
+            )
+          : current
+      );
+      setApprovalStatus(
+        `${selectedActionIds.length} cash-flow, ${selectedOpportunityIds.length} growth, ${selectedProductivityTaskIds.length} productivity, and ${selectedIntegrationCandidateIds.length} integration action(s) ${
+          decision === "approve" ? "queued in live demo mode" : "rejected and logged in live demo mode"
+        }.`
+      );
+      setSelectedActionIds([]);
+      setSelectedOpportunityIds([]);
+      setSelectedProductivityTaskIds([]);
+      setSelectedIntegrationCandidateIds([]);
+      setEditedMessages((current) => removeKeys(current, decidedIds));
     } finally {
       setApproving(false);
     }
@@ -310,7 +398,11 @@ export function App() {
         setAuditEntries((current) => [result.auditEntry as AuditLogEntry, ...current].slice(0, 12));
       }
     } catch (caught) {
-      setApprovalStatus(caught instanceof Error ? caught.message : "Unable to record mapping decision.");
+      persistStaticMappingDecision(match.matchId, decision);
+      const auditEntry = staticMappingDecisionToAuditEntry(match, decision);
+      setMappingStatuses((current) => ({ ...current, [match.matchId]: decision }));
+      setAuditEntries((current) => [auditEntry, ...current].slice(0, 12));
+      setApprovalStatus("Mapping decision saved in live demo mode.");
     }
   }
 
@@ -1672,6 +1764,201 @@ function removeKey(record: Record<string, string>, key: string): Record<string, 
 
 function removeKeys(record: Record<string, string>, keys: Set<string>): Record<string, string> {
   return Object.fromEntries(Object.entries(record).filter(([key]) => !keys.has(key)));
+}
+
+async function loadStaticDashboardPayload(): Promise<DashboardPayload> {
+  const response = await fetch(`${import.meta.env?.BASE_URL ?? "/"}demo-dashboard.json`, { cache: "no-store" });
+  if (!response.ok) throw new Error("Unable to load packaged demo dashboard");
+  return (await response.json()) as DashboardPayload;
+}
+
+function applyStaticDashboardState(dashboard: DashboardPayload): DashboardPayload {
+  const decisions = readStaticDecisions();
+  const decidedIds = new Set(decisions.map((decision) => decision.id));
+  const approvedWritebacks = decisions
+    .filter((decision) => decision.decision === "APPROVED" && decision.writeback)
+    .map((decision) => decision.writeback as QueuedWritebackPreview);
+  const mappingDecisions = readStaticMappingDecisions();
+  const entityMatches = dashboard.entityMatches.map((match) =>
+    mappingDecisions[match.matchId] ? { ...match, matchStatus: mappingDecisions[match.matchId] } : match
+  );
+  const pendingReview = entityMatches.filter((match) => match.matchStatus === "PENDING_REVIEW").length;
+
+  return removeDecidedItemsFromPayload(
+    {
+      ...dashboard,
+      source: "seeded-demo",
+      generatedAt: new Date().toISOString(),
+      entityMatches,
+      smartMappingSummary: {
+        ...dashboard.smartMappingSummary,
+        needsReview: pendingReview
+      },
+      auditLog: [...decisions.map(staticDecisionToAuditEntry), ...dashboard.auditLog].slice(0, 12),
+      queuedWritebacks: [...approvedWritebacks, ...dashboard.queuedWritebacks].slice(0, 12),
+      xero: {
+        ...dashboard.xero,
+        note: "Packaged Xero demo data is running in the browser for the public live demo."
+      }
+    },
+    decidedIds
+  );
+}
+
+function removeDecidedItemsFromPayload(payload: DashboardPayload, decidedIds: Set<string>): DashboardPayload {
+  return {
+    ...payload,
+    recommendedActions: payload.recommendedActions.filter((action) => !decidedIds.has(action.id)),
+    revenueOpportunities: payload.revenueOpportunities.filter((opportunity) => !decidedIds.has(opportunity.id)),
+    productivityTasks: payload.productivityTasks.filter((task) => !decidedIds.has(task.id)),
+    integrationCandidates: payload.integrationCandidates.filter((candidate) => !decidedIds.has(candidate.id))
+  };
+}
+
+function persistStaticDecision({
+  decision,
+  editedMessages,
+  selection,
+  writebacks
+}: {
+  decision: StaticDecision;
+  editedMessages: Record<string, string>;
+  selection: ApprovalSelection;
+  writebacks: QueuedWritebackPreview[];
+}): StaticDecisionRecord[] {
+  const createdAt = new Date().toISOString();
+  const writebacksById = new Map(writebacks.map((writeback) => [writeback.id, writeback]));
+  const records: StaticDecisionRecord[] = [
+    ...selection.cashActionIds.map((id) => ({
+      id,
+      group: "cash" as const,
+      decision,
+      editedMessage: editedMessages[id],
+      writeback: writebacksById.get(id),
+      createdAt
+    })),
+    ...selection.revenueOpportunityIds.map((id) => ({
+      id,
+      group: "revenue" as const,
+      decision,
+      editedMessage: editedMessages[id],
+      writeback: writebacksById.get(id),
+      createdAt
+    })),
+    ...selection.productivityTaskIds.map((id) => ({
+      id,
+      group: "productivity" as const,
+      decision,
+      writeback: writebacksById.get(id),
+      createdAt
+    })),
+    ...selection.integrationCandidateIds.map((id) => ({
+      id,
+      group: "integration" as const,
+      decision,
+      writeback: writebacksById.get(id),
+      createdAt
+    }))
+  ];
+
+  writeStaticDecisions(records);
+  return records;
+}
+
+function readStaticDecisions(): StaticDecisionRecord[] {
+  try {
+    const raw = window.localStorage.getItem(staticDecisionStorageKey);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? (parsed as StaticDecisionRecord[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+function writeStaticDecisions(records: StaticDecisionRecord[]) {
+  try {
+    const current = readStaticDecisions();
+    const next = new Map(current.map((record) => [record.id, record]));
+    records.forEach((record) => next.set(record.id, record));
+    window.localStorage.setItem(staticDecisionStorageKey, JSON.stringify([...next.values()]));
+  } catch {
+    // Local storage can be blocked in private browsing; the in-memory UI still updates.
+  }
+}
+
+function persistStaticMappingDecision(matchId: string, decision: EntityMatch["matchStatus"]) {
+  try {
+    window.localStorage.setItem(
+      staticMappingStorageKey,
+      JSON.stringify({
+        ...readStaticMappingDecisions(),
+        [matchId]: decision
+      })
+    );
+  } catch {
+    // The visible UI state is still updated when browser persistence is unavailable.
+  }
+}
+
+function readStaticMappingDecisions(): Record<string, EntityMatch["matchStatus"]> {
+  try {
+    const raw = window.localStorage.getItem(staticMappingStorageKey);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === "object" ? (parsed as Record<string, EntityMatch["matchStatus"]>) : {};
+  } catch {
+    return {};
+  }
+}
+
+function clearStaticDemoState() {
+  try {
+    window.localStorage.removeItem(staticDecisionStorageKey);
+    window.localStorage.removeItem(staticMappingStorageKey);
+  } catch {
+    // Nothing to clear when storage is unavailable.
+  }
+}
+
+function staticDecisionToAuditEntry(record: StaticDecisionRecord): AuditLogEntry {
+  return {
+    auditId: `audit-static-${record.group}-${record.decision.toLowerCase()}-${record.id}`,
+    eventType: `${record.group.toUpperCase()}_${record.decision}`,
+    sourceRecordIds: record.writeback
+      ? [record.writeback.id, record.writeback.endpoint]
+      : [record.id, "packaged-xero-demo"],
+    payload: {
+      recommendationId: record.id,
+      source: "github-pages-demo",
+      decision: record.decision,
+      previousStatus: "PENDING",
+      newStatus: record.decision,
+      editedMessage: record.editedMessage ?? null,
+      reviewedExecution: record.decision !== "REJECTED"
+    },
+    createdAt: record.createdAt
+  };
+}
+
+function staticMappingDecisionToAuditEntry(
+  match: EntityMatch,
+  decision: "APPROVED" | "REJECTED" | "NEEDS_NEW_CONTACT"
+): AuditLogEntry {
+  return {
+    auditId: `audit-static-mapping-${match.matchId}-${Date.now()}`,
+    eventType: `SMART_MAPPING_${decision}`,
+    sourceRecordIds: [match.externalRecordId, match.xeroContactId].filter((value): value is string => Boolean(value)),
+    payload: {
+      matchId: match.matchId,
+      decision,
+      previousStatus: "PENDING_REVIEW",
+      newStatus: decision,
+      xeroContactName: match.xeroContactName ?? null,
+      confidence: match.confidence
+    },
+    createdAt: new Date().toISOString()
+  };
 }
 
 function MetricTile({
