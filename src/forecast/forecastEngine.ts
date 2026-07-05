@@ -413,11 +413,114 @@ export function buildForecastIntelligence(
 
   const biggestRisk = cashDrivers.find((driver) => driver.direction !== "positive")?.label ?? "No major cash risk";
   const biggestOpportunity = cashDrivers.find((driver) => driver.direction === "positive")?.label ?? "No action lift selected";
+  const sharpestDip = findSharpestDailyDip(baseline.points);
+  const worstSevenDayWindow = findWorstRollingWindow(baseline.points, 7);
+  const dailyNetFlows = baseline.points.map((point) => point.closingBalance - point.openingBalance);
+  const averageDailyNetFlow = Math.round(dailyNetFlows.reduce((sum, value) => sum + value, 0) / Math.max(1, dailyNetFlows.length));
+  const netFlowVolatility = Math.round(standardDeviation(dailyNetFlows));
+  const minimumBand = baseline.bands?.find((band) => band.date === baseline.summary.minimumCashDate);
+  const actionLift = afterActions.summary.minimumCashBalance - baseline.summary.minimumCashBalance;
+  const topDrivers = cashDrivers.slice(0, 3);
+  const decisionCallouts = [
+    {
+      id: "why-cash-dips",
+      title: `Why cash dips on ${baseline.summary.minimumCashDate}`,
+      answer: sharpestDip
+        ? `${formatMoney(sharpestDip.netMovement, snapshot.currency)} net movement on ${sharpestDip.date}, driven by ${formatMoney(
+            sharpestDip.outflows,
+            snapshot.currency
+          )} of outflows against ${formatMoney(sharpestDip.inflows, snapshot.currency)} of inflows.`
+        : "No material cash dip appears in the selected forecast horizon.",
+      evidence: [
+        `${formatMoney(totalPayables, snapshot.currency)} authorised supplier bills in the model`,
+        `${formatMoney(totalReceivables, snapshot.currency)} authorised receivables depend on payment timing`,
+        baseline.summary.firstThresholdBreachDate
+          ? `Safe threshold first breached on ${baseline.summary.firstThresholdBreachDate}`
+          : "Safe threshold is not breached"
+      ],
+      businessDecision: "Prioritise actions that move cash before the minimum-cash date, not actions that arrive after the danger window."
+    },
+    {
+      id: "top-three-factors",
+      title: "Which 3 factors move cash most",
+      answer: topDrivers.map((driver) => `${driver.label}: ${driver.impactLabel}`).join(" | "),
+      evidence: topDrivers.flatMap((driver) => driver.evidence.slice(0, 1)),
+      businessDecision: "Focus the owner conversation on the few timing levers that actually change runway."
+    },
+    {
+      id: "what-changed-after-actions",
+      title: "What changed after actions",
+      answer: `${formatMoney(actionLift, snapshot.currency)} improvement to minimum cash; crunch probability moves from ${
+        baseline.summary.crunchProbability
+      }% to ${afterActions.summary.crunchProbability}%.`,
+      evidence: [
+        `${actions.length} cash-flow action(s) included`,
+        afterActions.summary.firstThresholdBreachDate
+          ? `After-action breach remains on ${afterActions.summary.firstThresholdBreachDate}`
+          : "After-action forecast removes the threshold breach",
+        actions[0]?.title ?? "No cash action selected"
+      ],
+      businessDecision: "Approve the smallest action bundle that removes the breach and preserves supplier/customer trust."
+    },
+    {
+      id: "monte-carlo-meaning",
+      title: "Monte Carlo means many realistic payment futures",
+      answer: minimumBand
+        ? `At the minimum-cash date, simulated outcomes range from ${formatMoney(
+            minimumBand.pessimisticBalance,
+            snapshot.currency
+          )} to ${formatMoney(minimumBand.optimisticBalance, snapshot.currency)}.`
+        : `${baseline.summary.crunchProbability}% of simulated payment futures fall below the safe cash threshold.`,
+      evidence: [
+        "420 seeded simulations vary customer payment delay around contact reliability",
+        "p10-p90 band shows the middle 80% of realistic outcomes",
+        "The red line is the deterministic expected timing case"
+      ],
+      businessDecision: "Treat the forecast as a risk range, not a single promise; approve actions that work in pessimistic timing cases."
+    }
+  ];
+  const timeSeriesDiagnostics = [
+    {
+      id: "daily-ledger",
+      label: "Daily ledger model",
+      value: `${baseline.points.length} forecast days`,
+      detail: `Every day rolls opening cash plus dated receivables, supplier bills, and recurring flows into closing cash.`,
+      method: "Time-indexed deterministic ledger from Xero due dates, planned payment dates, expected payment dates, and recurring cash flows."
+    },
+    {
+      id: "rolling-net-flow",
+      label: "Worst 7-day net cash movement",
+      value: formatMoney(worstSevenDayWindow.netMovement, snapshot.currency),
+      detail: `${worstSevenDayWindow.startDate} to ${worstSevenDayWindow.endDate} is the most stressful seven-day run in the baseline forecast.`,
+      method: "Rolling seven-day window over daily closing-minus-opening cash movement."
+    },
+    {
+      id: "cash-velocity",
+      label: "Average daily cash velocity",
+      value: formatMoney(averageDailyNetFlow, snapshot.currency),
+      detail: `Daily movement volatility is ${formatMoney(netFlowVolatility, snapshot.currency)}, which is why timing changes matter more than the average.`,
+      method: "Mean and standard deviation of daily net cash movements across the forecast horizon."
+    },
+    {
+      id: "payment-timing-band",
+      label: "Payment timing uncertainty",
+      value: `${baseline.summary.crunchProbability}% crunch probability`,
+      detail: minimumBand
+        ? `On ${minimumBand.date}, the simulated p10-p90 balance range is ${formatMoney(
+            minimumBand.pessimisticBalance,
+            snapshot.currency
+          )} to ${formatMoney(minimumBand.optimisticBalance, snapshot.currency)}.`
+        : "Monte Carlo band is unavailable for this run.",
+      method: "Monte Carlo simulation using contact payment reliability and invoice timing variance."
+    }
+  ];
 
   return {
     explainabilitySummary: `${biggestRisk} is the main pressure on cash, while ${biggestOpportunity.toLowerCase()} is the strongest lever the owner can control.`,
     biggestRisk,
     biggestOpportunity,
+    decisionCallouts,
+    timeSeriesDiagnostics,
     models: [
       {
         id: "model-daily-ledger",
@@ -732,6 +835,44 @@ function stressSupplierTiming(snapshot: XeroSnapshot, baseline: ForecastScenario
     monteCarloRuns: 0
   });
   return Math.max(0, baseline.summary.minimumCashBalance - scenario.summary.minimumCashBalance);
+}
+
+function findSharpestDailyDip(points: ForecastPoint[]) {
+  return points
+    .map((point) => ({
+      date: point.date,
+      inflows: point.customerInflows + point.recurringInflows,
+      outflows: point.supplierOutflows + point.recurringOutflows,
+      netMovement: point.closingBalance - point.openingBalance
+    }))
+    .sort((left, right) => left.netMovement - right.netMovement)[0];
+}
+
+function findWorstRollingWindow(points: ForecastPoint[], windowDays: number) {
+  const daily = points.map((point) => ({
+    date: point.date,
+    netMovement: point.closingBalance - point.openingBalance
+  }));
+  const windows = daily.map((point, index) => {
+    const window = daily.slice(index, index + windowDays);
+    return {
+      startDate: point.date,
+      endDate: window.at(-1)?.date ?? point.date,
+      netMovement: Math.round(window.reduce((sum, day) => sum + day.netMovement, 0))
+    };
+  });
+  return windows.sort((left, right) => left.netMovement - right.netMovement)[0] ?? {
+    startDate: points[0]?.date ?? "",
+    endDate: points[0]?.date ?? "",
+    netMovement: 0
+  };
+}
+
+function standardDeviation(values: number[]) {
+  if (values.length === 0) return 0;
+  const average = values.reduce((sum, value) => sum + value, 0) / values.length;
+  const variance = values.reduce((sum, value) => sum + (value - average) ** 2, 0) / values.length;
+  return Math.sqrt(variance);
 }
 
 function confidenceFromReliability(reliability: number) {

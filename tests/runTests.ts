@@ -1,4 +1,10 @@
 import assert from "node:assert/strict";
+import os from "node:os";
+import path from "node:path";
+import {
+  recordApprovalDecisions,
+  resetApprovalDecisionStore
+} from "../src/approvals/decisionStore";
 import {
   getMappingDecisions,
   recordApprovalAudit,
@@ -12,6 +18,7 @@ import {
   similarity
 } from "../src/mapping/smartMappingService";
 import { buildRevenueOpportunities } from "../src/revenue/opportunityEngine";
+import { buildDashboardPayload } from "../src/server/dashboard";
 
 function testSmartMapping() {
   assert.equal(normaliseCompanyName("Brightside Studio Ltd"), "brightside studio");
@@ -153,13 +160,64 @@ function testMappingDecisionAudit() {
   assert.equal(getMappingDecisions()["match-crm-deal-6500"], "APPROVED");
 }
 
-testSmartMapping();
-testRevenueLeakDetection();
-testForecastAndActions();
-testForecastBands();
-testUnmatchedExternalOrderDetection();
-testApprovalAudit();
-testRejectionAndEditAudit();
-testMappingDecisionAudit();
+async function testDecisionStoreAndDashboardFiltering() {
+  process.env.CASHPILOT_DECISION_STORE = path.join(os.tmpdir(), `cashpilot-test-decisions-${Date.now()}.json`);
+  await resetApprovalDecisionStore();
+
+  const before = await buildDashboardPayload(demoSnapshot);
+  const cashId = before.recommendedActions[0]?.id;
+  const revenueId = before.revenueOpportunities[0]?.id;
+
+  assert.ok(cashId, "Dashboard should expose a pending cash action before approval");
+  assert.ok(revenueId, "Dashboard should expose a pending revenue action before approval");
+  assert.ok(before.forecastIntelligence.decisionCallouts.length >= 4);
+  assert.ok(before.forecastIntelligence.timeSeriesDiagnostics.length >= 4);
+
+  await recordApprovalDecisions({
+    source: "demo",
+    decision: "APPROVED",
+    idsByGroup: {
+      cash: [cashId],
+      revenue: [revenueId],
+      productivity: [],
+      integration: []
+    },
+    writebackPreviews: [
+      {
+        id: cashId,
+        title: "Test writeback",
+        group: "cash",
+        method: "POST",
+        endpoint: "/Invoices/test/History",
+        object: "Invoice note",
+        payload: { safeWriteMode: "test" },
+        humanGate: "Owner approval required"
+      }
+    ]
+  });
+
+  const afterApproval = await buildDashboardPayload(demoSnapshot);
+  assert.ok(!afterApproval.recommendedActions.some((action) => action.id === cashId));
+  assert.ok(!afterApproval.revenueOpportunities.some((opportunity) => opportunity.id === revenueId));
+  assert.ok(afterApproval.queuedWritebacks.some((writeback) => writeback.id === cashId));
+
+  await resetApprovalDecisionStore();
+  const afterReset = await buildDashboardPayload(demoSnapshot);
+  assert.ok(afterReset.recommendedActions.some((action) => action.id === cashId));
+}
+
+async function main() {
+  testSmartMapping();
+  testRevenueLeakDetection();
+  testForecastAndActions();
+  testForecastBands();
+  testUnmatchedExternalOrderDetection();
+  testApprovalAudit();
+  testRejectionAndEditAudit();
+  testMappingDecisionAudit();
+  await testDecisionStoreAndDashboardFiltering();
+}
+
+await main();
 
 console.log("CashPilot core tests passed.");

@@ -6,22 +6,26 @@ import {
   CircleDollarSign,
   Clock3,
   DatabaseZap,
+  Eye,
   FileClock,
+  FileJson,
   Link2,
+  ListChecks,
   Mail,
   RadioTower,
   RefreshCw,
+  RotateCcw,
   ShieldCheck,
   Sparkles,
   TrendingUp,
-  Workflow
+  Workflow,
+  X
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import {
   Area,
   CartesianGrid,
   ComposedChart,
-  Legend,
   Line,
   ReferenceArea,
   ReferenceLine,
@@ -39,6 +43,7 @@ import type {
   EntityMatch,
   ForecastPoint,
   ProductivityAutomationTask,
+  QueuedWritebackPreview,
   RevenueOpportunity
 } from "./types/domain";
 
@@ -66,6 +71,7 @@ const currencyFormatter = new Intl.NumberFormat("en-GB", {
 const navSections = [
   { id: "overview", label: "Overview" },
   { id: "approvals", label: "Pending approval" },
+  { id: "writebacks", label: "Writeback queue" },
   { id: "mapping", label: "Smart mapping" },
   { id: "priorities", label: "Owner priorities" },
   { id: "productivity", label: "Productivity" },
@@ -73,6 +79,7 @@ const navSections = [
   { id: "forecast", label: "Cash forecast" },
   { id: "intelligence", label: "Forecast intelligence" },
   { id: "xero", label: "Xero footprint" },
+  { id: "agent-trace", label: "Agent trace" },
   { id: "opportunities", label: "Revenue opportunities" },
   { id: "actions", label: "Action simulator" },
   { id: "messages", label: "Draft messages" },
@@ -80,6 +87,25 @@ const navSections = [
 ] as const;
 
 type SectionId = (typeof navSections)[number]["id"];
+
+interface ApprovalSelection {
+  cashActionIds: string[];
+  revenueOpportunityIds: string[];
+  productivityTaskIds: string[];
+  integrationCandidateIds: string[];
+}
+
+interface EvidenceDrawerData {
+  id: string;
+  title: string;
+  family: string;
+  summary: string;
+  records: string[];
+  endpoints: string[];
+  fields: string[];
+  writeback: QueuedWritebackPreview;
+  humanControl: string;
+}
 
 export function App() {
   const initialSource = new URLSearchParams(window.location.search).get("source") === "xero" ? "xero" : "demo";
@@ -96,6 +122,7 @@ export function App() {
   const [approving, setApproving] = useState(false);
   const [mappingStatuses, setMappingStatuses] = useState<Record<string, EntityMatch["matchStatus"]>>({});
   const [editedMessages, setEditedMessages] = useState<Record<string, string>>({});
+  const [evidenceDrawer, setEvidenceDrawer] = useState<EvidenceDrawerData | null>(null);
   const [activeSection, setActiveSection] = useState<SectionId>("overview");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -115,12 +142,13 @@ export function App() {
 
     const dashboard = (await dashboardResponse.json()) as DashboardPayload;
     const xero = (await xeroResponse.json()) as XeroStatus;
+    const defaultSelection = buildDefaultApprovalSelection(dashboard);
     setPayload(dashboard);
     setXeroStatus(xero);
-    setSelectedActionIds(dashboard.recommendedActions.map((action) => action.id));
-    setSelectedOpportunityIds(dashboard.revenueOpportunities.map((opportunity) => opportunity.id));
-    setSelectedProductivityTaskIds(dashboard.productivityTasks.map((task) => task.id));
-    setSelectedIntegrationCandidateIds(dashboard.integrationCandidates.map((candidate) => candidate.id));
+    setSelectedActionIds(defaultSelection.cashActionIds);
+    setSelectedOpportunityIds(defaultSelection.revenueOpportunityIds);
+    setSelectedProductivityTaskIds(defaultSelection.productivityTaskIds);
+    setSelectedIntegrationCandidateIds(defaultSelection.integrationCandidateIds);
     setAuditEntries(dashboard.auditLog);
     setMappingStatuses(
       Object.fromEntries(dashboard.entityMatches.map((match) => [match.matchId, match.matchStatus]))
@@ -180,6 +208,17 @@ export function App() {
     await refresh(nextSource);
   }
 
+  async function resetDemoState() {
+    setApprovalStatus("Resetting demo state...");
+    const response = await fetch("/api/demo/reset", { method: "POST" });
+    if (!response.ok) {
+      setApprovalStatus("Unable to reset demo state.");
+      return;
+    }
+    await refresh(source);
+    setApprovalStatus("Demo approvals, mappings, and writeback queue reset.");
+  }
+
   async function submitDecision(decision: "approve" | "reject") {
     if (approvalCount === 0 || approving) return;
     setApproving(true);
@@ -190,6 +229,14 @@ export function App() {
           ([id]) => selectedActionIds.includes(id) || selectedOpportunityIds.includes(id)
         )
       );
+      const writebackPreviews = payload
+        ? buildSelectedWritebacks(payload, {
+            cashActionIds: selectedActionIds,
+            revenueOpportunityIds: selectedOpportunityIds,
+            productivityTaskIds: selectedProductivityTaskIds,
+            integrationCandidateIds: selectedIntegrationCandidateIds
+          })
+        : [];
       const response = await fetch(`/api/actions/${decision}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -199,6 +246,7 @@ export function App() {
           productivityTaskIds: selectedProductivityTaskIds,
           integrationCandidateIds: selectedIntegrationCandidateIds,
           editedMessages: decision === "approve" ? selectedEdits : undefined,
+          writebackPreviews: decision === "approve" ? writebackPreviews : [],
           source
         })
       });
@@ -214,12 +262,27 @@ export function App() {
           decision === "approve" ? "queued" : "rejected and logged"
         }${editedCount > 0 ? ` (${editedCount} with edited drafts)` : ""}.`
       );
-      if (decision === "reject") {
-        setSelectedActionIds([]);
-        setSelectedOpportunityIds([]);
-        setSelectedProductivityTaskIds([]);
-        setSelectedIntegrationCandidateIds([]);
+      if (decision === "approve") {
+        setPayload((current) =>
+          current
+            ? {
+                ...current,
+                queuedWritebacks: [...writebackPreviews, ...current.queuedWritebacks].slice(0, 12)
+              }
+            : current
+        );
       }
+      const decidedIds = new Set([
+        ...selectedActionIds,
+        ...selectedOpportunityIds,
+        ...selectedProductivityTaskIds,
+        ...selectedIntegrationCandidateIds
+      ]);
+      setSelectedActionIds([]);
+      setSelectedOpportunityIds([]);
+      setSelectedProductivityTaskIds([]);
+      setSelectedIntegrationCandidateIds([]);
+      setEditedMessages((current) => removeKeys(current, decidedIds));
     } catch (caught) {
       setApprovalStatus(caught instanceof Error ? caught.message : "Unable to queue selected actions.");
     } finally {
@@ -320,6 +383,26 @@ export function App() {
     selectedOpportunityIds.length +
     selectedProductivityTaskIds.length +
     selectedIntegrationCandidateIds.length;
+  const totalAvailableActions =
+    payload.recommendedActions.length +
+    payload.revenueOpportunities.length +
+    payload.productivityTasks.length +
+    payload.integrationCandidates.length;
+  const optionalBacklogCount = Math.max(0, totalAvailableActions - approvalCount);
+  const selectedPlanCashImpact = activeActions.reduce((sum, action) => sum + action.cashImpactBeforeCrunch, 0);
+  const selectedPlanRevenueImpact = activeOpportunities.reduce(
+    (sum, opportunity) => sum + opportunity.expectedRevenueImpact,
+    0
+  );
+  const heroDecision = payload.baseline.summary.firstThresholdBreachDate
+    ? `Cash crunch on ${breachDate}. Approve ${approvalCount} selected action${
+        approvalCount === 1 ? "" : "s"
+      } to protect ${money(selectedPlanCashImpact || minimumCashImprovement)} and unlock ${money(
+        payload.revenueGrowth.totalExpectedRevenue
+      )} revenue upside.`
+    : `No immediate breach. Approve ${approvalCount} selected action${
+        approvalCount === 1 ? "" : "s"
+      } to convert ${money(selectedPlanRevenueImpact || payload.revenueGrowth.totalExpectedRevenue)} of growth upside.`;
   const xeroRecordStats = [
     ["Invoices", payload.xero.records.invoices],
     ["Contacts", payload.xero.records.contacts],
@@ -433,6 +516,13 @@ export function App() {
               CashPilot <em>agent</em>
             </h1>
             <p>{payload.snapshot.organisationName} · Xero, messy CRM/e-commerce data, forecast risk, and approved actions</p>
+            <div className="heroDecision">
+              <strong>{heroDecision}</strong>
+              <span>
+                Agent preselected the highest-impact plan; {optionalBacklogCount} optional action
+                {optionalBacklogCount === 1 ? "" : "s"} remain in the backlog.
+              </span>
+            </div>
           </div>
           <div className="commandRight">
             <div className="statusCluster" aria-label="System status">
@@ -444,6 +534,10 @@ export function App() {
               <button className="ghostButton" type="button" onClick={() => refresh()}>
                 <RefreshCw size={16} aria-hidden="true" />
                 Refresh
+              </button>
+              <button className="ghostButton" type="button" onClick={resetDemoState}>
+                <RotateCcw size={16} aria-hidden="true" />
+                Reset demo
               </button>
               <button
                 className="ghostButton rejectButton"
@@ -492,7 +586,7 @@ export function App() {
           <MetricTile
             icon={<TrendingUp size={18} aria-hidden="true" />}
             label="Protected cash"
-            value={money(minimumCashImprovement)}
+            value={money(selectedPlanCashImpact || minimumCashImprovement)}
             helper={`${activeActions.length} cash-flow actions selected`}
             tone="neutral"
           />
@@ -500,7 +594,9 @@ export function App() {
             icon={<ArrowUpRight size={18} aria-hidden="true" />}
             label="Growth actions"
             value={String(activeOpportunities.length)}
-            helper={`${money(payload.revenueGrowth.totalExpectedCashFlow)} expected cash-flow lift`}
+            helper={`${money(
+              activeOpportunities.reduce((sum, opportunity) => sum + opportunity.expectedCashFlowImpact, 0)
+            )} selected cash-flow lift`}
             tone="neutral"
           />
           <MetricTile
@@ -517,7 +613,7 @@ export function App() {
             <div>
               <span className="sectionLabel">Pending approval</span>
               <h2>
-                {approvalCount} Xero-backed action(s) selected across growth, cash, productivity, and integrations
+                {approvalCount} preselected action(s) ready for approval; {optionalBacklogCount} optional backlog item(s)
               </h2>
             </div>
             <FileClock size={20} aria-hidden="true" />
@@ -531,7 +627,12 @@ export function App() {
               <div className="approvalList">
                 {activeActions.length > 0 ? (
                   activeActions.map((action) => (
-                    <ApprovalCashItem key={action.id} action={action} onToggle={() => toggleAction(action.id)} />
+                    <ApprovalCashItem
+                      key={action.id}
+                      action={action}
+                      onEvidence={() => setEvidenceDrawer(buildCashEvidence(action))}
+                      onToggle={() => toggleAction(action.id)}
+                    />
                   ))
                 ) : (
                   <EmptyApprovalState label="No cash-flow actions selected" />
@@ -550,6 +651,7 @@ export function App() {
                     <ApprovalOpportunityItem
                       key={opportunity.id}
                       opportunity={opportunity}
+                      onEvidence={() => setEvidenceDrawer(buildRevenueEvidence(opportunity))}
                       onToggle={() => toggleOpportunity(opportunity.id)}
                     />
                   ))
@@ -567,7 +669,12 @@ export function App() {
               <div className="approvalList">
                 {activeProductivityTasks.length > 0 ? (
                   activeProductivityTasks.map((task) => (
-                    <ApprovalProductivityItem key={task.id} task={task} onToggle={() => toggleProductivityTask(task.id)} />
+                    <ApprovalProductivityItem
+                      key={task.id}
+                      task={task}
+                      onEvidence={() => setEvidenceDrawer(buildProductivityEvidence(task))}
+                      onToggle={() => toggleProductivityTask(task.id)}
+                    />
                   ))
                 ) : (
                   <EmptyApprovalState label="No productivity automations selected" />
@@ -586,6 +693,7 @@ export function App() {
                     <ApprovalIntegrationItem
                       key={candidate.id}
                       candidate={candidate}
+                      onEvidence={() => setEvidenceDrawer(buildIntegrationEvidence(candidate))}
                       onToggle={() => toggleIntegrationCandidate(candidate.id)}
                     />
                   ))
@@ -596,6 +704,8 @@ export function App() {
             </div>
           </div>
         </section>
+
+        <QueuedWritebackPanel writebacks={payload.queuedWritebacks} />
 
         <SmartMappingReviewPanel
           matches={payload.entityMatches}
@@ -641,6 +751,7 @@ export function App() {
           selectedIds={selectedProductivityTaskIds}
           summary={payload.productivitySummary}
           tasks={payload.productivityTasks}
+          onEvidence={(task) => setEvidenceDrawer(buildProductivityEvidence(task))}
           onToggle={toggleProductivityTask}
         />
 
@@ -648,6 +759,7 @@ export function App() {
           candidates={payload.integrationCandidates}
           selectedIds={selectedIntegrationCandidateIds}
           summary={payload.integrationSummary}
+          onEvidence={(candidate) => setEvidenceDrawer(buildIntegrationEvidence(candidate))}
           onToggle={toggleIntegrationCandidate}
         />
 
@@ -673,18 +785,18 @@ export function App() {
             </div>
             <div className="chartFrame">
               <ResponsiveContainer width="100%" height="100%">
-                <ComposedChart data={chartData} margin={{ top: 12, right: 16, bottom: 0, left: 0 }}>
-                  <CartesianGrid stroke="#1b2445" strokeDasharray="4 4" vertical={false} />
+                <ComposedChart data={chartData} margin={{ top: 12, right: 16, bottom: 12, left: 0 }}>
+                  <CartesianGrid stroke="#dce5e2" strokeDasharray="4 4" vertical={false} />
                   <XAxis
                     dataKey="date"
-                    tick={{ fill: "#7f87a5", fontSize: 12 }}
+                    tick={{ fill: "#6b7a75", fontSize: 12 }}
                     tickLine={false}
                     axisLine={false}
                     minTickGap={22}
                   />
                   <YAxis
                     tickFormatter={(value) => `£${Math.round(Number(value) / 1000)}k`}
-                    tick={{ fill: "#7f87a5", fontSize: 12 }}
+                    tick={{ fill: "#6b7a75", fontSize: 12 }}
                     tickLine={false}
                     axisLine={false}
                     width={54}
@@ -704,10 +816,8 @@ export function App() {
                     }}
                     labelStyle={{ color: "#9aa4c7" }}
                   />
-                  <Legend wrapperStyle={{ color: "#9aa4c7" }} />
                   <ReferenceLine
                     y={payload.snapshot.safeCashThreshold}
-                    label="Safe threshold"
                     stroke="#ff4d6d"
                     strokeDasharray="5 5"
                   />
@@ -731,6 +841,12 @@ export function App() {
                   <Line type="monotone" name="After actions" dataKey="after" stroke="#6d6cff" strokeWidth={3} dot={false} />
                 </ComposedChart>
               </ResponsiveContainer>
+            </div>
+            <div className="chartLegend" aria-label="Forecast chart legend">
+              <span className="range">Simulated range</span>
+              <span className="before">Before actions</span>
+              <span className="after">After actions</span>
+              <span className="threshold">Safe threshold</span>
             </div>
           </div>
 
@@ -843,6 +959,8 @@ export function App() {
           </div>
         </section>
 
+        <AgentTracePanel payload={payload} />
+
         <section className="growthPanel" id="opportunities">
           <div className="panelHeader compact">
             <div>
@@ -857,6 +975,7 @@ export function App() {
                 key={opportunity.id}
                 opportunity={opportunity}
                 selected={selectedOpportunityIds.includes(opportunity.id)}
+                onEvidence={() => setEvidenceDrawer(buildRevenueEvidence(opportunity))}
                 onToggle={() => toggleOpportunity(opportunity.id)}
               />
             ))}
@@ -878,6 +997,7 @@ export function App() {
                 key={action.id}
                 action={action}
                 selected={selectedActionIds.includes(action.id)}
+                onEvidence={() => setEvidenceDrawer(buildCashEvidence(action))}
                 onToggle={() => toggleAction(action.id)}
               />
             ))}
@@ -968,7 +1088,149 @@ export function App() {
           ) : null}
         </div>
       ) : null}
+
+      {evidenceDrawer ? (
+        <EvidenceDrawer data={evidenceDrawer} onClose={() => setEvidenceDrawer(null)} />
+      ) : null}
     </main>
+  );
+}
+
+function QueuedWritebackPanel({ writebacks }: { writebacks: QueuedWritebackPreview[] }) {
+  return (
+    <section className="writebackPanel" id="writebacks">
+      <div className="panelHeader compact">
+        <div>
+          <span className="sectionLabel">Human-approved writeback queue</span>
+          <h2>
+            {writebacks.length > 0
+              ? `${writebacks.length} Xero writeback preview(s) queued`
+              : "No approved Xero writebacks queued yet"}
+          </h2>
+        </div>
+        <FileJson size={20} aria-hidden="true" />
+      </div>
+      {writebacks.length > 0 ? (
+        <div className="writebackGrid">
+          {writebacks.map((writeback) => (
+            <article key={`${writeback.id}-${writeback.endpoint}`} className="writebackCard">
+              <div className="writebackTop">
+                <strong>{writeback.title}</strong>
+                <span>{writeback.group}</span>
+              </div>
+              <div className="writebackEndpoint">
+                <code>{writeback.method}</code>
+                <span>{writeback.endpoint}</span>
+              </div>
+              <p>{writeback.object}</p>
+              <pre>{JSON.stringify(writeback.payload, null, 2)}</pre>
+              <em>{writeback.humanGate}</em>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <div className="writebackEmpty">
+          <ListChecks size={18} aria-hidden="true" />
+          <span>Approve the selected plan to show draft Xero payloads here. Nothing is written without review.</span>
+        </div>
+      )}
+    </section>
+  );
+}
+
+function AgentTracePanel({ payload }: { payload: DashboardPayload }) {
+  return (
+    <section className="agentTracePanel" id="agent-trace">
+      <div className="panelHeader compact">
+        <div>
+          <span className="sectionLabel">Agent trace</span>
+          <h2>Specialists explain, rank, and draft; deterministic code calculates the numbers</h2>
+        </div>
+        <Workflow size={20} aria-hidden="true" />
+      </div>
+      <div className="traceHint">{payload.agentLayer.traceHint}</div>
+      <div className="traceGrid">
+        {payload.agentLayer.traceSteps.map((step) => (
+          <article key={step.id} className={`traceCard ${step.status}`}>
+            <div className="traceTop">
+              <strong>{step.agentName}</strong>
+              <span>{step.status}</span>
+            </div>
+            <dl>
+              <div>
+                <dt>Input</dt>
+                <dd>{step.input}</dd>
+              </div>
+              <div>
+                <dt>Reasoning</dt>
+                <dd>{step.reasoning}</dd>
+              </div>
+              <div>
+                <dt>Output</dt>
+                <dd>{step.output}</dd>
+              </div>
+            </dl>
+            <div className="driverEvidence">
+              {step.xeroEvidence.map((item) => (
+                <span key={`${step.id}-${item}`}>{item}</span>
+              ))}
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function EvidenceDrawer({ data, onClose }: { data: EvidenceDrawerData; onClose: () => void }) {
+  return (
+    <div className="drawerOverlay" role="dialog" aria-modal="true" aria-label={`${data.title} Xero evidence`}>
+      <aside className="evidenceDrawer">
+        <div className="drawerHeader">
+          <div>
+            <span className="sectionLabel">{data.family}</span>
+            <h2>{data.title}</h2>
+          </div>
+          <button className="iconButton" type="button" onClick={onClose} aria-label="Close evidence drawer">
+            <X size={18} aria-hidden="true" />
+          </button>
+        </div>
+        <p className="drawerSummary">{data.summary}</p>
+        <div className="drawerSection">
+          <strong>Xero source records</strong>
+          <div className="approvalEvidence">
+            {data.records.map((record) => (
+              <strong key={record}>{record}</strong>
+            ))}
+          </div>
+        </div>
+        <div className="drawerSection">
+          <strong>API endpoints used</strong>
+          <div className="endpointGrid compactEndpoints">
+            {data.endpoints.map((endpoint) => (
+              <span key={endpoint}>{endpoint}</span>
+            ))}
+          </div>
+        </div>
+        <div className="drawerSection">
+          <strong>Fields inspected</strong>
+          <div className="pillGrid">
+            {data.fields.map((field) => (
+              <span key={field}>{field}</span>
+            ))}
+          </div>
+        </div>
+        <div className="drawerSection">
+          <strong>Human-approved writeback preview</strong>
+          <div className="writebackEndpoint">
+            <code>{data.writeback.method}</code>
+            <span>{data.writeback.endpoint}</span>
+          </div>
+          <pre>{JSON.stringify(data.writeback.payload, null, 2)}</pre>
+          <em>{data.humanControl}</em>
+        </div>
+      </aside>
+    </div>
   );
 }
 
@@ -1079,6 +1341,32 @@ function ForecastIntelligencePanel({
       </div>
       <p className="intelSummary">{intelligence.explainabilitySummary}</p>
 
+      <div className="decisionCalloutGrid">
+        {intelligence.decisionCallouts.map((callout) => (
+          <article key={callout.id} className="decisionCallout">
+            <strong>{callout.title}</strong>
+            <p>{callout.answer}</p>
+            <div className="driverEvidence">
+              {callout.evidence.map((item) => (
+                <span key={`${callout.id}-${item}`}>{item}</span>
+              ))}
+            </div>
+            <em>{callout.businessDecision}</em>
+          </article>
+        ))}
+      </div>
+
+      <div className="timeSeriesGrid">
+        {intelligence.timeSeriesDiagnostics.map((diagnostic) => (
+          <article key={diagnostic.id} className="timeSeriesCard">
+            <span>{diagnostic.label}</span>
+            <strong>{diagnostic.value}</strong>
+            <p>{diagnostic.detail}</p>
+            <em>{diagnostic.method}</em>
+          </article>
+        ))}
+      </div>
+
       <ForecastRiskScene
         afterActions={afterActions}
         baseline={baseline}
@@ -1183,11 +1471,13 @@ function ProductivityPowerhousePanel({
   summary,
   tasks,
   selectedIds,
+  onEvidence,
   onToggle
 }: {
   summary: DashboardPayload["productivitySummary"];
   tasks: ProductivityAutomationTask[];
   selectedIds: string[];
+  onEvidence: (task: ProductivityAutomationTask) => void;
   onToggle: (taskId: string) => void;
 }) {
   return (
@@ -1244,6 +1534,10 @@ function ProductivityPowerhousePanel({
               <strong>{formatDuration(task.timeSavedMinutes)} saved</strong>
               <span>{task.recommendedAction}</span>
             </div>
+            <button className="evidenceButton" type="button" onClick={() => onEvidence(task)}>
+              <Eye size={14} aria-hidden="true" />
+              Xero evidence and writeback
+            </button>
           </article>
         ))}
       </div>
@@ -1255,11 +1549,13 @@ function AdaptiveIntegrationHubPanel({
   summary,
   candidates,
   selectedIds,
+  onEvidence,
   onToggle
 }: {
   summary: DashboardPayload["integrationSummary"];
   candidates: AdaptiveIntegrationCandidate[];
   selectedIds: string[];
+  onEvidence: (candidate: AdaptiveIntegrationCandidate) => void;
   onToggle: (candidateId: string) => void;
 }) {
   return (
@@ -1326,6 +1622,10 @@ function AdaptiveIntegrationHubPanel({
               <strong>{candidate.missingFields.length > 0 ? "Review required" : "Ready to sync"}</strong>
               <span>{candidate.syncAction}</span>
             </div>
+            <button className="evidenceButton" type="button" onClick={() => onEvidence(candidate)}>
+              <Eye size={14} aria-hidden="true" />
+              Xero evidence and writeback
+            </button>
           </article>
         ))}
       </div>
@@ -1370,6 +1670,10 @@ function removeKey(record: Record<string, string>, key: string): Record<string, 
   return rest;
 }
 
+function removeKeys(record: Record<string, string>, keys: Set<string>): Record<string, string> {
+  return Object.fromEntries(Object.entries(record).filter(([key]) => !keys.has(key)));
+}
+
 function MetricTile({
   icon,
   label,
@@ -1393,7 +1697,15 @@ function MetricTile({
   );
 }
 
-function ApprovalCashItem({ action, onToggle }: { action: CashAction; onToggle: () => void }) {
+function ApprovalCashItem({
+  action,
+  onEvidence,
+  onToggle
+}: {
+  action: CashAction;
+  onEvidence: () => void;
+  onToggle: () => void;
+}) {
   return (
     <article className="approvalItem">
       <label className="approvalSelector">
@@ -1406,6 +1718,10 @@ function ApprovalCashItem({ action, onToggle }: { action: CashAction; onToggle: 
         <strong>{money(action.cashImpactBeforeCrunch)}</strong>
       </div>
       <p>{action.rationale}</p>
+      <button className="evidenceButton" type="button" onClick={onEvidence}>
+        <Eye size={14} aria-hidden="true" />
+        Xero evidence
+      </button>
       <ApprovalPlan plan={action.approvalPlan} />
     </article>
   );
@@ -1422,9 +1738,11 @@ function EmptyApprovalState({ label }: { label: string }) {
 
 function ApprovalOpportunityItem({
   opportunity,
+  onEvidence,
   onToggle
 }: {
   opportunity: RevenueOpportunity;
+  onEvidence: () => void;
   onToggle: () => void;
 }) {
   return (
@@ -1439,6 +1757,10 @@ function ApprovalOpportunityItem({
         <strong>{money(opportunity.expectedRevenueImpact)}</strong>
       </div>
       <p>{opportunity.recommendedAction}</p>
+      <button className="evidenceButton" type="button" onClick={onEvidence}>
+        <Eye size={14} aria-hidden="true" />
+        Xero evidence
+      </button>
       <ApprovalPlan plan={opportunity.approvalPlan} />
     </article>
   );
@@ -1446,9 +1768,11 @@ function ApprovalOpportunityItem({
 
 function ApprovalProductivityItem({
   task,
+  onEvidence,
   onToggle
 }: {
   task: ProductivityAutomationTask;
+  onEvidence: () => void;
   onToggle: () => void;
 }) {
   return (
@@ -1463,6 +1787,10 @@ function ApprovalProductivityItem({
         <strong>{formatDuration(task.timeSavedMinutes)}</strong>
       </div>
       <p>{task.recommendedAction}</p>
+      <button className="evidenceButton" type="button" onClick={onEvidence}>
+        <Eye size={14} aria-hidden="true" />
+        Xero evidence
+      </button>
       <ApprovalPlan plan={task.approvalPlan} />
     </article>
   );
@@ -1470,9 +1798,11 @@ function ApprovalProductivityItem({
 
 function ApprovalIntegrationItem({
   candidate,
+  onEvidence,
   onToggle
 }: {
   candidate: AdaptiveIntegrationCandidate;
+  onEvidence: () => void;
   onToggle: () => void;
 }) {
   return (
@@ -1487,6 +1817,10 @@ function ApprovalIntegrationItem({
         <strong>{money(candidate.expectedValue)}</strong>
       </div>
       <p>{candidate.syncAction}</p>
+      <button className="evidenceButton" type="button" onClick={onEvidence}>
+        <Eye size={14} aria-hidden="true" />
+        Xero evidence
+      </button>
       <ApprovalPlan plan={candidate.approvalPlan} />
     </article>
   );
@@ -1515,12 +1849,262 @@ function ApprovalPlan({ plan }: { plan: CashAction["approvalPlan"] }) {
   );
 }
 
+function buildDefaultApprovalSelection(dashboard: DashboardPayload): ApprovalSelection {
+  const selection: ApprovalSelection = {
+    cashActionIds: [],
+    revenueOpportunityIds: [],
+    productivityTaskIds: [],
+    integrationCandidateIds: []
+  };
+  const targetCount = 5;
+  const add = (group: keyof ApprovalSelection, id: string) => {
+    if (approvalSelectionCount(selection) >= targetCount) return;
+    if (!selection[group].includes(id)) selection[group] = [...selection[group], id];
+  };
+
+  dashboard.recommendedActions.slice(0, 3).forEach((action) => add("cashActionIds", action.id));
+  dashboard.revenueOpportunities.slice(0, 1).forEach((opportunity) => add("revenueOpportunityIds", opportunity.id));
+  dashboard.productivityTasks.slice(0, 1).forEach((task) => add("productivityTaskIds", task.id));
+
+  const backlog = [
+    ...dashboard.integrationCandidates.map((candidate) => ({
+      group: "integrationCandidateIds" as const,
+      id: candidate.id,
+      score: candidate.expectedValue
+    })),
+    ...dashboard.revenueOpportunities.slice(1).map((opportunity) => ({
+      group: "revenueOpportunityIds" as const,
+      id: opportunity.id,
+      score: opportunity.expectedRevenueImpact
+    })),
+    ...dashboard.productivityTasks.slice(1).map((task) => ({
+      group: "productivityTaskIds" as const,
+      id: task.id,
+      score: task.timeSavedMinutes * 100
+    }))
+  ].sort((left, right) => right.score - left.score);
+
+  backlog.forEach((item) => add(item.group, item.id));
+  return selection;
+}
+
+function approvalSelectionCount(selection: ApprovalSelection) {
+  return (
+    selection.cashActionIds.length +
+    selection.revenueOpportunityIds.length +
+    selection.productivityTaskIds.length +
+    selection.integrationCandidateIds.length
+  );
+}
+
+function buildSelectedWritebacks(payload: DashboardPayload, selection: ApprovalSelection): QueuedWritebackPreview[] {
+  return [
+    ...payload.recommendedActions
+      .filter((action) => selection.cashActionIds.includes(action.id))
+      .map((action) => buildCashEvidence(action).writeback),
+    ...payload.revenueOpportunities
+      .filter((opportunity) => selection.revenueOpportunityIds.includes(opportunity.id))
+      .map((opportunity) => buildRevenueEvidence(opportunity).writeback),
+    ...payload.productivityTasks
+      .filter((task) => selection.productivityTaskIds.includes(task.id))
+      .map((task) => buildProductivityEvidence(task).writeback),
+    ...payload.integrationCandidates
+      .filter((candidate) => selection.integrationCandidateIds.includes(candidate.id))
+      .map((candidate) => buildIntegrationEvidence(candidate).writeback)
+  ];
+}
+
+function buildCashEvidence(action: CashAction): EvidenceDrawerData {
+  const endpoint =
+    action.type === "chase_invoice"
+      ? `/Invoices/${action.invoiceId}/Email`
+      : `/Invoices/${action.invoiceId}/History`;
+  const object =
+    action.type === "delay_supplier_payment"
+      ? "Bill payment-plan note and supplier extension request"
+      : action.type === "early_payment_incentive"
+        ? "Invoice history note plus early-payment email draft"
+        : "Invoice follow-up email draft";
+  const writeback: QueuedWritebackPreview = {
+    id: action.id,
+    title: action.title,
+    group: "cash",
+    method: "POST",
+    endpoint,
+    object,
+    payload: {
+      invoiceId: action.invoiceId,
+      invoiceNumber: action.invoiceNumber,
+      contactId: action.contactId,
+      contactName: action.contactName,
+      actionType: action.type,
+      amount: action.amount,
+      expectedCashDate: action.expectedCashDate,
+      messageDraft: action.messageDraft,
+      safeWriteMode: "queued_for_owner_review"
+    },
+    humanGate: action.approvalPlan.humanControl
+  };
+
+  return {
+    id: action.id,
+    title: action.title,
+    family: "Cash-flow action",
+    summary: action.rationale,
+    records: action.approvalPlan.xeroRecords,
+    endpoints: ["GET /Invoices?Statuses=AUTHORISED,PAID", "GET /Contacts?summaryOnly=true", "GET /Payments"],
+    fields: [
+      "Invoice.InvoiceID",
+      "Invoice.InvoiceNumber",
+      "Invoice.AmountDue",
+      "Invoice.DueDate",
+      "Contact.Name",
+      "Contact.PaymentReliability"
+    ],
+    writeback,
+    humanControl: action.approvalPlan.humanControl
+  };
+}
+
+function buildRevenueEvidence(opportunity: RevenueOpportunity): EvidenceDrawerData {
+  const endpointByType: Record<RevenueOpportunity["type"], string> = {
+    closed_won_not_invoiced: "PUT /Invoices",
+    dormant_customer_reactivation: "PUT /Quotes",
+    upsell_cross_sell: "PUT /Quotes",
+    subscription_conversion: "PUT /RepeatingInvoices",
+    late_payment_recovery: "POST /Invoices/{InvoiceID}/Email",
+    unmatched_external_order: "PUT /Contacts + PUT /Invoices",
+    underperforming_service_fix: "PUT /Items"
+  };
+  const writeback: QueuedWritebackPreview = {
+    id: opportunity.id,
+    title: opportunity.title,
+    group: "revenue",
+    method: opportunity.type === "late_payment_recovery" ? "POST" : "PUT",
+    endpoint: endpointByType[opportunity.type],
+    object: opportunity.approvalPlan.approvedExecution,
+    payload: {
+      opportunityId: opportunity.id,
+      type: opportunity.type,
+      contactId: opportunity.contactId ?? null,
+      contactName: opportunity.contactName ?? null,
+      serviceCategory: opportunity.serviceCategory ?? null,
+      expectedRevenueImpact: opportunity.expectedRevenueImpact,
+      expectedCashFlowImpact: opportunity.expectedCashFlowImpact,
+      messageDraft: opportunity.messageDraft,
+      safeWriteMode: "draft_only_until_owner_approval"
+    },
+    humanGate: opportunity.approvalPlan.humanControl
+  };
+
+  return {
+    id: opportunity.id,
+    title: opportunity.title,
+    family: "Revenue opportunity",
+    summary: opportunity.recommendedAction,
+    records: opportunity.approvalPlan.xeroRecords,
+    endpoints: ["GET /Invoices", "GET /Contacts", "GET /Items", "GET /Quotes", "GET /RepeatingInvoices"],
+    fields: [
+      "Contact.Name",
+      "Invoice.Total",
+      "Invoice.Status",
+      "Invoice.LineItems",
+      ...opportunity.modelSignals.map((signal) => signal.label)
+    ],
+    writeback,
+    humanControl: opportunity.approvalPlan.humanControl
+  };
+}
+
+function buildProductivityEvidence(task: ProductivityAutomationTask): EvidenceDrawerData {
+  const endpointByType: Record<ProductivityAutomationTask["type"], string> = {
+    receipt_to_expense: "PUT /Invoices/{BillID}",
+    smart_reconciliation: "PUT /Payments",
+    duplicate_bill_guard: "POST /Invoices/{BillID}/History",
+    contractor_payment_prep: "PUT /Invoices",
+    subscription_expense_control: "PUT /BankTransactions"
+  };
+  const writeback: QueuedWritebackPreview = {
+    id: task.id,
+    title: task.title,
+    group: "productivity",
+    method: task.type === "duplicate_bill_guard" ? "POST" : "PUT",
+    endpoint: endpointByType[task.type],
+    object: task.xeroTarget,
+    payload: {
+      taskId: task.id,
+      workflow: task.workflow,
+      xeroTarget: task.xeroTarget,
+      sourceRecord: task.sourceRecord,
+      recommendedAction: task.recommendedAction,
+      automationSteps: task.automationSteps,
+      safeWriteMode: "reviewed_finance_admin_update"
+    },
+    humanGate: task.approvalPlan.humanControl
+  };
+
+  return {
+    id: task.id,
+    title: task.title,
+    family: "Productivity automation",
+    summary: task.businessImpact,
+    records: task.approvalPlan.xeroRecords,
+    endpoints: ["GET /BankTransactions", "GET /Invoices", "GET /Accounts", endpointByType[task.type]],
+    fields: ["Source memo/raw text", "Amount", "Contact.Name", "Account.Code", "Invoice.Reference", "Attachment"],
+    writeback,
+    humanControl: task.approvalPlan.humanControl
+  };
+}
+
+function buildIntegrationEvidence(candidate: AdaptiveIntegrationCandidate): EvidenceDrawerData {
+  const endpoint = `PUT /${pluralXeroObject(candidate.mappedXeroObject)}`;
+  const writeback: QueuedWritebackPreview = {
+    id: candidate.id,
+    title: candidate.title,
+    group: "integration",
+    method: "PUT",
+    endpoint,
+    object: candidate.targetXeroRecord,
+    payload: {
+      candidateId: candidate.id,
+      sourceSystem: candidate.sourceSystem,
+      sourceRecordId: candidate.sourceRecordId,
+      mappedXeroObject: candidate.mappedXeroObject,
+      targetXeroRecord: candidate.targetXeroRecord,
+      fieldMappings: candidate.fieldMappings,
+      missingFields: candidate.missingFields,
+      safeWriteMode: "draft_sync_until_owner_approval"
+    },
+    humanGate: candidate.approvalPlan.humanControl
+  };
+
+  return {
+    id: candidate.id,
+    title: candidate.title,
+    family: "Adaptive integration",
+    summary: candidate.syncAction,
+    records: candidate.approvalPlan.xeroRecords,
+    endpoints: ["GET /Contacts", "GET /Invoices", "GET /Items", endpoint],
+    fields: candidate.fieldMappings.map((mapping) => `${mapping.sourceField} -> ${mapping.xeroField}`),
+    writeback,
+    humanControl: candidate.approvalPlan.humanControl
+  };
+}
+
+function pluralXeroObject(object: AdaptiveIntegrationCandidate["mappedXeroObject"]) {
+  if (object === "RepeatingInvoice") return "RepeatingInvoices";
+  if (object === "TrackingCategory") return "TrackingCategories";
+  return `${object}s`;
+}
+
 function OpportunityCard({
   opportunity,
+  onEvidence,
   selected,
   onToggle
 }: {
   opportunity: RevenueOpportunity;
+  onEvidence: () => void;
   selected: boolean;
   onToggle: () => void;
 }) {
@@ -1552,16 +2136,22 @@ function OpportunityCard({
           </div>
         ))}
       </div>
+      <button className="evidenceButton" type="button" onClick={onEvidence}>
+        <Eye size={14} aria-hidden="true" />
+        Xero evidence and writeback
+      </button>
     </article>
   );
 }
 
 function ActionRow({
   action,
+  onEvidence,
   selected,
   onToggle
 }: {
   action: CashAction;
+  onEvidence: () => void;
   selected: boolean;
   onToggle: () => void;
 }) {
@@ -1576,6 +2166,10 @@ function ActionRow({
       <Stat label="Confidence" value={action.confidence} />
       <Stat label="Risk" value={action.relationshipRisk} />
       <p>{action.rationale}</p>
+      <button className="evidenceButton" type="button" onClick={onEvidence}>
+        <Eye size={14} aria-hidden="true" />
+        Xero evidence and writeback
+      </button>
     </article>
   );
 }

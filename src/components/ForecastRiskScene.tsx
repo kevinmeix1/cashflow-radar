@@ -45,6 +45,7 @@ export function ForecastRiskScene({ baseline, afterActions, threshold, drivers }
           <span className="risk">Before actions</span>
           <span className="safe">After actions</span>
           <span className="threshold">Safe cash line</span>
+          <span className="range">{view.bandLabel}</span>
         </div>
       </div>
 
@@ -93,9 +94,6 @@ export function ForecastRiskScene({ baseline, afterActions, threshold, drivers }
             <circle className="riskPoint" cx={view.breachPoint.x} cy={view.breachPoint.y} r="5" />
             <circle className="safePoint" cx={view.afterMinimumPoint.x} cy={view.afterMinimumPoint.y} r="5" />
 
-            <text className="bandLabel" x={CHART_PAD_X + 18} y={CHART_PAD_Y + 34}>
-              {view.bandLabel}
-            </text>
             {view.yTicks.map((tick) => (
               <text className="cashTickLabel" key={tick.key} x={CHART_PAD_X - 10} y={(tick.y ?? 0) + 4}>
                 {tick.label}
@@ -112,10 +110,12 @@ export function ForecastRiskScene({ baseline, afterActions, threshold, drivers }
             <text className="thresholdText" x={CHART_WIDTH - 210} y={view.thresholdY - 8}>
               Safe cash line: {money(threshold)}
             </text>
-            <text className="breachText" x={view.breachLabelX} y={view.breachLabelY}>
-              {view.breachLabel}
-            </text>
           </svg>
+
+          <div className="riskChartCallouts">
+            <span>{view.breachLabel}</span>
+            <span>Monte Carlo band shows likely payment-timing outcomes, not a single fixed future.</span>
+          </div>
 
           <div className="riskCalendar" aria-label="Weekly risk calendar">
             {view.weeks.map((week) => (

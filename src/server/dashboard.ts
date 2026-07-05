@@ -1,4 +1,5 @@
 import { generateAgentNarrative } from "../agents/cfoNarrativeAgent";
+import { getApprovalDecisions, getQueuedWritebacks } from "../approvals/decisionStore";
 import { demoSnapshot } from "../data/demoSnapshot";
 import {
   buildAdaptiveIntegrationCandidates,
@@ -19,6 +20,7 @@ import { buildProductivityAutomations, summariseProductivityAutomations } from "
 import { buildEntityMatches, summariseEntityMatches } from "../mapping/smartMappingService";
 import { buildRevenueOpportunities, summariseRevenueGrowth } from "../revenue/opportunityEngine";
 import { getAuditLog, getMappingDecisions } from "../audit/auditService";
+import { formatMoney } from "../forecast/dateUtils";
 
 export async function buildDashboardPayload(
   snapshot: XeroSnapshot = demoSnapshot,
@@ -29,9 +31,12 @@ export async function buildDashboardPayload(
 ): Promise<DashboardPayload> {
   const dataQuality = assessDataQuality(snapshot);
   const baseline = buildForecastScenario(snapshot, "Before agent actions");
-  const recommendedActions = recommendCashActions(snapshot, baseline);
+  const approvalDecisions = await getApprovalDecisions();
+  const recommendedActionCandidates = recommendCashActions(snapshot, baseline);
+  const effectiveActions = recommendedActionCandidates.filter((action) => approvalDecisions[action.id]?.decision !== "REJECTED");
+  const recommendedActions = recommendedActionCandidates.filter((action) => !approvalDecisions[action.id]);
   const afterActions = buildForecastScenario(snapshot, "After recommended actions", {
-    actions: recommendedActions
+    actions: effectiveActions
   });
   const mappingDecisions = getMappingDecisions();
   const entityMatches = buildEntityMatches(snapshot).map((match) => {
@@ -39,17 +44,19 @@ export async function buildDashboardPayload(
     return decision ? { ...match, matchStatus: decision } : match;
   });
   const smartMappingSummary = summariseEntityMatches(entityMatches);
-  const revenueOpportunities = buildRevenueOpportunities(snapshot, entityMatches);
+  const revenueOpportunities = buildRevenueOpportunities(snapshot, entityMatches).filter(
+    (opportunity) => !approvalDecisions[opportunity.id]
+  );
   const revenueGrowth = summariseRevenueGrowth(revenueOpportunities);
-  const productivityTasks = buildProductivityAutomations(snapshot);
+  const productivityTasks = buildProductivityAutomations(snapshot).filter((task) => !approvalDecisions[task.id]);
   const productivitySummary = summariseProductivityAutomations(productivityTasks);
-  const integrationCandidates = buildAdaptiveIntegrationCandidates(snapshot);
+  const integrationCandidates = buildAdaptiveIntegrationCandidates(snapshot).filter((candidate) => !approvalDecisions[candidate.id]);
   const integrationSummary = summariseAdaptiveIntegrations(integrationCandidates);
   const forecastIntelligence = buildForecastIntelligence(
     snapshot,
     baseline,
     afterActions,
-    recommendedActions,
+    effectiveActions,
     revenueGrowth,
     revenueOpportunities
   );
@@ -57,7 +64,7 @@ export async function buildDashboardPayload(
     snapshot,
     baseline,
     afterActions,
-    cashActions: recommendedActions,
+    cashActions: effectiveActions,
     revenueGrowth,
     revenueOpportunities
   });
@@ -87,7 +94,7 @@ export async function buildDashboardPayload(
       recommendedAction: opportunity.recommendedAction,
       evidence: opportunity.evidence
     })),
-    recommendedActions: recommendedActions.map((action) => ({
+    recommendedActions: effectiveActions.map((action) => ({
       id: action.id,
       type: action.type,
       title: action.title,
@@ -130,6 +137,7 @@ export async function buildDashboardPayload(
       agentNarrative ??
       buildFallbackNarrative(snapshot, baseline, afterActions, recommendedActions, revenueGrowth, revenueOpportunities),
     xero: options.xero ?? seededXeroProvenance(mcp),
+    queuedWritebacks: await getQueuedWritebacks(),
     agentLayer: {
       mode: agentNarrative ? "openai-agents-sdk" : "deterministic-fallback",
       specialists: [
@@ -182,6 +190,64 @@ export async function buildDashboardPayload(
           name: "CFO Narrative Agent",
           role: "Explains the forecast in plain English.",
           status: agentNarrative ? "ran" : "fallback"
+        }
+      ],
+      traceSteps: [
+        {
+          id: "trace-data-quality",
+          agentName: "Data Quality Agent",
+          status: agentNarrative ? "ran" : "fallback",
+          input: `${snapshot.invoices.length} invoices, ${snapshot.contacts.length} contacts, opening cash ${formatMoney(
+            snapshot.openingCashBalance,
+            snapshot.currency
+          )}`,
+          reasoning:
+            "Checked whether due dates, contacts, opening cash, and payment history are complete enough to trust the forecast.",
+          output: `${dataQuality.score}/100 data quality: ${dataQuality.status.replaceAll("-", " ")}`,
+          xeroEvidence: ["GET /Invoices", "GET /Contacts", "GET /Reports/BankSummary"]
+        },
+        {
+          id: "trace-forecast",
+          agentName: "Forecast Agent",
+          status: agentNarrative ? "ran" : "fallback",
+          input: `${baseline.horizonDays}-day ledger with ${baseline.bands?.length ?? 0} Monte Carlo band points`,
+          reasoning:
+            "Interpreted the risk window, safe-cash threshold, simulated uncertainty, and before/after action movement.",
+          output: baseline.summary.firstThresholdBreachDate
+            ? `Cash falls below threshold on ${baseline.summary.firstThresholdBreachDate}; after-action minimum is ${formatMoney(
+                afterActions.summary.minimumCashBalance,
+                snapshot.currency
+              )}.`
+            : "No threshold breach detected in the selected horizon.",
+          xeroEvidence: ["GET /Invoices?Statuses=AUTHORISED,PAID", "GET /Reports/BankSummary", "GET /RepeatingInvoices"]
+        },
+        {
+          id: "trace-cash-actions",
+          agentName: "Cash Action Agent",
+          status: agentNarrative ? "ran" : "fallback",
+          input: `${recommendedActionCandidates.length} cash intervention candidates`,
+          reasoning: "Ranked customer and supplier moves by cash protected before the risk window and relationship risk.",
+          output: `${recommendedActions.length} pending cash action(s); ${effectiveActions.length} action(s) included in after-action forecast.`,
+          xeroEvidence: ["Invoices", "Contacts", "Payment timing history"]
+        },
+        {
+          id: "trace-revenue-growth",
+          agentName: "Revenue Growth Agent",
+          status: agentNarrative ? "ran" : "fallback",
+          input: `${revenueOpportunities.length} pending revenue opportunities from invoices, contacts, line items, and external matches`,
+          reasoning:
+            "Looked for closed-won uninvoiced work, dormant high-value customers, repeat purchases, upsells, and unmatched external orders.",
+          output: `${formatMoney(revenueGrowth.totalExpectedRevenue, snapshot.currency)} expected revenue upside remains pending.`,
+          xeroEvidence: ["GET /Invoices", "GET /Contacts", "GET /Items", "Smart Mapping Review"]
+        },
+        {
+          id: "trace-communications",
+          agentName: "Communication Agent",
+          status: agentNarrative ? "ran" : "fallback",
+          input: `${recommendedActions.length + revenueOpportunities.length} customer/supplier message drafts`,
+          reasoning: "Kept outreach specific, respectful, and gated behind owner approval.",
+          output: "Draft messages are editable before any Xero writeback or external send.",
+          xeroEvidence: ["Contact names", "Invoice numbers", "Amounts due", "Approval audit trail"]
         }
       ],
       traceHint: agentNarrative

@@ -2,9 +2,11 @@ import { existsSync } from "node:fs";
 import { loadEnvFile } from "node:process";
 import cors from "cors";
 import express from "express";
+import { recordApprovalDecisions, resetApprovalDecisionStore } from "../approvals/decisionStore";
 import { buildDashboardPayload } from "./dashboard";
-import { getAuditLog, recordApprovalAudit, recordMappingDecision } from "../audit/auditService";
+import { getAuditLog, recordApprovalAudit, recordMappingDecision, resetRuntimeAuditState } from "../audit/auditService";
 import type { ApprovalDecision } from "../audit/auditService";
+import type { QueuedWritebackPreview } from "../types/domain";
 import {
   buildXeroConsentUrl,
   getXeroIntegrationStatus,
@@ -37,6 +39,15 @@ app.get("/api/integrations/xero/status", async (_request, response) => {
 app.get("/api/audit-log", (_request, response) => {
   response.json({
     auditLog: getAuditLog()
+  });
+});
+
+app.post("/api/demo/reset", async (_request, response) => {
+  await resetApprovalDecisionStore();
+  resetRuntimeAuditState();
+  response.json({
+    resetAt: new Date().toISOString(),
+    status: "demo-state-reset"
   });
 });
 
@@ -96,7 +107,7 @@ app.get("/api/dashboard", async (request, response) => {
 });
 
 function handleActionDecision(decision: ApprovalDecision) {
-  return (request: express.Request, response: express.Response) => {
+  return async (request: express.Request, response: express.Response) => {
     const cashActionIds = Array.isArray(request.body?.cashActionIds) ? request.body.cashActionIds : [];
     const revenueOpportunityIds = Array.isArray(request.body?.revenueOpportunityIds)
       ? request.body.revenueOpportunityIds
@@ -109,6 +120,9 @@ function handleActionDecision(decision: ApprovalDecision) {
       request.body?.editedMessages && typeof request.body.editedMessages === "object"
         ? (request.body.editedMessages as Record<string, string>)
         : undefined;
+    const writebackPreviews = Array.isArray(request.body?.writebackPreviews)
+      ? (request.body.writebackPreviews as QueuedWritebackPreview[])
+      : [];
     const actionIds = [...cashActionIds, ...revenueOpportunityIds, ...productivityTaskIds, ...integrationCandidateIds];
     const source = request.body?.source === "xero" ? "xero" : "demo";
     const auditEntries = recordApprovalAudit({
@@ -120,6 +134,18 @@ function handleActionDecision(decision: ApprovalDecision) {
       productivityTaskIds,
       integrationCandidateIds
     });
+    const storedDecisions = await recordApprovalDecisions({
+      source,
+      decision,
+      editedMessages,
+      idsByGroup: {
+        cash: cashActionIds,
+        revenue: revenueOpportunityIds,
+        productivity: productivityTaskIds,
+        integration: integrationCandidateIds
+      },
+      writebackPreviews: decision === "REJECTED" ? [] : writebackPreviews
+    });
 
     response.json({
       decidedAt: new Date().toISOString(),
@@ -127,6 +153,7 @@ function handleActionDecision(decision: ApprovalDecision) {
       status: decision === "REJECTED" ? "rejected-and-logged" : "queued-for-human-reviewed-execution",
       source,
       actionIds,
+      decisionsStored: storedDecisions.length,
       counts: {
         cashActions: cashActionIds.length,
         revenueOpportunities: revenueOpportunityIds.length,

@@ -142,10 +142,28 @@ export interface CashDriverInsight {
   confidence: RiskLevel;
 }
 
+export interface ForecastDecisionCallout {
+  id: string;
+  title: string;
+  answer: string;
+  evidence: string[];
+  businessDecision: string;
+}
+
+export interface TimeSeriesDiagnostic {
+  id: string;
+  label: string;
+  value: string;
+  detail: string;
+  method: string;
+}
+
 export interface ForecastIntelligence {
   explainabilitySummary: string;
   biggestRisk: string;
   biggestOpportunity: string;
+  decisionCallouts: ForecastDecisionCallout[];
+  timeSeriesDiagnostics: TimeSeriesDiagnostic[];
   models: ForecastModelInsight[];
   cashDrivers: CashDriverInsight[];
 }
@@ -421,6 +439,29 @@ export interface XeroApiProvenance {
   note: string;
 }
 
+export type ApprovalGroup = "cash" | "revenue" | "productivity" | "integration";
+
+export interface QueuedWritebackPreview {
+  id: string;
+  title: string;
+  group: ApprovalGroup;
+  method: "POST" | "PUT";
+  endpoint: string;
+  object: string;
+  payload: Record<string, unknown>;
+  humanGate: string;
+}
+
+export interface AgentTraceStep {
+  id: string;
+  agentName: string;
+  status: "ready" | "ran" | "fallback";
+  input: string;
+  reasoning: string;
+  output: string;
+  xeroEvidence: string[];
+}
+
 export interface AgentLayerStatus {
   mode: "deterministic-fallback" | "openai-agents-sdk";
   specialists: Array<{
@@ -428,6 +469,7 @@ export interface AgentLayerStatus {
     role: string;
     status: "ready" | "ran" | "fallback";
   }>;
+  traceSteps: AgentTraceStep[];
   traceHint: string;
 }
 
@@ -455,5 +497,6 @@ export interface DashboardPayload {
   ownerPriorities: OwnerPriority[];
   narrative: AgentNarrative;
   xero: XeroApiProvenance;
+  queuedWritebacks: QueuedWritebackPreview[];
   agentLayer: AgentLayerStatus;
 }

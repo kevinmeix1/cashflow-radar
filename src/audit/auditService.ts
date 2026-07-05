@@ -13,7 +13,7 @@ interface ApprovalAuditInput {
   integrationCandidateIds: string[];
 }
 
-const auditLog: AuditLogEntry[] = [
+const seedAuditLog: AuditLogEntry[] = [
   {
     auditId: "audit-seed-mapping-brightside",
     eventType: "SMART_MAPPING_REVIEWED",
@@ -39,6 +39,8 @@ const auditLog: AuditLogEntry[] = [
     createdAt: "2026-07-04T09:07:00.000Z"
   }
 ];
+
+const auditLog: AuditLogEntry[] = [...seedAuditLog];
 
 export function getAuditLog(): AuditLogEntry[] {
   return [...auditLog].sort((left, right) => right.createdAt.localeCompare(left.createdAt)).slice(0, 12);
@@ -114,6 +116,11 @@ export function recordMappingDecision(input: MappingDecisionInput): AuditLogEntr
   };
   auditLog.unshift(entry);
   return entry;
+}
+
+export function resetRuntimeAuditState(): void {
+  auditLog.splice(0, auditLog.length, ...seedAuditLog);
+  mappingDecisions.clear();
 }
 
 function inferSourceRecordIds(id: string): string[] {
